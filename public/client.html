@@ -1,0 +1,206 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="client.css">
+        <title>Client Interface</title>
+    </head>
+    <body>
+        <div id="loginDiv">
+            <label for="idInput">Please enter your email</label> <br><br>
+            <input id="idInput"> <br> <br>
+            <button type="button" onclick="joinGame()" id="joinGameButton" class="joinGame">Login</button>
+        </div>
+        <div id="pleaseWaitDiv">Please Wait</div>
+        <div id="preSurveyDiv"><b>Pre Survey</b><br><br>
+            <div id="preSurveyDivPage1">
+                <form id="preSurveyFormPage1" onSubmit="return submitPreSurveyPage1();">
+                    <div class="surveyQuestionDiv">
+                        <label for="risk">In comparison with others, are you a person who is generally willing to take risks?</label> <br>
+                        <select name="risk" id="risk" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="time">In comparison with others, are you a person who is generally willing to give up something today in order to benefit in the future?</label> <br>
+                        <select name="time" id="time" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="memory1">How often do you forget the names of people minutes after being introduced?</label> <br>
+                        <select name="memory1" id="memory1" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="1">More than Once per day</option>
+                            <option value="2">2 to 6 times a week</option>
+                            <option value="3">A few times a month</option>
+                            <option value="4">A few times a year</option>
+                            <option value="5">Never</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="memory2">How often do you discover when you have gone out that you must return for something that you left behind?</label> <br>
+                        <select name="memory2" id="memory2" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="1">More than Once per day</option>
+                            <option value="2">2 to 6 times a week</option>
+                            <option value="3">A few times a month</option>
+                            <option value="4">A few times a year</option>
+                            <option value="5">Never</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="cognitiveReflectionTask1">If it takes 5 machines 5 minutes to make 5 widgets, how many minutes would it take 100 machines to make 100 widgets? </label> <br>
+                        <input class="surveyInput" type="number" min="0" name="cognitiveReflectionTask1" id="cognitiveReflectionTask1" required>
+                    </div>
+                    <div> <br>
+                        <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+                    </div> 
+                </form>
+            </div>
+            <div id="preSurveyDivPage2">
+                <form id="preSurveyFormPage2" onSubmit="return submitPreSurveyPage2();">
+                    <div class="surveyQuestionDiv">
+                        <label for="cognitiveReflectionTask2">A man buys a stock for $60. Then he sells it for $70. Then he buys it back for $80. Then he sells it again for $90. How many dollars did he make?</label> <br>
+                        <input class="surveyNumber" type="number" min="0" max="10000" name="cognitiveReflectionTask2" id="cognitiveReflectionTask2" required>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="reputation1">Do you worry about what other people will think of you even when you know it doesn’t make any difference?</label> <br>
+                        <select name="reputation1" id="reputation1" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="reputation2">Are you frequently afraid of other people noticing your shortcomings?</label> <br>
+                        <select name="reputation2" id="reputation2" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div> 
+                    <div class="surveyQuestionDiv">
+                        <label for="ruleOfThumb">Are you a person who tends to finish what you started?</label> <br>
+                        <select name="ruleOfThumb" id="ruleOfThumb" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="BehavioralInertia1">Do you tend to use short-cuts to achieve your goals?</label> <br>
+                        <select name="BehavioralInertia1" id="BehavioralInertia1" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>                
+                    <div> <br>
+                        <input class="preSurveyButton" type="submit" value="Submit" id="preSurveyButtonPage2">
+                    </div>
+                </form>   
+            </div>           
+        </div>
+        <div id="instructionsDiv"> 
+            <div id="instructionsTextDiv"></div> <br>
+            <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">Begin Practice Periods</button>
+            <button type="button" onclick="beginExperiment()" id="beginExperimentButton">Begin Experiment</button>
+        </div>
+        <div id="interfaceDiv"><canvas id="canvas"></canvas></div>
+        <div id="postSurveyDiv"><b>Post Survey </b><br><br>
+            <div id="postSurveyDivPage1">
+                <form id="postSurveyFormPage1" onSubmit="return submitPostSurveyPage1();">
+                    <div class="surveyQuestionDiv">
+                        <label for="yearsInCollege">How many years have you been a student at VCU?</label> <br>
+                        <input class="surveyNumber" type="number" min="0" max="20" name="yearsInCollege" id="yearsInCollege" required>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="dateOfBirth">What year were you born?</label> <br>
+                        <input class="surveyNumber" type="number" min="1900" max="2018" name="dateOfBirth" id="dateOfBirth" required>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="employmentStatus">What is your employment status?</label> <br>
+                        <select name="employmentStatus" id="employmentStatus" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="fullTime">Full Time</option>
+                            <option value="partTime">Part Time</option>
+                            <option value="unemployed">Unemployed</option>
+                            <option value="selfemployed">Self Employed</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="major">Major:</label> <br>
+                        <select name="major" id="major" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="business">Business</option>
+                            <option value="accounting">Accounting</option>
+                            <option value="economics">Economics</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="mathematics">Mathematics</option>
+                            <option value="english">English</option>
+                            <option value="biology">Biology</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="religion">Religion:</label> <br>
+                        <select name="religion" id="religion" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="christian">Christian</option>
+                            <option value="islam">Islam</option>
+                            <option value="buddhism">Buddhism</option>
+                            <option value="judaism">Judaism</option>
+                            <option value="hinduism">Hinduism</option>
+                            <option value="none">None</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div> <br>
+                        <input class="postSurveyButtonPage1" type="submit" value="Next Page" id="postSurveyButtonPage1">
+                    </div> 
+                </form>
+            </div>
+            <div id="postSurveyDivPage2">
+                <form id="postSurveyFormPage2" onSubmit="return submitPostSurveyPage2();">
+                    <div class="surveyQuestionDiv">
+                        <label for="gender">Gender:</label> <br>
+                        <select name="gender" id="gender" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="race">Race:</label> <br>
+                        <select name="race" id="race" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="white">White</option>
+                            <option value="black">Black or African American</option>
+                            <option value="native">American Indian or Alaska Native</option>
+                            <option value="asian">Asian</option>
+                            <option value="islander">Native Hawaiian or Other Pacific Islander</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="surveyQuestionDiv">
+                        <label for="ethnicity">Ethnicity:</label> <br>
+                        <select name="ethnicity" id="ethnicity" class="surveyInput" required>
+                            <option value="" selected=""></option>>Please select</option>
+                            <option value="hispanic">Hispanic or Latino</option>
+                            <option value="nonHispanic">Not Hispanic or Latino</option>
+                        </select>
+                    </div>
+                    <div> <br>
+                        <input class="postSurveyButtonPage2" type="submit" value="Submit" id="postSurveyButtonPage2">
+                    </div> 
+                </form>
+            </div>       
+        </div>   
+        <script src="client.js" type="module"></script>
+    </body>
+</html>

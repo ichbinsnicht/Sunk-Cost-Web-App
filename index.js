@@ -1,10 +1,26 @@
 // TODO
+// 0) unlock preSurveyLock and experiment generally (Continue here!)
+// 1) read URL parameters for login:
+// https://trialparticipation.com/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}
+// 1) Update interface (unlocking, instructions, ,
+// feedback at end of experiment, no audio, data recording?, )
+// 2) Rely on Prolific for some demographic questions (drop some survey questions)
+// 4) API. Send custom emails about gift cards
+// 5) check mobile/tablet compatibility
+//
 // - Pilot: Prolific students
 // ---> set up URL parameters from Prolific on the website
 // ---> redirect subjects (automated completion code)
 // ---> shareable link version for a gift card.
+//
 // - giftbit.com
 // - https://app.giftbit.com/app/order/pay/bda63b3c49eb433995fccd4996eb54e2
+// - https://docs.prolific.com/docs/api-docs/public/#tag/Messages/operation/SendMessage
+//
+
+//
+// base: 3, bonus: 6 , gift card value: 9
+//
 // - ML analysis
 //
 // Alternative version:
@@ -139,7 +155,7 @@ io.on('connection', function (socket) {
   socket.emit('connected')
   socket.on('joinGame', function (msg) {
     console.log('joinGame', msg.id)
-    if (!subjects[msg.id]) createSubject(msg.id, socket) // restart client: client joins but server has record
+    if (!subjects[msg.id]) createSubject(msg, socket) // restart client: client joins but server has record
     socket.emit('clientJoined', { id: msg.id, hist: subjects[msg.id].hist, period: subjects[msg.id].period })
     console.log('Object.keys(subjects)', Object.keys(subjects))
   })
@@ -236,7 +252,7 @@ io.on('connection', function (socket) {
       }
       socket.emit('serverUpdateClient', reply)
     } else { // restart server: solving issue that client does not know that
-      createSubject(msg.id, socket)
+      createSubject(msg, socket)
       socket.emit('clientJoined', { id: msg.id })
     }
   })
@@ -255,10 +271,12 @@ function setupHist (subject) {
   })
 }
 
-function createSubject (id, socket) {
+function createSubject (msg, socket) {
   numSubjects += 1
   const subject = {
-    id,
+    id: msg.id,
+    study: msg.study,
+    session: msg.session,
     socket,
     startTime: getDateString(),
     preSurveySubmitted: false,
@@ -281,9 +299,9 @@ function createSubject (id, socket) {
     selectedWinPrize: 0,
     hist: {}
   }
-  subjects[id] = subject
+  subjects[msg.id] = subject
   setupHist(subject)
-  console.log(`subject ${id} connected`)
+  console.log(`subject ${msg.id} connected`)
 }
 function calculateOutcome () {
   Object.values(subjects).forEach(subject => {

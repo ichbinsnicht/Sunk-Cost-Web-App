@@ -4,8 +4,6 @@ import { io } from './socketIo/socket.io.esm.min.js'
 // getting Elements from HTML
 const instructionsDiv = document.getElementById('instructionsDiv')
 const instructionsTextDiv = document.getElementById('instructionsTextDiv')
-const idInput = document.getElementById('idInput')
-const loginDiv = document.getElementById('loginDiv')
 const pleaseWaitDiv = document.getElementById('pleaseWaitDiv')
 const preSurveyDiv = document.getElementById('preSurveyDiv')
 const preSurveyDivPage1 = document.getElementById('preSurveyDivPage1')
@@ -39,7 +37,9 @@ const darkBlue = 'rgb(0,50,256)'
 
 // variables
 let state = 'startup'
-let id = 0
+let id = 'id'
+let study = 'study'
+let session = 'session'
 let joined = false
 let xScale = 1
 let yScale = 1
@@ -95,13 +95,24 @@ const readyString = 'If you have any questions, raise your hand and we will come
 
 const socket = io() // browser based socket
 const arange = n => [...Array(n).keys()]
+// URL
+// http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
+const urlParams = new URLSearchParams(window.location.search)
+urlParams.forEach((value, key) => {
+  console.log('key', key)
+  console.log('value', value)
+  if (key === 'PROLIFIC_PID') id = value
+  if (key === 'STUDY_ID') study = value
+  if (key === 'SESSION_ID') session = value
+})
 
 window.joinGame = function () {
-  const id = idInput.value
   console.log('id', id)
-  const msg = { id }
+  const msg = { id, study, session }
   socket.emit('joinGame', msg)
 }
+window.joinGame()
+
 window.submitPreSurveyPage1 = function () {
   console.log('submitPreSurveyPage1')
   window.nextPreSurveyPage()
@@ -229,6 +240,8 @@ const update = function () {
   if (step === 'choice1' || step === 'choice2') updateChoice()
   const msg = {
     id,
+    study,
+    session,
     period,
     step,
     stage,
@@ -238,7 +251,6 @@ const update = function () {
   socket.emit('clientUpdate', msg)
   beginPracticePeriodsButton.style.display = (!practiceLock && !practicePeriodsComplete) ? 'block' : 'none'
   beginExperimentButton.style.display = practicePeriodsComplete ? 'inline' : 'none'
-  loginDiv.style.display = 'none'
   instructionsDiv.style.display = 'none'
   pleaseWaitDiv.style.display = 'none'
   preSurveyDiv.style.display = 'none'
@@ -286,9 +298,7 @@ const updateChoice = function () {
   const canvasRect = canvas.getBoundingClientRect()
   mouseX = (mouseEvent.pageX - x0 - canvasRect.left) * 100 / canvas.height
   const mouseGraphX = (mouseX - graphX) / graphWidth
-  console.log('step', step)
   if (step === 'choice1' || step === 'choice2') {
-    console.log('stage', stage)
     choice[stage] = Math.round(0.5 * Math.max(0, Math.min(1, mouseGraphX)) * 100) / 100
     score[stage] = forced[stage] * forcedScore[stage] + (1 - forced[stage]) * choice[stage]
   }

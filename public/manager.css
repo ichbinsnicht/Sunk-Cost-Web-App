@@ -6,35 +6,29 @@ button {
     margin-bottom: 2vh;
 }
 #interfaceDiv {
-    display: table;
+    display: block;
     margin-top: 0vh;
 }
 #rowDiv {
-    display: table-row;
+    display: block;
     margin-top: 0vh;
+    width: 80vw;
 }
 #infoDiv {
     display: table-cell;
-    width: fit-content;
-    border-collapse: 0;
+    float: right;
 }
 #subjectsDiv {
     display: table-cell;
     margin-top: 0vh;
-    width: fit-content;
+    float: left;
     height: fit-content;
 }
 #subjectsTable {
     margin-top: 0vh;
-    width: 10vw;
 }
 td {
     font: 2vmin monospace;
     padding-left: 1vmin;
     padding-right: 1vmin;
-}
-#parametersDiv {
-    display: table-cell;
-    margin-top: 0vh;
-    width: 50vw;
 }

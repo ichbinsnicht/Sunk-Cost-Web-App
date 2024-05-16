@@ -1,17 +1,11 @@
-/* global io, Audio */
+/* global io */
 const infoDiv = document.getElementById('infoDiv')
 const subjectsTable = document.getElementById('subjectsTable')
-const playAudioButton = document.getElementById('playAudioButton')
-const stopAudioButton = document.getElementById('stopAudioButton')
-const preSurveyLock = document.getElementById('preSurveyLock')
-const practiceLock = document.getElementById('practiceLock')
-const audio = new Audio('instructions.mp3')
 const socket = io()
 
 let numSubjects = 0
 let message = {}
 let subjects = []
-let joined = false
 
 document.onmousedown = function () {
   console.log(message)
@@ -21,11 +15,6 @@ socket.on('connected', function (msg) {
   setInterval(update, 100)
 })
 socket.on('serverUpdateManager', function (msg) {
-  if (joined === false && msg.online) {
-    preSurveyLock.checked = false
-    practiceLock.checked = false
-  }
-  joined = true
   message = msg
   numSubjects = msg.numSubjects
   subjects = msg.subjectsData
@@ -67,19 +56,7 @@ socket.on('serverUpdateManager', function (msg) {
   subjectsTable.innerHTML = tableString
 })
 
-playAudioButton.onclick = function () {
-  audio.play()
-}
-
-stopAudioButton.onclick = function () {
-  audio.pause()
-  audio.currentTime = 0
-}
-
 const update = function () {
-  const msg = {
-    preSurveyLock: preSurveyLock.checked,
-    practiceLock: practiceLock.checked
-  }
+  const msg = {}
   socket.emit('managerUpdate', msg)
 }

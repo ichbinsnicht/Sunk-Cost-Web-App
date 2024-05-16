@@ -7,6 +7,9 @@ body {
 #joinGameButton{
     font: 5vmin monospace;
 }
+#beginPreSurveyButton{
+    font: 5vmin monospace;
+}
 #preSurveyDiv {
     width: 133vh;
     margin-top: 8vh;
@@ -76,6 +79,15 @@ body {
     padding-bottom: 20;
     float: right;  
     border-style: none;
+}
+#welcomeDiv {
+    width: 133vh;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+    text-align: center;
+    font: 5vmin monospace;
+    margin-top: 8vh;
 }
 #pleaseWaitDiv {
     width: 133vh;
@@ -157,6 +169,7 @@ body {
 }
 #beginExperimentButton {
     margin: 2vh;
+    font: 5vmin monospace;
 }
 .surveyQuestionDiv {
     margin: auto;
@@ -168,7 +181,8 @@ input::-webkit-inner-spin-button {
 }
 input[type=number] {
     -moz-appearance: textfield;
-  }
+    appearance: textfield;
+}
 .surveyInput {
     text-align: center;
     margin: 2vh;

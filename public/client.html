@@ -5,6 +5,11 @@
     </head>
     <body>
         <div id="pleaseWaitDiv">Please Wait</div>
+        <div id="welcomeDiv">Welcome to the Experiment.
+            <br><br><br><br> Please fill out the following 
+            <br><br> survey before you begin.
+            <br><br><br><br> <button type="button" onclick="beginPreSurvey()" id="beginPreSurveyButton">Begin Survey</button>
+        </div>
         <div id="preSurveyDiv"><b>Pre Survey</b><br><br>
             <div id="preSurveyDivPage1">
                 <form id="preSurveyFormPage1" onSubmit="return submitPreSurveyPage1();">
@@ -108,14 +113,6 @@
         <div id="postSurveyDiv"><b>Post Survey </b><br><br>
             <div id="postSurveyDivPage1">
                 <form id="postSurveyFormPage1" onSubmit="return submitPostSurveyPage1();">
-                    <div class="surveyQuestionDiv">
-                        <label for="yearsInCollege">How many years have you been a student at VCU?</label> <br>
-                        <input class="surveyNumber" type="number" min="0" max="20" name="yearsInCollege" id="yearsInCollege" required>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="dateOfBirth">What year were you born?</label> <br>
-                        <input class="surveyNumber" type="number" min="1900" max="2018" name="dateOfBirth" id="dateOfBirth" required>
-                    </div>
                     <div class="surveyQuestionDiv">
                         <label for="employmentStatus">What is your employment status?</label> <br>
                         <select name="employmentStatus" id="employmentStatus" class="surveyInput" required>

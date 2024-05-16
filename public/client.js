@@ -4,6 +4,7 @@ import { io } from './socketIo/socket.io.esm.min.js'
 // getting Elements from HTML
 const instructionsDiv = document.getElementById('instructionsDiv')
 const instructionsTextDiv = document.getElementById('instructionsTextDiv')
+const welcomeDiv = document.getElementById('welcomeDiv')
 const pleaseWaitDiv = document.getElementById('pleaseWaitDiv')
 const preSurveyDiv = document.getElementById('preSurveyDiv')
 const preSurveyDivPage1 = document.getElementById('preSurveyDivPage1')
@@ -71,11 +72,11 @@ const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
 
 // probForcingInstructionsString
 const instructionsString = `
-This is an experiment about decision making. You will receive $5 in cash just for participating. Depending on the decisions you make, you will also receive either a $15 Starbucks gift card or a bonus of $10 in cash.
+This is an experiment about decision making. You will receive $3 in cash just for participating. Depending on the decisions you make, you will also receive either a $9 Starbucks gift card or a bonus of $6 in cash.
 
 ${imageHTML} <br>
 
-This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $15 Starbucks gift card and your probability of receiving the $10 bonus.<br><br>
+This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $9 Starbucks gift card and your probability of receiving the $6 bonus.<br><br>
 
 Stage 1:<br>
 <ul>
@@ -89,9 +90,9 @@ Stage 2:<br>
     <li> Probability 2 will equal Choice 2.</li>
 </ul>
 
-During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $10 bonus or the $15 Starbucks gift card. Your chance of receiving the $15 Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $10 bonus will be 100% minus your chance of receiving the $15 Starbucks gift card.<br><br>`
+During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $6 bonus or the $9 Starbucks gift card. Your chance of receiving the $9 Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $6 bonus will be 100% minus your chance of receiving the $9 Starbucks gift card.<br><br>`
 
-const readyString = 'If you have any questions, raise your hand and we will come to assist you. Please click the button below to begin the experiment.'
+const readyString = 'Please click the button below to begin the experiment.'
 
 const socket = io() // browser based socket
 const arange = n => [...Array(n).keys()]
@@ -113,6 +114,11 @@ window.joinGame = function () {
 }
 window.joinGame()
 
+window.beginPreSurvey = function () {
+  console.log('beginPreSurvey')
+  const msg = { id }
+  socket.emit('beginPreSurvey', msg)
+}
 window.submitPreSurveyPage1 = function () {
   console.log('submitPreSurveyPage1')
   window.nextPreSurveyPage()
@@ -226,10 +232,11 @@ socket.on('serverUpdateClient', function (msg) {
   hist = msg.hist
   bonus = msg.bonus
   endowment = msg.endowment
+  console.log('endowment', endowment)
   forcedScore = msg.hist[msg.period].forcedScore
   forced = msg.hist[msg.period].forced
   if (state !== msg.state) {
-    const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> If you have any questions, raise your hand and we will come to assist you. Please click the button below to begin the practice periods.`
+    const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
     const practiceInstructionsString = instructionsString + readyPracticeString
     instructionsTextDiv.innerHTML = practicePeriodsComplete ? readyInstructionsString : practiceInstructionsString
   }
@@ -252,6 +259,7 @@ const update = function () {
   beginPracticePeriodsButton.style.display = (!practiceLock && !practicePeriodsComplete) ? 'block' : 'none'
   beginExperimentButton.style.display = practicePeriodsComplete ? 'inline' : 'none'
   instructionsDiv.style.display = 'none'
+  welcomeDiv.style.display = 'none'
   pleaseWaitDiv.style.display = 'none'
   preSurveyDiv.style.display = 'none'
   interfaceDiv.style.display = 'none'
@@ -259,6 +267,9 @@ const update = function () {
 
   if (joined && state === 'startup') {
     pleaseWaitDiv.style.display = 'block'
+  }
+  if (joined && state === 'welcome') {
+    welcomeDiv.style.display = 'block'
   }
   if (joined && state === 'preSurvey') {
     preSurveyDiv.style.display = 'block'
@@ -405,8 +416,8 @@ const drawBottom = function () {
   context.textBaseline = 'top'
   const probGiftCard = (score[1] + score[2]) * 100
   const probMoney = (1 - score[1] - score[2]) * 100
-  const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $15 gift card.`
-  const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $10 bonus.`
+  const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${endowment + bonus} gift card.`
+  const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $${bonus} bonus.`
   context.fillStyle = darkBlue
   context.fillText(giftCardChance, graphX + 0.5 * graphWidth, lineY2 + 14)
   context.fillStyle = darkGreen
@@ -484,7 +495,7 @@ const drawBarGiftCard = function () {
   })
   context.fillStyle = darkBlue
   context.textAlign = 'center'
-  const winProbString = `$15 Gift Card: ${winProb.toFixed(0)}%`
+  const winProbString = `$${endowment + bonus} Gift Card: ${winProb.toFixed(0)}%`
   context.fillText(winProbString, barX, baseY + 5)
 }
 const drawBarBonus = function () {
@@ -542,8 +553,8 @@ const drawBarBonus = function () {
   })
   context.fillStyle = darkGreen
   context.textAlign = 'center'
-  const winProbString1 = `$10 Bonus: ${score1.toFixed(0)}%`
-  const winProbString2 = `$10 Bonus: ${winProb.toFixed(0)}%`
+  const winProbString1 = `$${bonus} Bonus: ${score1.toFixed(0)}%`
+  const winProbString2 = `$${bonus} Bonus: ${winProb.toFixed(0)}%`
   const winProbString = step === 'choice1' || step === 'feedback1' ? winProbString1 : winProbString2
   context.fillText(winProbString, barX, baseY + 5)
 }
@@ -560,24 +571,20 @@ const drawOutcome = function () {
   console.log('selectedScore, outcomeRandom', selectedScore, outcomeRandom)
   console.log('hist', hist)
   const line1 = 'The experiment is complete'
-  const line2 = `Period ${selectedPeriod} was randomly selected.`
   const line3 = `You started with $${endowment.toFixed(0)}`
   const line4A = `You did not win the $${bonus.toFixed(0)} bonus`
   const line4B = `You won the $${bonus.toFixed(0)} bonus`
   const line4 = selectedWinPrize ? line4A : line4B
-  const line5A = 'You won the $15 Starbucks gift card'
-  const line5B = 'You did not win the $15 Starbucks gift card'
+  const line5A = `You won the $${endowment + bonus} Starbucks gift card`
+  const line5B = `You did not win the $${endowment + bonus} Starbucks gift card`
   const line5 = selectedWinPrize ? line5A : line5B
-  const line6A = `You will receive $${endowment.toFixed(0)} and the $15 gift card`
+  const line6A = `You will receive $${endowment.toFixed(0)} and the $${endowment + bonus} gift card`
   const line6B = `You will receive $${endowment.toFixed(0)} and the $${bonus.toFixed(0)} bonus`
   const line6 = selectedWinPrize ? line6A : line6B
-  const line7 = 'Please wait while your payment is prepared'
   context.fillText(line1, 50, lineY1 + 4)
-  context.fillText(line2, 50, lineY1 + 12)
-  context.fillText(line3, 50, lineY1 + 30)
-  context.fillText(line4, 50, lineY1 + 38)
-  context.fillText(line5, 50, lineY1 + 46)
-  context.fillText(line6, 50, lineY1 + 54)
-  context.fillText(line7, 50, lineY1 + 70)
+  context.fillText(line3, 50, lineY1 + 20)
+  context.fillText(line4, 50, lineY1 + 28)
+  context.fillText(line5, 50, lineY1 + 36)
+  context.fillText(line6, 50, lineY1 + 44)
 }
 draw()

@@ -1,17 +1,21 @@
 // TODO
-// 0) unlock preSurveyLock and experiment generally (Continue here!)
-// 1) read URL parameters for login:
-// https://trialparticipation.com/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}
-// 1) Update interface (unlocking, instructions, ,
-// feedback at end of experiment, no audio, data recording?, )
-// 2) Rely on Prolific for some demographic questions (drop some survey questions)
-// 4) API. Send custom emails about gift cards
-// 5) check mobile/tablet compatibility
+// 1) Rely on Prolific for some demographic questions (drop some survey questions)
+// 2) Update interface: link to prolific at the end)
+// 3) API.
+//  3a) Send custom emails about gift cards
+//  3b) Send bonus payments
+// 4) check mobile/tablet compatibility
+
 //
 // - Pilot: Prolific students
 // ---> set up URL parameters from Prolific on the website
 // ---> redirect subjects (automated completion code)
 // ---> shareable link version for a gift card.
+//
+// - prolific details
+//   URL parameters for login:
+//   http://localhost:3000/?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Something
+//   https://trialparticipation.com/?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Something
 //
 // - giftbit.com
 // - https://app.giftbit.com/app/order/pay/bda63b3c49eb433995fccd4996eb54e2
@@ -31,30 +35,23 @@
 //
 // PUSH: adjust parameters to the true values
 //
-// Online-Info
-// ------------------------------------------------------------------------------
-// - Web deployment for piloting: https://sunkcost.onrender.com
-// - FTP server: https://dash.infinityfree.com/accounts/if0_34633717
-// - Unused: GDrive interfacing (https://www.section.io/engineering-education/google-drive-api-nodejs/)
 
 import { io } from './server.js'
 import fs from 'fs'
 
 // parameters
 const subjects = {}
-const numPracticePeriods = 3 // 3 practice periods
+const numPracticePeriods = 1 // 3 practice periods
 const numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
-const choice1Length = 15 // 15 secs choice1 (internal: 5)
-const feedback1Length = 5 // 5 secs feedback1 (internal: 2)
-const choice2Length = 15 // 15 secs choice2 (internal: 5)
-const feedback2Length = 5 // 5 secs feedback2 (internal: 5)
-const endowment = 5
-const bonus = 10
+const choice1Length = 3 // 15 secs choice1 (internal: 5)
+const feedback1Length = 3 // 5 secs feedback1 (internal: 2)
+const choice2Length = 3 // 15 secs choice2 (internal: 5)
+const feedback2Length = 3 // 5 secs feedback2 (internal: 5)
+const endowment = 3 //  online: 3
+const bonus = 6 // online: 6
 
 // variables and guestList
 let numSubjects = 0
-let preSurveyLock = false
-let practiceLock = false
 let dataStream
 let preSurveyStream
 let postSurveyStream
@@ -107,15 +104,15 @@ function updatePreSurveyFile (msg) {
 
 function createDataFile () {
   dataStream = fs.createWriteStream(`data/${dateString}-data.csv`)
-  let csvString = 'session,subjectStartTime,period,practice,id,forced1,forcedScore1,'
-  csvString += 'choice1,choice2,score1,score2,endowment,bonus,totalScore,outcomeRandom,'
-  csvString += 'winPrize,totalCost,earnings,selectedPeriod'
+  let csvString = 'study,session,subjectStartTime,period,practice,id,forced1,'
+  csvString += 'forcedScore1,choice1,choice2,score1,score2,endowment,bonus,totalScore,'
+  csvString += 'outcomeRandom,winPrize,totalCost,earnings,selectedPeriod'
   csvString += '\n'
   dataStream.write(csvString)
 }
 function updateDataFile (subject) {
   let csvString = ''
-  csvString += `${dateString},${subject.startTime},${subject.period},`
+  csvString += `${subject.study},${subject.session},${subject.startTime},${subject.period},`
   csvString += `${1 - subject.practicePeriodsComplete},${subject.id},`
   csvString += `${subject.hist[subject.period].forced[1]},${subject.hist[subject.period].forcedScore[1]},`
   csvString += `${subject.hist[subject.period].choice[1]},${subject.hist[subject.period].choice[2]},`
@@ -159,6 +156,13 @@ io.on('connection', function (socket) {
     socket.emit('clientJoined', { id: msg.id, hist: subjects[msg.id].hist, period: subjects[msg.id].period })
     console.log('Object.keys(subjects)', Object.keys(subjects))
   })
+  socket.on('beginPreSurvey', function (msg) {
+    console.log('beginPreSurvey')
+    const subject = subjects[msg.id]
+    if (subject.state === 'welcome') {
+      subject.state = 'preSurvey'
+    }
+  })
   socket.on('submitPreSurvey', function (msg) {
     console.log('submitPreSurvey')
     const subject = subjects[msg.id]
@@ -194,8 +198,6 @@ io.on('connection', function (socket) {
     }
   })
   socket.on('managerUpdate', function (msg) {
-    preSurveyLock = msg.preSurveyLock
-    practiceLock = msg.practiceLock
     const ids = Object.keys(subjects)
     const subjectsArray = Object.values(subjects)
     const subjectsData = subjectsArray.map(subject => {
@@ -214,8 +216,7 @@ io.on('connection', function (socket) {
     const reply = {
       numSubjects,
       ids,
-      subjectsData,
-      online: process.env.RENDER
+      subjectsData
     }
     socket.emit('serverUpdateManager', reply)
   })
@@ -232,7 +233,6 @@ io.on('connection', function (socket) {
         }
       }
       const reply = {
-        practiceLock,
         period: subject.period,
         state: subject.state,
         experimentStarted: subject.experimentStarted,
@@ -331,11 +331,8 @@ function calculateSelectedOutcome () {
   })
 }
 function update (subject) { // add presurvey
-  if (subject.state === 'startup' & !preSurveyLock) {
-    subject.state = 'preSurvey'
-  }
-  if (subject.state === 'preSurvey' & preSurveyLock) {
-    subject.state = 'startup'
+  if (subject.state === 'startup') {
+    subject.state = 'welcome'
   }
   if (subject.state === 'interface') {
     subject.countdown = subject.countdown - 1

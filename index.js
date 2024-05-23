@@ -5,7 +5,6 @@
 //  3a) Send custom emails about gift cards
 //  3b) Send bonus payments
 // 4) check mobile/tablet compatibility
-
 //
 // - Pilot: Prolific students
 // ---> set up URL parameters from Prolific on the website

@@ -11,14 +11,10 @@ const preSurveyDivPage1 = document.getElementById('preSurveyDivPage1')
 const preSurveyDivPage2 = document.getElementById('preSurveyDivPage2')
 const preSurveyFormPage1 = document.getElementById('preSurveyFormPage1')
 const preSurveyFormPage2 = document.getElementById('preSurveyFormPage2')
-const postSurveyDiv = document.getElementById('postSurveyDiv')
-const postSurveyDivPage1 = document.getElementById('postSurveyDivPage1')
-const postSurveyDivPage2 = document.getElementById('postSurveyDivPage2')
-const postSurveyFormPage1 = document.getElementById('postSurveyFormPage1')
-const postSurveyFormPage2 = document.getElementById('postSurveyFormPage2')
 const beginPracticePeriodsButton = document.getElementById('beginPracticePeriodsButton')
 const beginExperimentButton = document.getElementById('beginExperimentButton')
 const interfaceDiv = document.getElementById('interfaceDiv')
+const experimentCompleteDiv = document.getElementById('experimentCompleteDiv')
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
 
@@ -140,23 +136,6 @@ window.submitPreSurveyPage2 = function () {
   socket.emit('submitPreSurvey', msg)
   return false
 }
-window.submitPostSurveyPage1 = function () {
-  console.log('submitPostSurveyPage1')
-  window.nextPostSurveyPage()
-  return false
-}
-window.submitPostSurveyPage2 = function () {
-  console.log('submitPostSurveyPage2')
-  const msg = { id }
-  Array.from(postSurveyFormPage1.elements).forEach(element => {
-    msg[element.id] = element.value
-  })
-  Array.from(postSurveyFormPage2.elements).forEach(element => {
-    msg[element.id] = element.value
-  })
-  socket.emit('submitPostSurvey', msg)
-  return false
-}
 
 window.beginPracticePeriods = function () {
   const msg = { id }
@@ -168,13 +147,14 @@ window.nextPreSurveyPage = function () {
   preSurveyDivPage1.style.display = 'none'
   preSurveyDivPage2.style.display = 'block'
 }
-window.nextPostSurveyPage = function () {
-  postSurveyDivPage1.style.display = 'none'
-  postSurveyDivPage2.style.display = 'block'
-}
+
 window.beginExperiment = function () {
   const msg = { id }
   socket.emit('beginExperiment', msg)
+}
+window.completeExperiment = function () {
+  const msg = { id }
+  socket.emit('completeExperiment', msg)
 }
 
 document.onmousedown = function (event) {
@@ -204,6 +184,9 @@ socket.on('clientJoined', function (msg) {
   forcedScore = hist[period].forcedScore
   console.log('hist', hist)
   setInterval(update, 10)
+})
+socket.on('experimentComplete', function (msg) {
+  window.location.href = msg.url
 })
 socket.on('serverUpdateClient', function (msg) {
   joined = true
@@ -263,7 +246,7 @@ const update = function () {
   pleaseWaitDiv.style.display = 'none'
   preSurveyDiv.style.display = 'none'
   interfaceDiv.style.display = 'none'
-  postSurveyDiv.style.display = 'none'
+  experimentCompleteDiv.style.display = 'none'
 
   if (joined && state === 'startup') {
     pleaseWaitDiv.style.display = 'block'
@@ -280,11 +263,8 @@ const update = function () {
   if (joined && state === 'interface') {
     interfaceDiv.style.display = 'block'
   }
-  if (joined && state === 'postSurvey') {
-    postSurveyDiv.style.display = 'block'
-  }
   if (joined && state === 'experimentComplete') {
-    interfaceDiv.style.display = 'block'
+    experimentCompleteDiv.style.display = 'block'
   }
 }
 
@@ -293,7 +273,7 @@ const draw = function () {
   setupCanvas()
   context.clearRect(0, 0, canvas.width, canvas.height)
   if (joined && state === 'interface') drawInterface()
-  if (joined && state === 'experimentComplete') drawOutcome()
+  // if (joined && state === 'experimentComplete') drawOutcome()
 }
 const setupCanvas = function () {
   xScale = 1 * window.innerWidth
@@ -571,7 +551,7 @@ const drawOutcome = function () {
   console.log('selectedScore, outcomeRandom', selectedScore, outcomeRandom)
   console.log('hist', hist)
   const line1 = 'The experiment is complete'
-  const line3 = `You started with $${endowment.toFixed(0)}`
+  const line3 = `You earned a $${endowment.toFixed(0)} participation fee`
   const line4A = `You did not win the $${bonus.toFixed(0)} bonus`
   const line4B = `You won the $${bonus.toFixed(0)} bonus`
   const line4 = selectedWinPrize ? line4A : line4B

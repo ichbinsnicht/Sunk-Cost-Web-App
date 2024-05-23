@@ -1,14 +1,30 @@
-// TODO
-// 1) Rely on Prolific for some demographic questions (drop some survey questions)
-// 2) Update interface: link to prolific at the end)
+// TODO A
+// create data file for billing purposes (adj of payment file)
+// Setting up Gift card linkage:
+// 1) starting point: gift card link csv (use gift card links from // expProgramWebApplication\links)
+// 2) in order of completion,
+//    send link to the participant and do not use the same link from CSV file
+// 3) edit csv while the experiment is running
+// 4) have a ledger of usage
+// 5) create billing file for gift cards with columns:
+//    - id, Date paid,	Amount, Order nunber (gift bit link number)
+// 6) experimentcomplete Button.
+//    a) button trigger function to send msg to server
+//    b) msg from server to client comes back. redirect to Prolific
+
+// TODO B
+// 1) Update interface: link to prolific at the end
+// 2) test accounts through Prolific: https://docs.prolific.com/docs/api-docs/public/#tag/Testing
 // 3) API.
 //  3a) Send custom emails about gift cards
 //  3b) Send bonus payments
-// 4) check mobile/tablet compatibility
+// 2) check mobile/tablet compatibility
+
+// TODO C
+// Work on ML 'application'
+
 //
 // - Pilot: Prolific students
-// ---> set up URL parameters from Prolific on the website
-// ---> redirect subjects (automated completion code)
 // ---> shareable link version for a gift card.
 //
 // - prolific details
@@ -53,10 +69,8 @@ const bonus = 6 // online: 6
 let numSubjects = 0
 let dataStream
 let preSurveyStream
-let postSurveyStream
 let paymentStream
 let preSurveyReady = false
-let postSurveyReady = false
 const dateString = getDateString()
 
 createDataFile()
@@ -123,19 +137,6 @@ function updateDataFile (subject) {
   dataStream.write(csvString)
 }
 
-function createPostSurveyFile (msg) {
-  postSurveyStream = fs.createWriteStream(`data/${dateString}-postSurvey.csv`)
-  let csvString = Object.keys(msg).join(',')
-  csvString += '\n'
-  postSurveyStream.write(csvString)
-  postSurveyReady = true
-}
-function updatePostSurveyFile (msg) {
-  if (!postSurveyReady) createPostSurveyFile(msg)
-  let csvString = Object.values(msg).join(',')
-  csvString += '\n'
-  postSurveyStream.write(csvString)
-}
 function createPaymentFile () {
   paymentStream = fs.createWriteStream(`data/${dateString}-payment.csv`)
   const csvString = 'id,earnings,winPrize\n'
@@ -187,15 +188,14 @@ io.on('connection', function (socket) {
       subject.state = 'interface'
     }
   })
-  socket.on('submitPostSurvey', function (msg) {
-    console.log('submitPostSurvey')
+  socket.on('completeExperiment', function (msg) {
     const subject = subjects[msg.id]
-    updatePostSurveyFile(msg)
-    if (subject.state === 'postSurvey') {
-      subject.preSurveySubmitted = true
-      subject.state = 'experimentComplete'
+    if (subject.state === 'experimentComplete') {
+      subject.state = 'prolific'
+      socket.emit('experimentComplete', { url: 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K' })
     }
   })
+
   socket.on('managerUpdate', function (msg) {
     const ids = Object.keys(subjects)
     const subjectsArray = Object.values(subjects)
@@ -356,7 +356,7 @@ function update (subject) { // add presurvey
         if (subject.experimentStarted) {
           subject.step = 'end'
           updatePaymentFile(subject)
-          subject.state = 'postSurvey'
+          subject.state = 'experimentComplete'
         } else {
           subject.state = 'instructions'
           subject.practicePeriodsComplete = true

@@ -7,10 +7,10 @@
 // 3) edit csv while the experiment is running
 // 4) have a ledger of usage
 // 5) create billing file for gift cards with columns:
-//    - id, Date paid,	Amount, Order nunber (gift bit link number)
 // 6) experimentcomplete Button.
 //    a) button trigger function to send msg to server
 //    b) msg from server to client comes back. redirect to Prolific
+// 7) Dynamic construction of instruction string due to incentive amounts
 
 // TODO B
 // 1) Update interface: link to prolific at the end
@@ -23,6 +23,10 @@
 // TODO C
 // Work on ML 'application'
 
+// TODO D Alternative to Prolific. Mturk
+// Sandbox
+// Notify Workers (Email): https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_NotifyWorkersOperation.html
+// Bonus Payment for Workers: https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SendBonusOperation.html
 //
 // - Pilot: Prolific students
 // ---> shareable link version for a gift card.
@@ -35,11 +39,7 @@
 // - giftbit.com
 // - https://app.giftbit.com/app/order/pay/bda63b3c49eb433995fccd4996eb54e2
 // - https://docs.prolific.com/docs/api-docs/public/#tag/Messages/operation/SendMessage
-//
 
-//
-// base: 3, bonus: 6 , gift card value: 9
-//
 // - ML analysis
 //
 // Alternative version:
@@ -50,6 +50,8 @@
 //
 // PUSH: adjust parameters to the true values
 //
+
+// potential to-dos: multiple periods
 
 import { io } from './server.js'
 import fs from 'fs'
@@ -63,7 +65,8 @@ const feedback1Length = 3 // 5 secs feedback1 (internal: 2)
 const choice2Length = 3 // 15 secs choice2 (internal: 5)
 const feedback2Length = 3 // 5 secs feedback2 (internal: 5)
 const endowment = 3 //  online: 3
-const bonus = 6 // online: 6
+const bonus = 4 // online: {4,6}
+const giftAmount = 6 // online: {6,9}
 
 // variables and guestList
 let numSubjects = 0
@@ -139,15 +142,34 @@ function updateDataFile (subject) {
 
 function createPaymentFile () {
   paymentStream = fs.createWriteStream(`data/${dateString}-payment.csv`)
-  const csvString = 'id,earnings,winPrize\n'
+  const csvString = 'date,id,earnings,winPrize,giftAmount,link\n'
   paymentStream.write(csvString)
 }
 function updatePaymentFile (subject) {
   calculateSelectedOutcome()
-  const csvString = `${subject.id},${subject.selectedEarnings.toFixed(0)},${subject.selectedWinPrize}\n`
+  assignGift(subject)
+  const date = subject.startTime.slice(0, 10)
+  console.log('giftAmount', subject.giftAmount)
+  let csvString = `${date},${subject.id},${subject.selectedEarnings.toFixed(0)},`
+  csvString += `${subject.selectedWinPrize},${subject.giftAmount},`
+  csvString += `${subject.link}\n`
+  console.log('csvString', csvString)
   paymentStream.write(csvString)
 }
-
+function assignGift (subject) {
+  const links = fs.readFileSync('links/links.csv', 'utf8').split('\n')
+  const ledger = fs.readFileSync('links/ledger.csv', 'utf8').split('\n')
+    .filter(x => x.length > 0)
+  const link = links.find(link => !ledger.includes(link))
+  ledger.push(link)
+  const remainingLinks = links.filter(link => !ledger.includes(link))
+  fs.writeFileSync('links/ledger.csv', ledger.join('\n'))
+  fs.writeFileSync('links/remaining.csv', remainingLinks.join('\n'))
+  subject.link = link
+  subject.GiftAmount = subject.WinPrize === 1 ? giftAmount : 0
+  console.log(links)
+  console.log(ledger)
+}
 io.on('connection', function (socket) {
   socket.emit('connected')
   socket.on('joinGame', function (msg) {
@@ -191,8 +213,13 @@ io.on('connection', function (socket) {
   socket.on('completeExperiment', function (msg) {
     const subject = subjects[msg.id]
     if (subject.state === 'experimentComplete') {
+      updatePaymentFile(subject)
       subject.state = 'prolific'
-      socket.emit('experimentComplete', { url: 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K' })
+      const reply = {
+        id: subject.id,
+        url: 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K'
+      }
+      socket.emit('experimentComplete', reply)
     }
   })
 
@@ -292,6 +319,8 @@ function createSubject (msg, socket) {
     selectedPeriod: choose(arange(1, numPeriods)),
     outcomeRandom: 0,
     winPrize: 0,
+    giftAmount: 0,
+    link: '',
     totalCost: 0,
     earnings: 0,
     selectedEarnings: 0,
@@ -355,7 +384,6 @@ function update (subject) { // add presurvey
       if (subject.period >= maxPeriod) {
         if (subject.experimentStarted) {
           subject.step = 'end'
-          updatePaymentFile(subject)
           subject.state = 'experimentComplete'
         } else {
           subject.state = 'instructions'

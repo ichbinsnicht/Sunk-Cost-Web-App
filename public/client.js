@@ -68,11 +68,11 @@ const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
 
 // probForcingInstructionsString
 const instructionsString = `
-This is an experiment about decision making. You will receive $3 in cash just for participating. Depending on the decisions you make, you will also receive either a $9 Starbucks gift card or a bonus of $6 in cash.
+This is an experiment about decision making. You will receive $3 in cash just for participating. Depending on the decisions you make, you will also receive either a $6 Starbucks gift card or a bonus of $4 in cash.
 
 ${imageHTML} <br>
 
-This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $9 Starbucks gift card and your probability of receiving the $6 bonus.<br><br>
+This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $6 Starbucks gift card and your probability of receiving the $4 bonus.<br><br>
 
 Stage 1:<br>
 <ul>
@@ -86,7 +86,7 @@ Stage 2:<br>
     <li> Probability 2 will equal Choice 2.</li>
 </ul>
 
-During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $6 bonus or the $9 Starbucks gift card. Your chance of receiving the $9 Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $6 bonus will be 100% minus your chance of receiving the $9 Starbucks gift card.<br><br>`
+During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $4 bonus or the $6 Starbucks gift card. Your chance of receiving the $6 Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $4 bonus will be 100% minus your chance of receiving the $6 Starbucks gift card.<br><br>`
 
 const readyString = 'Please click the button below to begin the experiment.'
 
@@ -538,33 +538,4 @@ const drawBarBonus = function () {
   const winProbString = step === 'choice1' || step === 'feedback1' ? winProbString1 : winProbString2
   context.fillText(winProbString, barX, baseY + 5)
 }
-// const drawOutcome = function () {
-console.log('drawOutcome')
-context.fillStyle = black
-context.textAlign = 'center'
-context.strokeStyle = 'black'
-context.font = feedbackFont
-context.lineWidth = 0.25
-const selectedScore = hist[selectedPeriod].score[1] + hist[selectedPeriod].score[2]
-const outcomeRandom = hist[selectedPeriod].outcomeRandom
-const selectedWinPrize = selectedScore > outcomeRandom
-console.log('selectedScore, outcomeRandom', selectedScore, outcomeRandom)
-console.log('hist', hist)
-const line1 = 'The experiment is complete'
-const line3 = `You earned a $${endowment.toFixed(0)} participation fee`
-const line4A = `You did not win the $${bonus.toFixed(0)} bonus`
-const line4B = `You won the $${bonus.toFixed(0)} bonus`
-const line4 = selectedWinPrize ? line4A : line4B
-const line5A = `You won the $${endowment + bonus} Starbucks gift card`
-const line5B = `You did not win the $${endowment + bonus} Starbucks gift card`
-const line5 = selectedWinPrize ? line5A : line5B
-const line6A = `You will receive $${endowment.toFixed(0)} and the $${endowment + bonus} gift card`
-const line6B = `You will receive $${endowment.toFixed(0)} and the $${bonus.toFixed(0)} bonus`
-const line6 = selectedWinPrize ? line6A : line6B
-context.fillText(line1, 50, lineY1 + 4)
-context.fillText(line3, 50, lineY1 + 20)
-context.fillText(line4, 50, lineY1 + 28)
-context.fillText(line5, 50, lineY1 + 36)
-context.fillText(line6, 50, lineY1 + 44)
-// }
 draw()

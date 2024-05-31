@@ -15,6 +15,7 @@ const beginPracticePeriodsButton = document.getElementById('beginPracticePeriods
 const beginExperimentButton = document.getElementById('beginExperimentButton')
 const interfaceDiv = document.getElementById('interfaceDiv')
 const experimentCompleteDiv = document.getElementById('experimentCompleteDiv')
+const completeTextDiv = document.getElementById('completeTextDiv')
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
 
@@ -25,12 +26,11 @@ const lineY1 = -90
 const lineY2 = -65
 const tickFont = '1.5pt monospace'
 const labelFont = '1.5pt monospace'
-const feedbackFont = '3pt monospace'
 const black = 'rgb(0,0,0)'
-const green = 'rgb(0,200,0)'
-const darkGreen = 'rgb(0,150,0)'
 const blue = 'rgb(0,150,256)'
 const darkBlue = 'rgb(0,50,256)'
+const green = 'rgb(0,200,0)'
+const darkGreen = 'rgb(0,150,0)'
 
 // variables
 let state = 'startup'
@@ -59,34 +59,40 @@ let readyInstructionsString = ''
 let practiceLock = true
 let startPreSurveyTime = 0
 let endPreSurveyTime = 0
-let selectedPeriod = 0
 let bonus = 0
 let endowment = 0
+let giftValue = 0
+let winPrize = 0
+let instructionsString = ''
 
 const imageStyle = 'width:14.2vh;height:9vh;margin-left:auto;margin-right:auto;display:block;'
 const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
 
 // probForcingInstructionsString
-const instructionsString = `
-This is an experiment about decision making. You will receive $3 in cash just for participating. Depending on the decisions you make, you will also receive either a $6 Starbucks gift card or a bonus of $4 in cash.
+function getInstructionString () {
+  const instructionsString = `
+  This is an experiment about decision making. You will receive $${endowment} in cash just for participating. Depending on the decisions you make, you will also receive either a $${giftValue} Starbucks gift card or a bonus of $${bonus} in cash.
 
-${imageHTML} <br>
+  ${imageHTML} <br>
 
-This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $6 Starbucks gift card and your probability of receiving the $4 bonus.<br><br>
+  This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $${giftValue} Starbucks gift card and your probability of receiving the $${bonus} bonus.<br><br>
 
-Stage 1:<br>
-<ul>
-    <li> You will choose a number between 0% and 50%, called Choice 1.</li>
-    <li> Probability 1 will equal either Choice 1 or 0%. Both are equally likely.</li>
-</ul>
+  Stage 1:<br>
+  <ul>
+      <li> You will choose a number between 0% and 50%, called Choice 1.</li>
+      <li> Probability 1 will equal either Choice 1 or 0%. Both are equally likely.</li>
+  </ul>
 
-Stage 2:<br>
-<ul>
-    <li> You will choose a number between 0% and 50%, called Choice 2.</li>
-    <li> Probability 2 will equal Choice 2.</li>
-</ul>
+  Stage 2:<br>
+  <ul>
+      <li> You will choose a number between 0% and 50%, called Choice 2.</li>
+      <li> Probability 2 will equal Choice 2.</li>
+  </ul>
 
-During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $4 bonus or the $6 Starbucks gift card. Your chance of receiving the $6 Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $4 bonus will be 100% minus your chance of receiving the $6 Starbucks gift card.<br><br>`
+  During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus} bonus or the $${giftValue} Starbucks gift card. Your chance of receiving the $${giftValue} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus} bonus will be 100% minus your chance of receiving the $${giftValue} Starbucks gift card.<br><br>`
+
+  return instructionsString
+}
 
 const readyString = 'Please click the button below to begin the experiment.'
 
@@ -152,9 +158,9 @@ window.beginExperiment = function () {
   const msg = { id }
   socket.emit('beginExperiment', msg)
 }
-window.completeExperiment = function () {
+window.requestPayment = function () {
   const msg = { id }
-  socket.emit('completeExperiment', msg)
+  socket.emit('requestPayment', msg)
 }
 
 document.onmousedown = function (event) {
@@ -185,7 +191,7 @@ socket.on('clientJoined', function (msg) {
   console.log('hist', hist)
   setInterval(update, 10)
 })
-socket.on('experimentComplete', function (msg) {
+socket.on('paymentComplete', function (msg) {
   window.location.href = msg.url
 })
 socket.on('serverUpdateClient', function (msg) {
@@ -201,9 +207,9 @@ socket.on('serverUpdateClient', function (msg) {
     console.log('msg.period', msg.period)
     console.log('msg.step', msg.step)
   }
+  instructionsString = getInstructionString()
   readyInstructionsString = instructionsString + readyString
   message = msg
-  selectedPeriod = msg.selectedPeriod
   step = msg.step
   stage = msg.stage
   practiceLock = msg.practiceLock
@@ -214,6 +220,8 @@ socket.on('serverUpdateClient', function (msg) {
   period = msg.period
   hist = msg.hist
   bonus = msg.bonus
+  winPrize = msg.winPrize
+  giftValue = msg.giftValue
   endowment = msg.endowment
   console.log('endowment', endowment)
   forcedScore = msg.hist[msg.period].forcedScore
@@ -273,7 +281,7 @@ const draw = function () {
   setupCanvas()
   context.clearRect(0, 0, canvas.width, canvas.height)
   if (joined && state === 'interface') drawInterface()
-  // if (joined && state === 'experimentComplete') drawOutcome()
+  if (joined && state === 'experimentComplete') writeOutcome()
 }
 const setupCanvas = function () {
   xScale = 1 * window.innerWidth
@@ -333,7 +341,7 @@ const drawTop = function () {
   context.font = labelFont
   if (step !== 'choice1') {
     context.textBaseline = 'bottom'
-    context.fillStyle = darkBlue
+    context.fillStyle = darkGreen
     const score1String = `${(score[1] * 100).toFixed(0)}%`
     context.fillText(`Probability 1: ${score1String}`, graphX + graphWidth * 2 * score[1], lineY1 - tickLength - 0.5)
     context.beginPath()
@@ -379,11 +387,11 @@ const drawBottom = function () {
   })
   context.font = labelFont
   context.textBaseline = 'bottom'
-  context.fillStyle = blue
+  context.fillStyle = green
   const score2String = `${(score[2] * 100).toFixed(0)}%`
   context.fillText(`Probability 2: ${score2String}`, graphX + graphWidth * 2 * score[2], lineY2 - tickLength - 0.5)
   context.beginPath()
-  context.fillStyle = blue
+  context.fillStyle = green
   context.arc(graphX + graphWidth * 2 * score[2], lineY2, 1.5, 0, 2 * Math.PI)
   context.fill()
   context.textBaseline = 'bottom'
@@ -398,9 +406,9 @@ const drawBottom = function () {
   const probMoney = (1 - score[1] - score[2]) * 100
   const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${endowment + bonus} gift card.`
   const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $${bonus} bonus.`
-  context.fillStyle = darkBlue
-  context.fillText(giftCardChance, graphX + 0.5 * graphWidth, lineY2 + 14)
   context.fillStyle = darkGreen
+  context.fillText(giftCardChance, graphX + 0.5 * graphWidth, lineY2 + 14)
+  context.fillStyle = darkBlue
   context.fillText(moneyChance, graphX + 0.5 * graphWidth, lineY2 + 17.5)
   if (step === 'feedback2') {
     context.textAlign = 'center'
@@ -418,7 +426,7 @@ const drawCountdownText = function () {
 const drawFeedback1Text = function () {
   context.textBaseline = 'top'
   context.textAlign = 'center'
-  context.fillStyle = darkBlue
+  context.fillStyle = darkGreen
   const score1CompleteString = 'Probability 1 Implemented'
   context.fillText(score1CompleteString, graphX + 0.5 * graphWidth, lineY2 - 10)
 }
@@ -427,7 +435,7 @@ const drawBarGiftCard = function () {
   context.strokeStyle = 'black'
   context.lineWidth = 0.25
   context.beginPath()
-  const barX = 30
+  const barX = 70
   const baseY = -15
   const barWidth = 10
   const barHeight = 20
@@ -436,11 +444,11 @@ const drawBarGiftCard = function () {
   context.lineTo(barX + 0.5 * barWidth, baseY)
   context.lineTo(barX + 0.5 * barWidth, baseY - barHeight)
   context.stroke()
-  context.fillStyle = blue
+  context.fillStyle = green
   const winProb = (score[1] + score[2]) * 100
   const barLevelTotal = barHeight * winProb / 100
   context.fillRect(barX - 0.5 * barWidth, baseY - barLevelTotal, barWidth, barLevelTotal)
-  context.fillStyle = darkBlue
+  context.fillStyle = darkGreen
   const score1 = score[1] * 100
   const barLevel1 = barHeight * score1 / 100
   context.fillRect(barX - 0.5 * barWidth, baseY - barLevel1, barWidth, barLevel1)
@@ -473,7 +481,7 @@ const drawBarGiftCard = function () {
     context.textAlign = 'right'
     context.fillText(yWinProbLabel, barX - 0.5 * barWidth - tickLength - tickSpace, y)
   })
-  context.fillStyle = darkBlue
+  context.fillStyle = darkGreen
   context.textAlign = 'center'
   const winProbString = `$${endowment + bonus} Gift Card: ${winProb.toFixed(0)}%`
   context.fillText(winProbString, barX, baseY + 5)
@@ -483,7 +491,7 @@ const drawBarBonus = function () {
   context.strokeStyle = 'black'
   context.lineWidth = 0.25
   context.beginPath()
-  const barX = 70
+  const barX = 30
   const baseY = -15
   const barWidth = 10
   const barHeight = 20
@@ -492,13 +500,13 @@ const drawBarBonus = function () {
   context.lineTo(barX + 0.5 * barWidth, baseY)
   context.lineTo(barX + 0.5 * barWidth, baseY - barHeight)
   context.stroke()
-  context.fillStyle = green
+  context.fillStyle = blue
   const winProb = 100 - (score[1] + score[2]) * 100
   if (stage === 2) {
     const barLevelTotal = barHeight * winProb / 100
     context.fillRect(barX - 0.5 * barWidth, baseY - barLevelTotal, barWidth, barLevelTotal)
   }
-  context.fillStyle = darkGreen
+  context.fillStyle = darkBlue
   const score1 = 50 - score[1] * 100
   const barLevel1 = barHeight * score1 / 100
   context.fillRect(barX - 0.5 * barWidth, baseY - barLevel1, barWidth, barLevel1)
@@ -531,11 +539,27 @@ const drawBarBonus = function () {
     context.textAlign = 'right'
     context.fillText(yWinProbLabel, barX - 0.5 * barWidth - tickLength - tickSpace, y)
   })
-  context.fillStyle = darkGreen
+  context.fillStyle = darkBlue
   context.textAlign = 'center'
   const winProbString1 = `$${bonus} Bonus: ${score1.toFixed(0)}%`
   const winProbString2 = `$${bonus} Bonus: ${winProb.toFixed(0)}%`
   const winProbString = step === 'choice1' || step === 'feedback1' ? winProbString1 : winProbString2
   context.fillText(winProbString, barX, baseY + 5)
 }
+
+const writeOutcome = function () {
+  completeTextDiv.innerHTML = ''
+  completeTextDiv.innerHTML += 'The experiment is complete <br><br>'
+  completeTextDiv.innerHTML += `You started with $${endowment.toFixed(0)}<br>`
+  const bonusTextA = `You did not win the $${bonus.toFixed(0)} bonus<br>`
+  const bonusTextB = `You won the $${bonus.toFixed(0)} bonus<br>`
+  completeTextDiv.innerHTML += winPrize ? bonusTextA : bonusTextB
+  const giftCardTextA = `You won the $${giftValue} Starbucks gift card<br><br>`
+  const giftCardTextB = `You did not win the $${giftValue} Starbucks gift card<br><br>`
+  completeTextDiv.innerHTML += winPrize ? giftCardTextA : giftCardTextB
+  const finalTextA = `You will receive $${endowment.toFixed(0)} and the $${giftValue} gift card<br>`
+  const finalTextB = `You will receive $${endowment.toFixed(0)} and the $${bonus.toFixed(0)} bonus<br>`
+  completeTextDiv.innerHTML += winPrize ? finalTextA : finalTextB
+}
+
 draw()

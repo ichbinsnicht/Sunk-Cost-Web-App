@@ -1,26 +1,16 @@
 // TODO A
-// create data file for billing purposes (adj of payment file)
-// Setting up Gift card linkage:
-// 1) starting point: gift card link csv (use gift card links from // expProgramWebApplication\links)
-// 2) in order of completion,
-//    send link to the participant and do not use the same link from CSV file
-// 3) edit csv while the experiment is running
-// 4) have a ledger of usage
-// 5) create billing file for gift cards with columns:
-// 6) experimentcomplete Button.
-//    a) button trigger function to send msg to server
-//    b) msg from server to client comes back. redirect to Prolific
-// 7) Dynamic construction of instruction string due to incentive amounts
-
-// TODO B
 // 1) Update interface: link to prolific at the end
 // 2) test accounts through Prolific: https://docs.prolific.com/docs/api-docs/public/#tag/Testing
 // 3) API.
-//  3a) Send custom emails about gift cards
+//  3a) Send custom emails about gift cards (with link)
 //  3b) Send bonus payments
 // 2) check mobile/tablet compatibility
+//
+// Prolific test accounts
+// manuelhoffmann@g.harvard.edu: 6650ce123adb3cef7f74e354
+// dgstephenson.econ+test@gmail.com: 6650ce878485cd00aa153bd6
 
-// TODO C
+// TODO B
 // Work on ML 'application'
 
 // TODO D Alternative to Prolific. Mturk
@@ -62,11 +52,11 @@ const numPracticePeriods = 1 // 3 practice periods
 const numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
 const choice1Length = 3 // 15 secs choice1 (internal: 5)
 const feedback1Length = 3 // 5 secs feedback1 (internal: 2)
-const choice2Length = 3 // 15 secs choice2 (internal: 5)
+const choice2Length = 15 // 15 secs choice2 (internal: 5)
 const feedback2Length = 3 // 5 secs feedback2 (internal: 5)
 const endowment = 3 //  online: 3
 const bonus = 4 // online: {4,6}
-const giftAmount = 6 // online: {6,9}
+const giftValue = 6 // online: {6,9}
 
 // variables and guestList
 let numSubjects = 0
@@ -81,10 +71,6 @@ createPaymentFile()
 
 function arange (a, b) {
   return [...Array(b - a + 1).keys()].map(i => i + a)
-}
-
-function choose (x) {
-  return x[Math.floor(Math.random() * x.length)]
 }
 
 function formatTwo (x) {
@@ -121,8 +107,8 @@ function updatePreSurveyFile (msg) {
 function createDataFile () {
   dataStream = fs.createWriteStream(`data/${dateString}-data.csv`)
   let csvString = 'study,session,subjectStartTime,period,practice,id,forced1,'
-  csvString += 'forcedScore1,choice1,choice2,score1,score2,endowment,bonus,totalScore,'
-  csvString += 'outcomeRandom,winPrize,totalCost,earnings,selectedPeriod'
+  csvString += 'forcedScore1,choice1,choice2,score1,score2,endowment,bonus,giftValue,totalScore,'
+  csvString += 'outcomeRandom,winPrize,totalCost,earnings,giftAmount'
   csvString += '\n'
   dataStream.write(csvString)
 }
@@ -133,9 +119,8 @@ function updateDataFile (subject) {
   csvString += `${subject.hist[subject.period].forced[1]},${subject.hist[subject.period].forcedScore[1]},`
   csvString += `${subject.hist[subject.period].choice[1]},${subject.hist[subject.period].choice[2]},`
   csvString += `${subject.hist[subject.period].score[1]},${subject.hist[subject.period].score[2]},`
-  csvString += `${endowment},${bonus},${subject.totalScore},${subject.outcomeRandom},`
-  csvString += `${subject.winPrize},${subject.totalCost},${subject.earnings},`
-  csvString += `${subject.selectedPeriod}`
+  csvString += `${endowment},${bonus},${giftValue},${subject.totalScore},${subject.outcomeRandom},`
+  csvString += `${subject.winPrize},${subject.totalCost},${subject.earnings},${subject.giftAmount},`
   csvString += '\n'
   dataStream.write(csvString)
 }
@@ -146,14 +131,12 @@ function createPaymentFile () {
   paymentStream.write(csvString)
 }
 function updatePaymentFile (subject) {
-  calculateSelectedOutcome()
   assignGift(subject)
+  updateDataFile(subject)
   const date = subject.startTime.slice(0, 10)
-  console.log('giftAmount', subject.giftAmount)
-  let csvString = `${date},${subject.id},${subject.selectedEarnings.toFixed(0)},`
-  csvString += `${subject.selectedWinPrize},${subject.giftAmount},`
+  let csvString = `${date},${subject.id},${subject.earnings.toFixed(0)},`
+  csvString += `${subject.winPrize},${subject.giftAmount},`
   csvString += `${subject.link}\n`
-  console.log('csvString', csvString)
   paymentStream.write(csvString)
 }
 function assignGift (subject) {
@@ -166,9 +149,7 @@ function assignGift (subject) {
   fs.writeFileSync('links/ledger.csv', ledger.join('\n'))
   fs.writeFileSync('links/remaining.csv', remainingLinks.join('\n'))
   subject.link = link
-  subject.GiftAmount = subject.WinPrize === 1 ? giftAmount : 0
-  console.log(links)
-  console.log(ledger)
+  subject.giftAmount = subject.winPrize === 1 ? giftValue : 0
 }
 io.on('connection', function (socket) {
   socket.emit('connected')
@@ -210,16 +191,16 @@ io.on('connection', function (socket) {
       subject.state = 'interface'
     }
   })
-  socket.on('completeExperiment', function (msg) {
+  socket.on('requestPayment', function (msg) {
     const subject = subjects[msg.id]
     if (subject.state === 'experimentComplete') {
       updatePaymentFile(subject)
-      subject.state = 'prolific'
+      subject.state = 'paymentComplete'
       const reply = {
         id: subject.id,
         url: 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K'
       }
-      socket.emit('experimentComplete', reply)
+      socket.emit('paymentComplete', reply)
     }
   })
 
@@ -233,10 +214,9 @@ io.on('connection', function (socket) {
         period: subject.period,
         countdown: subject.countdown,
         state: subject.state,
-        selectedEarnings: subject.selectedEarnings,
-        selectedWinPrize: subject.selectedWinPrize,
-        practice: !subject.practicePeriodsComplete,
-        selectedPeriod: subject.selectedPeriod
+        earnings: subject.earnings,
+        winPrize: subject.winPrize,
+        practice: !subject.practicePeriodsComplete
       }
     })
     const reply = {
@@ -268,9 +248,9 @@ io.on('connection', function (socket) {
         step: subject.step,
         stage: subject.stage,
         countdown: subject.countdown,
-        selectedPeriod: subject.selectedPeriod,
         outcomeRandom: subject.outcomeRandom,
         winPrize: subject.winPrize,
+        giftValue,
         totalCost: subject.totalCost,
         earnings: subject.earnings,
         hist: subject.hist,
@@ -316,15 +296,12 @@ function createSubject (msg, socket) {
     countdown: choice1Length,
     choice1: 0,
     investment2: 0,
-    selectedPeriod: choose(arange(1, numPeriods)),
     outcomeRandom: 0,
     winPrize: 0,
     giftAmount: 0,
     link: '',
     totalCost: 0,
     earnings: 0,
-    selectedEarnings: 0,
-    selectedWinPrize: 0,
     hist: {}
   }
   subjects[msg.id] = subject
@@ -342,22 +319,7 @@ function calculateOutcome () {
     subject.earnings = endowment + bonus * (1 - subject.winPrize)
   })
 }
-function calculateSelectedOutcome () {
-  Object.values(subjects).forEach(subject => {
-    console.log('subject.selectedPeriod', subject.selectedPeriod)
-    const selectedHist = subject.hist[subject.selectedPeriod]
-    console.log('subject.hist', subject.hist)
-    console.log('selectedHist', selectedHist)
-    const outcomeRandom = selectedHist.outcomeRandom
-    const score1 = selectedHist.score[1]
-    const score2 = selectedHist.score[2]
-    const totalScore = score1 + score2
-    subject.selectedWinPrize = (totalScore > outcomeRandom) * 1
-    subject.selectedEarnings = endowment + bonus * (1 - subject.selectedWinPrize)
-    console.log('subject.selectedEarnings', subject.selectedEarnings)
-    console.log('subject.selectedWinPrize', subject.selectedWinPrize)
-  })
-}
+
 function update (subject) { // add presurvey
   if (subject.state === 'startup') {
     subject.state = 'welcome'
@@ -374,12 +336,13 @@ function update (subject) { // add presurvey
     }
     if (subject.step === 'choice2' && subject.countdown <= 0) { // end choice2
       calculateOutcome()
-      calculateSelectedOutcome()
       subject.countdown = feedback2Length
       subject.step = 'feedback2'
     }
     if (subject.step === 'feedback2' && subject.countdown <= 0) { // end feedback2
-      updateDataFile(subject) // change to subject-specific
+      if (subject.practicePeriodsComplete === false) {
+        updateDataFile(subject) // change to subject-specific
+      }
       const maxPeriod = subject.experimentStarted ? numPeriods : numPracticePeriods
       if (subject.period >= maxPeriod) {
         if (subject.experimentStarted) {

@@ -30,15 +30,14 @@ socket.on('serverUpdateManager', function (msg) {
     <td>Period</td>
     <td>Step</td>
     <td>Countdown</td>
-    <td>Selected Period</td>
     <td>Earnings</td>
     <td>WinPrize</td>
   </tr>`
   subjects.forEach(subject => {
-    const earnings = subject.selectedEarnings.toFixed(0)
-    const winPrize = subject.selectedWinPrize === 1
+    const earnings = subject.earnings.toFixed(0)
+    const winPrize = subject.winPrize === 1
     const experimentComplete = subject.state === 'experimentComplete' || subject.state === 'postSurvey'
-    const payReady = (subject.period > subject.selectedPeriod || experimentComplete) && !subject.practice
+    const payReady = (subject.period > 1 || experimentComplete) && !subject.practice
     const earningsMessage = payReady ? earnings : 'NA'
     const winPrizeMessage = payReady ? winPrize : 'NA'
     tableString += `<tr>
@@ -48,7 +47,6 @@ socket.on('serverUpdateManager', function (msg) {
         <td>${subject.period}</td>
         <td>${subject.step}</td>
         <td>${subject.countdown}</td>
-        <td>${subject.selectedPeriod}</td>
         <td>${earningsMessage}</td>
         <td>${winPrizeMessage}</td>
     </tr>`

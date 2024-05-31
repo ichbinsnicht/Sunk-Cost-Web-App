@@ -206,8 +206,12 @@ input[type=number] {
     display: none;
     text-align: center;
     font: 5vmin monospace;
+    width: 133vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8vh;
 }
-#completeExperimentButton{
+#requestPaymentButton{
     margin: 2vh;
     font: 5vmin monospace;
 }

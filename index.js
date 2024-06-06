@@ -45,6 +45,7 @@
 
 import { io } from './server.js'
 import fs from 'fs'
+import https from 'https'
 
 // parameters
 const subjects = {}
@@ -65,6 +66,34 @@ let preSurveyStream
 let paymentStream
 let preSurveyReady = false
 const dateString = getDateString()
+
+// Message API for Prolific
+// https://docs.prolific.com/docs/api-docs/public/#tag/Messages/operation/SendMessage
+
+const postData = JSON.stringify({
+  recipient_id: '6650ce878485cd00aa153bd6',
+  body: 'Thanks for participating in my study',
+  study_id: '66574c8610e94d979f32aa80'
+})
+const options = {
+  hostname: 'api.prolific.com',
+  path: '/api/v1/studies/',
+  method: 'GET',
+  headers: {
+    Authorization: 'c-5FPy0ltEryNu_38lkMHZi-DVnC7odOgCtk379xD_lEKNT3z6r8Sb8njqGoJ4Em3oM_UW1zA7zSck1zLGisM6KbW4NrJjgY90J2Oso68aAzDQQFQxi_FCJp'
+  },
+  query: 'ACTIVE'
+}
+const req = https.request(options, (res) => {
+  console.log(`statusCode: ${res.statusCode}`)
+  console.log('headers:', res.headers)
+  console.log('results:', typeof (res))
+})
+req.on('error', (error) => {
+  console.error(error)
+})
+// req.write(postData)
+req.end()
 
 createDataFile()
 createPaymentFile()

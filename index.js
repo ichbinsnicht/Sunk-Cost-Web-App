@@ -1,7 +1,11 @@
 // TODO A
+//  STYLE buttons
+// fix end of study
+//
 // 1) End of study
-//  1a) Send custom Prolific message about gift cards (with link)
-//  1b) Provide giftcard link to subjects directly in the interface (conditional on winning the gift card)
+//  1a) Provide giftcard link to subjects directly in the interface (conditional on winning the gift card)
+//        link should be copyable from interface directly by subject
+//  1b) Send custom Prolific message about gift cards (with link)
 //  1c) Send bonus payments
 //  1d) subjects need to complete study on Prolific
 // 2) check mobile/tablet compatibility
@@ -47,11 +51,12 @@ const numPracticePeriods = 1 // 3 practice periods
 const numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
 const choice1Length = 3 // 15 secs choice1 (internal: 5)
 const feedback1Length = 3 // 5 secs feedback1 (internal: 2)
-const choice2Length = 15 // 15 secs choice2 (internal: 5)
+const choice2Length = 3 // 15 secs choice2 (internal: 5)
 const feedback2Length = 3 // 5 secs feedback2 (internal: 5)
 const endowment = 3 //  online: 3
 const bonus = 4 // online: {4,6}
 const giftValue = 6 // online: {6,9}
+const completionLink = 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K'
 
 // variables and guestList
 let numSubjects = 0
@@ -62,7 +67,7 @@ let preSurveyReady = false
 const dateString = getDateString()
 
 logStudies()
-sendMesssage('6650ce123adb3cef7f74e354', 'Fantastic!')
+// sendMesssage('6650ce123adb3cef7f74e354', 'Fantastic!')
 
 createDataFile()
 createPaymentFile()
@@ -146,7 +151,7 @@ function assignGift (subject) {
   const remainingLinks = links.filter(link => !ledger.includes(link))
   fs.writeFileSync('links/ledger.csv', ledger.join('\n'))
   fs.writeFileSync('links/remaining.csv', remainingLinks.join('\n'))
-  subject.link = link
+  subject.giftLink = link
   subject.giftAmount = subject.winPrize === 1 ? giftValue : 0
 }
 io.on('connection', function (socket) {
@@ -193,10 +198,8 @@ io.on('connection', function (socket) {
     const subject = subjects[msg.id]
     if (subject.state === 'experimentComplete') {
       updatePaymentFile(subject)
-      subject.state = 'paymentComplete'
       const reply = {
-        id: subject.id,
-        url: 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K'
+        id: subject.id
       }
       socket.emit('paymentComplete', reply)
     }
@@ -252,7 +255,9 @@ io.on('connection', function (socket) {
         totalCost: subject.totalCost,
         earnings: subject.earnings,
         hist: subject.hist,
-        bonus
+        bonus,
+        completionLink: subject.state === 'experimentComplete' ? completionLink : '',
+        giftLink: subject.state === 'experimentComplete' ? subject.giftLink : ''
       }
       socket.emit('serverUpdateClient', reply)
     } else { // restart server: solving issue that client does not know that
@@ -297,7 +302,7 @@ function createSubject (msg, socket) {
     outcomeRandom: 0,
     winPrize: 0,
     giftAmount: 0,
-    link: '',
+    giftLink: '',
     totalCost: 0,
     earnings: 0,
     hist: {}

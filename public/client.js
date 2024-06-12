@@ -15,7 +15,11 @@ const beginPracticePeriodsButton = document.getElementById('beginPracticePeriods
 const beginExperimentButton = document.getElementById('beginExperimentButton')
 const interfaceDiv = document.getElementById('interfaceDiv')
 const experimentCompleteDiv = document.getElementById('experimentCompleteDiv')
+const completeButtonDiv = document.getElementById('completeButtonDiv')
+const paymentDiv = document.getElementById('paymentDiv')
 const completeTextDiv = document.getElementById('completeTextDiv')
+const paymentLink = document.getElementById('paymentLink')
+
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
 
@@ -64,6 +68,7 @@ let endowment = 0
 let giftValue = 0
 let winPrize = 0
 let instructionsString = ''
+let completionLink = ''
 
 const imageStyle = 'width:14.2vh;height:9vh;margin-left:auto;margin-right:auto;display:block;'
 const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
@@ -158,9 +163,13 @@ window.beginExperiment = function () {
   const msg = { id }
   socket.emit('beginExperiment', msg)
 }
+
 window.requestPayment = function () {
   const msg = { id }
   socket.emit('requestPayment', msg)
+}
+window.returnToProlific = function () {
+  setTimeout(() => { window.location.href = completionLink }, 100)
 }
 
 document.onmousedown = function (event) {
@@ -192,7 +201,11 @@ socket.on('clientJoined', function (msg) {
   setInterval(update, 10)
 })
 socket.on('paymentComplete', function (msg) {
-  window.location.href = msg.url
+  completeButtonDiv.style.display = 'none'
+  paymentDiv.style.display = 'block'
+  console.log('paymentComplete', msg)
+  console.log('completeButtonDiv', completeButtonDiv.style.display)
+  console.log('paymentDiv', paymentDiv.style.display)
 })
 socket.on('serverUpdateClient', function (msg) {
   joined = true
@@ -226,6 +239,8 @@ socket.on('serverUpdateClient', function (msg) {
   console.log('endowment', endowment)
   forcedScore = msg.hist[msg.period].forcedScore
   forced = msg.hist[msg.period].forced
+  completionLink = msg.completionLink
+  paymentLink.href = msg.giftLink
   if (state !== msg.state) {
     const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
     const practiceInstructionsString = instructionsString + readyPracticeString
@@ -255,7 +270,6 @@ const update = function () {
   preSurveyDiv.style.display = 'none'
   interfaceDiv.style.display = 'none'
   experimentCompleteDiv.style.display = 'none'
-
   if (joined && state === 'startup') {
     pleaseWaitDiv.style.display = 'block'
   }

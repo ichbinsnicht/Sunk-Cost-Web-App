@@ -215,3 +215,21 @@ input[type=number] {
     margin: 2vh;
     font: 5vmin monospace;
 }
+#paymentDiv{
+    display: none;
+    text-align: center;
+    font: 5vmin monospace;
+    width: 133vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8vh;
+}
+#completeButtonDiv{
+    display: block;
+    text-align: center;
+    font: 5vmin monospace;
+    width: 133vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8vh;
+}

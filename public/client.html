@@ -106,15 +106,24 @@
         </div>
         <div id="instructionsDiv"> 
             <div id="instructionsTextDiv"></div> <br>
-            <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">Begin Practice Periods</button>
-            <button type="button" onclick="beginExperiment()" id="beginExperimentButton">Begin Experiment</button>
+            <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">
+                Begin Practice Periods
+            </button>
+            <button type="button" onclick="beginExperiment()" id="beginExperimentButton">
+                Begin Experiment
+            </button>
         </div>
         <div id="interfaceDiv"><canvas id="canvas"></canvas></div>
         <div id="experimentCompleteDiv">
-            <div id="completeTextDiv"></div> <br>
-            <button type="button" onclick="requestPayment()" id="requestPaymentButton">Complete Experiment: Return to Prolific</button>
+            <div id="completeButtonDiv">
+                <button onclick="requestPayment()" id="completeExperimentLink">Complete Experiment</button>
+            </div>
+            <div id="paymentDiv">
+                <div id="completeTextDiv"></div> <br>
+                <a href="" target="_blank" onclick="returnToProlific()" id="paymentLink">Return to Prolific and Claim Your Gift Card</a>
+            </div>
         </div>
-<!-- https://app.prolific.com/submissions/complete?cc=C1NU8C6K !-->
+        <!-- https://app.prolific.com/submissions/complete?cc=C1NU8C6K !-->
         <script src="client.js" type="module"></script>
     </body>
 </html>

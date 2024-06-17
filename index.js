@@ -1,10 +1,8 @@
 // TODO A
 //
 // 1) End of study
-//  1b) Send custom Prolific message about gift cards (with link)
-//  1c) Send bonus payments
-//  1d) subjects need to complete study on Prolific
-// 2) check mobile/tablet compatibility
+//  1a) Send bonus payments
+//  1b) check mobile/tablet compatibility
 
 // For testing purposes with API:
 // http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session

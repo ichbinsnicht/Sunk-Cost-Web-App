@@ -6,6 +6,9 @@
 //  1d) subjects need to complete study on Prolific
 // 2) check mobile/tablet compatibility
 
+// For testing purposes with API:
+// http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session
+
 // TODO B
 // Work on ML 'application'
 
@@ -63,8 +66,6 @@ let preSurveyReady = false
 const dateString = getDateString()
 
 logStudies()
-// sendMesssage('6650ce123adb3cef7f74e354', 'Fantastic!')
-
 createDataFile()
 createPaymentFile()
 
@@ -130,7 +131,7 @@ function createPaymentFile () {
   paymentStream.write(csvString)
 }
 function updatePaymentFile (subject) {
-  assignGift(subject)
+  if (subject.winPrize) assignGift(subject)
   updateDataFile(subject)
   const date = subject.startTime.slice(0, 10)
   let csvString = `${date},${subject.id},${subject.earnings.toFixed(0)},`
@@ -197,6 +198,7 @@ io.on('connection', function (socket) {
       const reply = {
         id: subject.id
       }
+      if (subject.winPrize) sendMesssage(subject.id, `Your gift card is here: ${subject.giftURL}`)
       socket.emit('paymentComplete', reply)
     }
   })

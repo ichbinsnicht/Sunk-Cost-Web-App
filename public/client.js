@@ -19,6 +19,8 @@ const completeButtonDiv = document.getElementById('completeButtonDiv')
 const paymentDiv = document.getElementById('paymentDiv')
 const completeTextDiv = document.getElementById('completeTextDiv')
 const paymentLink = document.getElementById('paymentLink')
+const giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
+const copyURLDiv = document.getElementById('copyURLDiv')
 
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
@@ -68,7 +70,8 @@ let endowment = 0
 let giftValue = 0
 let winPrize = 0
 let instructionsString = ''
-let completionLink = ''
+let completionURL = ''
+let giftURL = ''
 
 const imageStyle = 'width:14.2vh;height:9vh;margin-left:auto;margin-right:auto;display:block;'
 const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
@@ -168,8 +171,11 @@ window.requestPayment = function () {
   const msg = { id }
   socket.emit('requestPayment', msg)
 }
-window.returnToProlific = function () {
-  setTimeout(() => { window.location.href = completionLink }, 100)
+window.goToGiftCard = function () {
+  if (winPrize) setTimeout(() => { window.location.href = giftURL }, 100)
+}
+window.copyGiftLink = function () {
+  navigator.clipboard.writeText(giftURL)
 }
 
 document.onmousedown = function (event) {
@@ -239,8 +245,8 @@ socket.on('serverUpdateClient', function (msg) {
   console.log('endowment', endowment)
   forcedScore = msg.hist[msg.period].forcedScore
   forced = msg.hist[msg.period].forced
-  completionLink = msg.completionLink
-  paymentLink.href = msg.giftLink
+  completionURL = msg.completionURL
+  giftURL = msg.giftURL
   if (state !== msg.state) {
     const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
     const practiceInstructionsString = instructionsString + readyPracticeString
@@ -563,17 +569,25 @@ const drawBarBonus = function () {
 
 const writeOutcome = function () {
   completeTextDiv.innerHTML = ''
-  completeTextDiv.innerHTML += 'The experiment is complete <br><br>'
   completeTextDiv.innerHTML += `You started with $${endowment.toFixed(0)}<br>`
   const bonusTextA = `You did not win the $${bonus.toFixed(0)} bonus<br>`
   const bonusTextB = `You won the $${bonus.toFixed(0)} bonus<br>`
   completeTextDiv.innerHTML += winPrize ? bonusTextA : bonusTextB
-  const giftCardTextA = `You won the $${giftValue} Starbucks gift card<br><br>`
-  const giftCardTextB = `You did not win the $${giftValue} Starbucks gift card<br><br>`
+  const giftCardTextA = `You won the $${giftValue} Starbucks gift card`
+  const giftCardTextB = `You did not win the $${giftValue} Starbucks gift card`
   completeTextDiv.innerHTML += winPrize ? giftCardTextA : giftCardTextB
-  const finalTextA = `You will receive $${endowment.toFixed(0)} and the $${giftValue} gift card<br>`
-  const finalTextB = `You will receive $${endowment.toFixed(0)} and the $${bonus.toFixed(0)} bonus<br>`
-  completeTextDiv.innerHTML += winPrize ? finalTextA : finalTextB
+  giftBitLinkDiv.innerHTML = ''
+  console.log('winPrize', winPrize)
+  console.log('completionURL', completionURL)
+  console.log('giftURL', giftURL)
+  paymentLink.href = completionURL
+  paymentLink.target = '_self'
+  copyURLDiv.style.display = 'none'
+  if (winPrize) {
+    giftBitLinkDiv.innerHTML += `Your gift card URL: <br> ${giftURL}`
+    paymentLink.target = '_blank'
+    copyURLDiv.style.display = 'block'
+  }
 }
 
 draw()

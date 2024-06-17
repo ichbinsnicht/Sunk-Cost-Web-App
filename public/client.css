@@ -233,3 +233,19 @@ input[type=number] {
     margin-right: auto;
     margin-top: 8vh;
 }
+#seeResultsButton{
+    margin: 2vh;
+    font: 5vmin monospace;
+}
+#paymentLink{
+    font: 10vmin monospace;
+}
+#copyURLButton{
+    margin: 2vh;
+    font: 5vmin monospace;    
+}
+#copyURLDiv{
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}

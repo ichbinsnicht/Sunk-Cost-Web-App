@@ -7,29 +7,32 @@ body {
 #joinGameButton{
     font: 5vmin monospace;
 }
+
 #beginPreSurveyButton{
     font: 5vmin monospace;
 }
+.preSurveyButton {
+    font: 5vmin monospace;
+    margin: 2vmin;
+}
 #preSurveyDiv {
-    width: 133vh;
+    width: 100vmin;
     margin-top: 8vh;
     margin-left: auto;
     margin-right: auto;
     display: none;
     text-align: center;
-    font: 2.5vmin monospace;
+    font: 5vmin monospace;
 }
-#preSurveyDivPage1 {
-    display: block;  
-}
-#preSurveyDivPage2 {
+#preSurveyQuestionDiv {
     display: none;  
 }
-.preSurveyButton {
-    font: 3vmin monospace;
+
+form {
+    display: none;
 }
 #typingDiv {
-    width: 133vh;
+    width: 100%;
     margin-top: 8vh;
     margin-left: auto;
     margin-right: auto;
@@ -81,7 +84,7 @@ body {
     border-style: none;
 }
 #welcomeDiv {
-    width: 133vh;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     display: none;
@@ -90,7 +93,7 @@ body {
     margin-top: 8vh;
 }
 #pleaseWaitDiv {
-    width: 133vh;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -144,7 +147,7 @@ body {
     padding: 0;
 }
 #postSurveyDiv {
-    width: 133vh;
+    width: 100%;
     margin-top: 8vh;
     margin-left: auto;
     margin-right: auto;
@@ -160,12 +163,6 @@ body {
 }
 .postSurveyButton {
     font: 5vmin monospace;
-}
-.surveyNumber {
-    text-align: center;
-    margin: 2vh;
-    width: 40vh;
-    font: 2.5vmin monospace;
 }
 #beginExperimentButton {
     margin: 2vh;
@@ -183,11 +180,21 @@ input[type=number] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
+.radioInput {
+    margin: auto;
+    height: 2vmin;
+    width: 2vmin;
+}
+.radioDiv {
+    display: inline-block;
+    text-align: left;
+    margin-left: auto;
+}
 .surveyInput {
     text-align: center;
     margin: 2vh;
     width: 50vh;
-    font: 2.5vmin monospace;
+    font: 5vmin monospace;
 }
 .postSurveySubmit {
     font: 5vmin monospace;
@@ -206,7 +213,7 @@ input[type=number] {
     display: none;
     text-align: center;
     font: 5vmin monospace;
-    width: 133vh;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 8vh;
@@ -219,7 +226,7 @@ input[type=number] {
     display: none;
     text-align: center;
     font: 5vmin monospace;
-    width: 133vh;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 8vh;
@@ -228,7 +235,7 @@ input[type=number] {
     display: block;
     text-align: center;
     font: 5vmin monospace;
-    width: 133vh;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 8vh;

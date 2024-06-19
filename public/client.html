@@ -11,98 +11,136 @@
             <br><br><br><br> <button type="button" onclick="beginPreSurvey()" id="beginPreSurveyButton">Begin Survey</button>
         </div>
         <div id="preSurveyDiv"><b>Survey</b><br><br>
-            <div id="preSurveyDivPage1">
-                <form id="preSurveyFormPage1" onSubmit="return submitPreSurveyPage1();">
-                    <div class="surveyQuestionDiv">
-                        <label for="risk">In comparison with others, are you a person who is generally willing to take risks?</label> <br>
-                        <select name="risk" id="risk" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="time">In comparison with others, are you a person who is generally willing to give up something today in order to benefit in the future?</label> <br>
-                        <select name="time" id="time" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="memory1">How often do you forget the names of people minutes after being introduced?</label> <br>
-                        <select name="memory1" id="memory1" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="1">More than Once per day</option>
-                            <option value="2">2 to 6 times a week</option>
-                            <option value="3">A few times a month</option>
-                            <option value="4">A few times a year</option>
-                            <option value="5">Never</option>
-                        </select>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="memory2">How often do you discover when you have gone out that you must return for something that you left behind?</label> <br>
-                        <select name="memory2" id="memory2" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="1">More than Once per day</option>
-                            <option value="2">2 to 6 times a week</option>
-                            <option value="3">A few times a month</option>
-                            <option value="4">A few times a year</option>
-                            <option value="5">Never</option>
-                        </select>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="cognitiveReflectionTask1">If it takes 5 machines 5 minutes to make 5 widgets, how many minutes would it take 100 machines to make 100 widgets? </label> <br>
-                        <input class="surveyInput" type="number" min="0" name="cognitiveReflectionTask1" id="cognitiveReflectionTask1" required>
-                    </div>
-                    <div> <br>
-                        <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
-                    </div> 
-                </form>
-            </div>
-            <div id="preSurveyDivPage2">
-                <form id="preSurveyFormPage2" onSubmit="return submitPreSurveyPage2();">
-                    <div class="surveyQuestionDiv">
-                        <label for="cognitiveReflectionTask2">A man buys a stock for $60. Then he sells it for $70. Then he buys it back for $80. Then he sells it again for $90. How many dollars did he make?</label> <br>
-                        <input class="surveyNumber" type="number" min="0" max="10000" name="cognitiveReflectionTask2" id="cognitiveReflectionTask2" required>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="reputation1">Do you worry about what other people will think of you even when you know it doesn’t make any difference?</label> <br>
-                        <select name="reputation1" id="reputation1" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="reputation2">Are you frequently afraid of other people noticing your shortcomings?</label> <br>
-                        <select name="reputation2" id="reputation2" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div> 
-                    <div class="surveyQuestionDiv">
-                        <label for="ruleOfThumb">Are you a person who tends to finish what you started?</label> <br>
-                        <select name="ruleOfThumb" id="ruleOfThumb" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-                    <div class="surveyQuestionDiv">
-                        <label for="BehavioralInertia1">Do you tend to use short-cuts to achieve your goals?</label> <br>
-                        <select name="BehavioralInertia1" id="BehavioralInertia1" class="surveyInput" required>
-                            <option value="" selected=""></option>>Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>                
-                    <div> <br>
-                        <input class="preSurveyButton" type="submit" value="Submit" id="preSurveyButtonPage2">
-                    </div>
-                </form>   
-            </div>           
+            <form id="preSurveyForm1" >
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>In comparison with others, are you a person who is generally willing to take risks?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="riskYes" name="risk" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="riskNo" name="risk" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm2" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>In comparison with others, are you a person who is generally willing to give up something today in order to benefit in the future?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="timeYes" name="time" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="timeNo" name="time" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm3" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>Do you often forget the names of people minutes after being introduced?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="memory1Yes" name="memory1" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="memory1No" name="memory1" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm4" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>Do you often discover when you have gone out that you must return for something that you left behind?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="memory2Yes" name="memory2" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="memory2No" name="memory2" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm5" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <label for="cognition1">If it takes 5 machines 5 minutes to make 5 widgets, how many minutes would it take 100 machines to make 100 widgets? </label> <br>
+                        <input class="surveyInput" type="number" min="0" name="cognition1" id="cognition1" required>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm6" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <label for="cognition2">A man buys a stock for $60. Then he sells it for $70. Then he buys it back for $80. Then he sells it again for $90. How many dollars did he make?</label> <br>
+                        <input class="surveyInput" type="number" min="0" max="10000" name="cognition2" id="cognition2" required>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm7" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>Do you worry about what other people will think of you even when you know it doesn't make any difference?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="reputation1Yes" name="reputation1" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="reputation1No" name="reputation1" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm8" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>Are you frequently afraid of other people noticing your shortcomings?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="reputation2Yes" name="reputation2" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="reputation2No" name="reputation2" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm9" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>Are you a person who tends to finish what you started?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="ruleOfThumbYes" name="ruleOfThumb" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="ruleOfThumbNo" name="ruleOfThumb" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
+            <form id="preSurveyForm10" onSubmit="return nextPreSurveyForm();">
+                <div class="surveyQuestionDiv">
+                    <fieldset>
+                        <legend>Are you a person who tends to finish what you started?</legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="inertiaYes" name="inertia" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="inertiaNo" name="inertia" value="0"  />
+                            <label for="no">No</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
+            </form>
         </div>
         <div id="instructionsDiv"> 
             <div id="instructionsTextDiv"></div> <br>

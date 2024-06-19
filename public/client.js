@@ -7,10 +7,6 @@ const instructionsTextDiv = document.getElementById('instructionsTextDiv')
 const welcomeDiv = document.getElementById('welcomeDiv')
 const pleaseWaitDiv = document.getElementById('pleaseWaitDiv')
 const preSurveyDiv = document.getElementById('preSurveyDiv')
-const preSurveyDivPage1 = document.getElementById('preSurveyDivPage1')
-const preSurveyDivPage2 = document.getElementById('preSurveyDivPage2')
-const preSurveyFormPage1 = document.getElementById('preSurveyFormPage1')
-const preSurveyFormPage2 = document.getElementById('preSurveyFormPage2')
 const beginPracticePeriodsButton = document.getElementById('beginPracticePeriodsButton')
 const beginExperimentButton = document.getElementById('beginExperimentButton')
 const interfaceDiv = document.getElementById('interfaceDiv')
@@ -21,7 +17,24 @@ const completeTextDiv = document.getElementById('completeTextDiv')
 const paymentLink = document.getElementById('paymentLink')
 const giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
 const copyURLDiv = document.getElementById('copyURLDiv')
-
+const preSurveyForms = [
+  document.getElementById('preSurveyForm1'),
+  document.getElementById('preSurveyForm2'),
+  document.getElementById('preSurveyForm3'),
+  document.getElementById('preSurveyForm4'),
+  document.getElementById('preSurveyForm5'),
+  document.getElementById('preSurveyForm6'),
+  document.getElementById('preSurveyForm7'),
+  document.getElementById('preSurveyForm8'),
+  document.getElementById('preSurveyForm9'),
+  document.getElementById('preSurveyForm10')
+]
+preSurveyForms.forEach(form => {
+  form.onsubmit = function (event) {
+    event.preventDefault()
+    window.nextPreSurveyForm(event)
+  }
+})
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
 
@@ -72,6 +85,7 @@ let winPrize = 0
 let instructionsString = ''
 let completionURL = ''
 let giftURL = ''
+let preSurveyQuestion = 0
 
 const imageStyle = 'width:14.2vh;height:9vh;margin-left:auto;margin-right:auto;display:block;'
 const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
@@ -129,37 +143,39 @@ window.beginPreSurvey = function () {
   const msg = { id }
   socket.emit('beginPreSurvey', msg)
 }
-window.submitPreSurveyPage1 = function () {
-  console.log('submitPreSurveyPage1')
-  window.nextPreSurveyPage()
-  return false
-}
-window.submitPreSurveyPage2 = function () {
-  console.log('submitPreSurveyPage2')
-  endPreSurveyTime = Date.now()
-  const msg = {
-    id,
-    preSurveyDuration: (endPreSurveyTime - startPreSurveyTime) / 1000
+window.nextPreSurveyForm = function (event) {
+  preSurveyForms.forEach(div => {
+    div.style.display = 'none'
+  })
+  preSurveyQuestion++
+  if (preSurveyQuestion <= preSurveyForms.length) {
+    const nextDiv = preSurveyForms[preSurveyQuestion - 1]
+    nextDiv.style.display = 'block'
+  } else {
+    console.log('submitPreSurvey')
+    endPreSurveyTime = Date.now()
+    const msg = {
+      id,
+      preSurveyDuration: (endPreSurveyTime - startPreSurveyTime) / 1000
+    }
+    preSurveyForms.forEach(form => {
+      const formData = new FormData(form)
+      formData.forEach((value, key) => {
+        console.log(key, value)
+        msg[key] = value
+      })
+    })
+    socket.emit('submitPreSurvey', msg)
+    return false
   }
-  Array.from(preSurveyFormPage1.elements).forEach(element => {
-    msg[element.id] = element.value
-  })
-  Array.from(preSurveyFormPage2.elements).forEach(element => {
-    msg[element.id] = element.value
-  })
-  socket.emit('submitPreSurvey', msg)
-  return false
 }
+window.nextPreSurveyForm()
 
 window.beginPracticePeriods = function () {
   const msg = { id }
   beginPracticePeriodsButton.style.display = 'none'
   socket.emit('beginPracticePeriods', msg)
   console.log('beginPracticePeriods')
-}
-window.nextPreSurveyPage = function () {
-  preSurveyDivPage1.style.display = 'none'
-  preSurveyDivPage2.style.display = 'block'
 }
 
 window.beginExperiment = function () {
@@ -176,11 +192,6 @@ window.goToGiftCard = function () {
 }
 window.copyGiftLink = function () {
   navigator.clipboard.writeText(giftURL)
-}
-
-document.onmousedown = function (event) {
-  console.log('message', message)
-  console.log('id', id)
 }
 
 document.onkeydown = function (event) {
@@ -242,7 +253,6 @@ socket.on('serverUpdateClient', function (msg) {
   winPrize = msg.winPrize
   giftValue = msg.giftValue
   endowment = msg.endowment
-  console.log('endowment', endowment)
   forcedScore = msg.hist[msg.period].forcedScore
   forced = msg.hist[msg.period].forced
   completionURL = msg.completionURL

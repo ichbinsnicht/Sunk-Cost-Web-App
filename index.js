@@ -1,8 +1,7 @@
 // TODO A
 //
-// 1) End of study
+//  1a) check mobile/tablet compatibility
 //  1a) Send bonus payments
-//  1b) check mobile/tablet compatibility
 
 // For testing purposes with API:
 // http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session

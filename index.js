@@ -1,6 +1,7 @@
 // TODO A
 //
 //  1a) check mobile/tablet compatibility
+//  - styling the survey for mobile (inconsisent font size, label/legends, "survey" header)
 //  1a) Send bonus payments
 
 // For testing purposes with API:

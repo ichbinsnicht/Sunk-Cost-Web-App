@@ -26,6 +26,7 @@ body {
 }
 #preSurveyQuestionDiv {
     display: none;  
+    font: 5vmin monospace;
 }
 
 form {
@@ -179,6 +180,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
     appearance: textfield;
+}
+legend {
+    font: 5vmin monospace;
 }
 .radioInput {
     margin: auto;

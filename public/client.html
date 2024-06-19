@@ -70,8 +70,13 @@
             <form id="preSurveyForm5" onSubmit="return nextPreSurveyForm();">
                 <div class="surveyQuestionDiv">
                     <fieldset>
-                        <label for="cognition1">If it takes 5 machines 5 minutes to make 5 widgets, how many minutes would it take 100 machines to make 100 widgets? </label> <br>
-                        <input class="surveyInput" type="number" min="0" name="cognition1" id="cognition1" required>
+                        <legend for="cognition1">If it takes 5 machines 5 minutes to make 5 widgets, how many minutes would it take 100 machines to make 100 widgets? </legend>
+                        <div class="radioDiv">
+                            <input class="radioInput" type="radio" id="memory2Yes" name="memory2" value="1"  required />
+                            <label for="yes">Yes</label> <br />
+                            <input class="radioInput" type="radio" id="memory2No" name="memory2" value="0"  />
+                            <label for="no">No</label>
+                        </div>
                     </fieldset>
                 </div>
                 <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">

@@ -149,12 +149,22 @@
         </div>
         <div id="instructionsDiv"> 
             <div id="instructionsTextDiv"></div> <br>
-            <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">
-                Begin Practice Periods
-            </button>
-            <button type="button" onclick="beginExperiment()" id="beginExperimentButton">
-                Begin Experiment
-            </button>
+            <div>
+                <button type="button" onclick="previousInstructionsPage()" id="previousPageButton">
+                    Previous Page
+                </button>
+                <button type="button" onclick="nextInstructionsPage()" id="nextPageButton">
+                    Next Page
+                </button>
+            </div>
+            <div>
+                <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">
+                    Begin Practice Periods
+                </button>
+                <button type="button" onclick="beginExperiment()" id="beginExperimentButton">
+                    Begin Experiment
+                </button>
+            </div>
         </div>
         <div id="interfaceDiv"><canvas id="canvas"></canvas></div>
         <div id="experimentCompleteDiv">

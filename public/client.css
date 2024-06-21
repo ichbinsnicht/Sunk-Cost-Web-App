@@ -116,19 +116,12 @@ form {
 #instructionsTextDiv {
     display: block;
     text-align: justify;      
-    font: 2vmin monospace;    
+    font: 4.5vmin monospace;    
     border: 0;
-    padding-top: 20;
-    padding-left: 20;
-    padding-right: 20;
+    padding-top: 10;
+    padding-left: 10;
+    padding-right: 10;
     padding-bottom: 0;
-}
-#beginPracticePeriodsButton{
-    display: none;
-    margin-top: 0;
-    margin-left: auto;
-    margin-right: auto; 
-    font: 5vmin monospace;
 }
 #idInput{
     font: 10vmin monospace;
@@ -165,9 +158,25 @@ form {
 .postSurveyButton {
     font: 5vmin monospace;
 }
-#beginExperimentButton {
+button {
     margin: 2vh;
     font: 5vmin monospace;
+}
+#beginExperimentButton {
+    display: none;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto; 
+    font: 5vmin monospace;
+    background-color: #05ed0d;
+}
+#beginPracticePeriodsButton{
+    display: none;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto; 
+    font: 5vmin monospace;
+    background-color: #05ed0d;
 }
 .surveyQuestionDiv {
     margin: auto;

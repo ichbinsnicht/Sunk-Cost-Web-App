@@ -4,6 +4,9 @@
 //  - styling the survey for mobile (inconsisent font size, label/legends, "survey" header)
 //  1a) Send bonus payments
 
+// - Desktop Only on Prolific
+// -->  mobile excluded due to canvas setup
+
 // For testing purposes with API:
 // http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session
 

@@ -9,6 +9,8 @@ const pleaseWaitDiv = document.getElementById('pleaseWaitDiv')
 const preSurveyDiv = document.getElementById('preSurveyDiv')
 const beginPracticePeriodsButton = document.getElementById('beginPracticePeriodsButton')
 const beginExperimentButton = document.getElementById('beginExperimentButton')
+const previousPageButton = document.getElementById('previousPageButton')
+const nextPageButton = document.getElementById('nextPageButton')
 const interfaceDiv = document.getElementById('interfaceDiv')
 const experimentCompleteDiv = document.getElementById('experimentCompleteDiv')
 const completeButtonDiv = document.getElementById('completeButtonDiv')
@@ -72,51 +74,56 @@ let score = { 1: 0, 2: 0 }
 let forcedScore = { 1: 0, 2: 0 }
 let forced = { 1: 0, 2: 0 }
 let hist = {}
-let message = {}
 let mouseEvent = { x: 0, y: 0 }
-let readyInstructionsString = ''
-let practiceLock = true
 let startPreSurveyTime = 0
 let endPreSurveyTime = 0
 let bonus = 0
 let endowment = 0
 let giftValue = 0
 let winPrize = 0
-let instructionsString = ''
 let completionURL = ''
 let giftURL = ''
 let preSurveyQuestion = 0
+let instructionsPage = 1
 
-const imageStyle = 'width:14.2vh;height:9vh;margin-left:auto;margin-right:auto;display:block;'
+const imageStyle = `width:${1.5 * 14.2}vh;height:${1.5 * 9}vh;margin-left:auto;margin-right:auto;margin-top:3vmin;margin-bottom:3vmin;display:block;`
 const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
 
 // probForcingInstructionsString
 function getInstructionString () {
-  const instructionsString = `
-  This is an experiment about decision making. You will receive $${endowment} in cash just for participating. Depending on the decisions you make, you will also receive either a $${giftValue} Starbucks gift card or a bonus of $${bonus} in cash.
-
-  ${imageHTML} <br>
-
-  This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $${giftValue} Starbucks gift card and your probability of receiving the $${bonus} bonus.<br><br>
-
+  const instructionsString1 = `
+    This is an experiment about decision making. You will receive $${endowment} just for participating. Depending on the decisions you make, you will also receive either a $${giftValue} Starbucks gift card or a bonus of $${bonus}.
+    ${imageHTML}
+    This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $${giftValue} Starbucks gift card or the $${bonus} bonus.`
+  const instructionsString2 = `
   Stage 1:<br>
   <ul>
       <li> You will choose a number between 0% and 50%, called Choice 1.</li>
       <li> Probability 1 will equal either Choice 1 or 0%. Both are equally likely.</li>
   </ul>
-
-  Stage 2:<br>
+  <br>Stage 2:<br>
   <ul>
       <li> You will choose a number between 0% and 50%, called Choice 2.</li>
       <li> Probability 2 will equal Choice 2.</li>
-  </ul>
+  </ul>`
+  const instructionsString3 = `
+  During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus} bonus or the $${giftValue} Starbucks gift card. <br><br>  Your chance of receiving the $${giftValue} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus} bonus will be 100% minus your chance of receiving the $${giftValue} Starbucks gift card.<br><br>`
 
-  During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus} bonus or the $${giftValue} Starbucks gift card. Your chance of receiving the $${giftValue} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus} bonus will be 100% minus your chance of receiving the $${giftValue} Starbucks gift card.<br><br>`
+  const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
+  const readyExperimentString = 'Please click the button below to begin the experiment.'
 
-  return instructionsString
+  const readyString = practicePeriodsComplete ? readyExperimentString : readyPracticeString
+  const instructionsString4 = readyString
+
+  const instructionsStrings = [
+    instructionsString1,
+    instructionsString2,
+    instructionsString3,
+    instructionsString4
+  ]
+
+  return instructionsStrings[instructionsPage - 1]
 }
-
-const readyString = 'Please click the button below to begin the experiment.'
 
 const socket = io() // browser based socket
 const arange = n => [...Array(n).keys()]
@@ -170,6 +177,9 @@ window.nextPreSurveyForm = function (event) {
   }
 }
 window.nextPreSurveyForm()
+
+window.previousInstructionsPage = function () { instructionsPage-- }
+window.nextInstructionsPage = function () { instructionsPage++ }
 
 window.beginPracticePeriods = function () {
   const msg = { id }
@@ -237,12 +247,9 @@ socket.on('serverUpdateClient', function (msg) {
     console.log('msg.period', msg.period)
     console.log('msg.step', msg.step)
   }
-  instructionsString = getInstructionString()
-  readyInstructionsString = instructionsString + readyString
-  message = msg
+  instructionsTextDiv.innerHTML = getInstructionString()
   step = msg.step
   stage = msg.stage
-  practiceLock = msg.practiceLock
   experimentStarted = msg.experimentStarted
   practicePeriodsComplete = msg.practicePeriodsComplete
   numPracticePeriods = msg.numPracticePeriods
@@ -257,11 +264,6 @@ socket.on('serverUpdateClient', function (msg) {
   forced = msg.hist[msg.period].forced
   completionURL = msg.completionURL
   giftURL = msg.giftURL
-  if (state !== msg.state) {
-    const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
-    const practiceInstructionsString = instructionsString + readyPracticeString
-    instructionsTextDiv.innerHTML = practicePeriodsComplete ? readyInstructionsString : practiceInstructionsString
-  }
   state = msg.state
 })
 
@@ -278,8 +280,10 @@ const update = function () {
     currentScore: score[stage]
   }
   socket.emit('clientUpdate', msg)
-  beginPracticePeriodsButton.style.display = (!practiceLock && !practicePeriodsComplete) ? 'block' : 'none'
+  beginPracticePeriodsButton.style.display = (!practicePeriodsComplete && instructionsPage === 4) ? 'inline' : 'none'
   beginExperimentButton.style.display = practicePeriodsComplete ? 'inline' : 'none'
+  previousPageButton.style.display = instructionsPage === 1 ? 'none' : 'inline'
+  nextPageButton.style.display = instructionsPage === 4 ? 'none' : 'inline'
   instructionsDiv.style.display = 'none'
   welcomeDiv.style.display = 'none'
   pleaseWaitDiv.style.display = 'none'

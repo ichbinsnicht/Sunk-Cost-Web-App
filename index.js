@@ -1,6 +1,15 @@
 // TODO A
 //
 //  - Send bonus payments
+// - https://docs.prolific.com/docs/api-docs/public/#tag/Bonuses
+//
+// For test:
+// - set up prolific study with 10 subjects
+// - upload latest web version to server
+// - get gift bit links (Kate!)
+// - set up gift bit links on server (links.csv)
+// - server should communicate with prolific
+// - send out invitations
 
 // For testing purposes with API:
 // http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session

@@ -1,25 +1,14 @@
 // TODO A
 //
-//  1a) check mobile/tablet compatibility
-//  - styling the survey for mobile (inconsisent font size, label/legends, "survey" header)
-//  1a) Send bonus payments
-
-// - Desktop Only on Prolific
-// -->  mobile excluded due to canvas setup
+//  - Send bonus payments
 
 // For testing purposes with API:
 // http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session
 
-// TODO B
-// Work on ML 'application'
-
-// TODO D Alternative to Prolific. Mturk
-// Sandbox
-// Notify Workers (Email): https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_NotifyWorkersOperation.html
-// Bonus Payment for Workers: https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SendBonusOperation.html
-//
+// SETUP Prolific
 // - Pilot: Prolific students
-// ---> shareable link version for a gift card.
+// - Desktop Only on Prolific
+// -->  mobile excluded due to canvas setup
 //
 // - prolific details
 //   URL parameters for login:
@@ -29,6 +18,14 @@
 // - giftbit.com
 // - https://app.giftbit.com/app/order/pay/bda63b3c49eb433995fccd4996eb54e2
 // - https://docs.prolific.com/docs/api-docs/public/#tag/Messages/operation/SendMessage
+
+// TODO B
+// Work on ML 'application'
+
+// TODO D Alternative to Prolific. Mturk
+// Sandbox
+// Notify Workers (Email): https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_NotifyWorkersOperation.html
+// Bonus Payment for Workers: https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SendBonusOperation.html
 
 // - ML analysis
 //

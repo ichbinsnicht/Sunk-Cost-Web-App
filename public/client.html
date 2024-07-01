@@ -71,12 +71,7 @@
                 <div class="surveyQuestionDiv">
                     <fieldset>
                         <legend for="cognition1">If it takes 5 machines 5 minutes to make 5 widgets, how many minutes would it take 100 machines to make 100 widgets? </legend>
-                        <div class="radioDiv">
-                            <input class="radioInput" type="radio" id="memory2Yes" name="memory2" value="1"  required />
-                            <label for="yes">Yes</label> <br />
-                            <input class="radioInput" type="radio" id="memory2No" name="memory2" value="0"  />
-                            <label for="no">No</label>
-                        </div>
+                        <input class="surveyInput" type="number" min="0" max="10000" name="cognition1" id="cognition1" required>
                     </fieldset>
                 </div>
                 <input class="preSurveyButton" type="submit" value="Next Page" id="preSurveyButtonPage1">
@@ -121,7 +116,7 @@
             <form id="preSurveyForm9" onSubmit="return nextPreSurveyForm();">
                 <div class="surveyQuestionDiv">
                     <fieldset>
-                        <legend>Are you a person who tends to finish what you started?</legend>
+                        <legend>Do you tend to use shortcuts to achieve your goals?</legend>
                         <div class="radioDiv">
                             <input class="radioInput" type="radio" id="ruleOfThumbYes" name="ruleOfThumb" value="1"  required />
                             <label for="yes">Yes</label> <br />
@@ -173,6 +168,7 @@
             </div>
             <div id="paymentDiv">
                 <div id="completeTextDiv"></div> <br>
+                <div id="bonusDiv">You should receive the bonus within a week.</div>
                 <div id="giftBitLinkDiv"></div>
                 <div id="copyURLDiv">
                     <button onclick="copyGiftLink()" id="copyURLButton">Copy Gift Card Link</button><br><br>

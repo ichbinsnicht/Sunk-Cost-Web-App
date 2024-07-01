@@ -19,6 +19,7 @@ const completeTextDiv = document.getElementById('completeTextDiv')
 const paymentLink = document.getElementById('paymentLink')
 const giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
 const copyURLDiv = document.getElementById('copyURLDiv')
+const bonusDiv = document.getElementById('bonusDiv')
 const preSurveyForms = [
   document.getElementById('preSurveyForm1'),
   document.getElementById('preSurveyForm2'),
@@ -583,13 +584,14 @@ const drawBarBonus = function () {
 
 const writeOutcome = function () {
   completeTextDiv.innerHTML = ''
-  completeTextDiv.innerHTML += `You started with $${endowment.toFixed(0)}<br>`
-  const bonusTextA = `You did not win the $${bonus.toFixed(0)} bonus<br>`
-  const bonusTextB = `You won the $${bonus.toFixed(0)} bonus<br>`
-  completeTextDiv.innerHTML += winPrize ? bonusTextA : bonusTextB
+  completeTextDiv.innerHTML += `You will receive $${endowment.toFixed(0)} upon completion.<br>`
+  const bonusTextA = `You won the $${bonus.toFixed(0)} bonus`
+  const bonusTextB = `You did not win the $${bonus.toFixed(0)} bonus`
   const giftCardTextA = `You won the $${giftValue} Starbucks gift card`
   const giftCardTextB = `You did not win the $${giftValue} Starbucks gift card`
-  completeTextDiv.innerHTML += winPrize ? giftCardTextA : giftCardTextB
+  completeTextDiv.innerHTML += winPrize ? bonusTextB : giftCardTextB
+  completeTextDiv.innerHTML += '<br>'
+  completeTextDiv.innerHTML += winPrize ? giftCardTextA : bonusTextA
   giftBitLinkDiv.innerHTML = ''
   console.log('winPrize', winPrize)
   console.log('completionURL', completionURL)
@@ -597,10 +599,13 @@ const writeOutcome = function () {
   paymentLink.href = completionURL
   paymentLink.target = '_self'
   copyURLDiv.style.display = 'none'
+  bonusDiv.style.display = 'none'
   if (winPrize) {
     giftBitLinkDiv.innerHTML += `Your gift card URL: <br> ${giftURL}`
     paymentLink.target = '_blank'
     copyURLDiv.style.display = 'block'
+  } else {
+    bonusDiv.style.display = 'block'
   }
 }
 

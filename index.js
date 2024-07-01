@@ -1,8 +1,5 @@
-// TODO A
-//
-//  - Send bonus payments
-// - https://docs.prolific.com/docs/api-docs/public/#tag/Bonuses
-//
+// TODO upload everything to web server
+
 // For test:
 // - set up prolific study with 10 subjects
 // - upload latest web version to server
@@ -13,6 +10,9 @@
 
 // For testing purposes with API:
 // http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session
+
+// Manuel: 6650ce123adb3cef7f74e354
+// Daniel: 6650ce878485cd00aa153bd6
 
 // SETUP Prolific
 // - Pilot: Prolific students
@@ -68,6 +68,7 @@ const completionURL = 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K
 let numSubjects = 0
 let dataStream
 let preSurveyStream
+let bonusStream
 let paymentStream
 let preSurveyReady = false
 const dateString = getDateString()
@@ -75,6 +76,7 @@ const dateString = getDateString()
 logStudies()
 createDataFile()
 createPaymentFile()
+createBonusFile()
 
 function arange (a, b) {
   return [...Array(b - a + 1).keys()].map(i => i + a)
@@ -146,6 +148,15 @@ function updatePaymentFile (subject) {
   csvString += `${subject.link}\n`
   paymentStream.write(csvString)
 }
+function createBonusFile () {
+  bonusStream = fs.createWriteStream(`data/${dateString}-bonus.csv`)
+}
+function updateBonusFile (subject) {
+  if (subject.winPrize === 0) {
+    const csvString = `${subject.id},${bonus.toFixed(2)}\n`
+    bonusStream.write(csvString)
+  }
+}
 function assignGift (subject) {
   const links = fs.readFileSync('links/links.csv', 'utf8').split('\n')
   const ledger = fs.readFileSync('links/ledger.csv', 'utf8').split('\n')
@@ -202,6 +213,7 @@ io.on('connection', function (socket) {
     const subject = subjects[msg.id]
     if (subject.state === 'experimentComplete') {
       updatePaymentFile(subject)
+      updateBonusFile(subject)
       const reply = {
         id: subject.id
       }

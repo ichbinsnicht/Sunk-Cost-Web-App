@@ -269,3 +269,8 @@ legend {
     margin-left: auto;
     margin-right: auto;
 }
+#bonusDiv{
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}

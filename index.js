@@ -1,9 +1,7 @@
-// TODO upload everything to web server
+// TODO upload latest web version to server (INCl. links.csv and clean ledger!)
 
 // For test:
 // - set up prolific study with 10 subjects
-// - upload latest web version to server
-// - get gift bit links (Kate!)
 // - set up gift bit links on server (links.csv)
 // - server should communicate with prolific
 // - send out invitations

@@ -161,7 +161,7 @@ function updatePaymentFile (subject) {
   const date = subject.startTime.slice(0, 10)
   let csvString = `${date},${subject.id},${subject.earnings.toFixed(0)},`
   csvString += `${subject.winPrize},${subject.giftAmount},`
-  csvString += `${subject.link}\n`
+  csvString += `${subject.giftURL}\n`
   paymentStream.write(csvString)
 }
 function createBonusFile () {

@@ -1,4 +1,18 @@
-// TODO upload latest web version to server (INCl. links.csv and clean ledger!)
+// For each session:
+// -----------------------------------
+// remaining.csv (needs to be empty)
+// ledger.csv (needs to be empty)
+// links.csv (for that session)
+
+// set up web server
+// --------------------------
+// update stage times and practice period numbers for experiment (index.js)
+// npm install
+// config.json for https
+//    port: 443
+//    secure: true
+// move files (links.csv, ledger.csv, remaining.csv) to links folder
+// call nohup on server (README.md)
 
 // For test:
 // - set up prolific study with 10 subjects
@@ -8,7 +22,7 @@
 
 // For testing purposes with API:
 // http://localhost:3000/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session
-
+// https://trialparticipation.com/?PROLIFIC_PID=6650ce123adb3cef7f74e354&STUDY_ID=GiftCard&SESSION_ID=Session
 // Manuel: 6650ce123adb3cef7f74e354
 // Daniel: 6650ce878485cd00aa153bd6
 

@@ -439,7 +439,7 @@ const drawBottom = function () {
   context.textBaseline = 'top'
   const probGiftCard = (score[1] + score[2]) * 100
   const probMoney = (1 - score[1] - score[2]) * 100
-  const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${endowment + bonus} gift card.`
+  const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${giftValue} gift card.`
   const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $${bonus} bonus.`
   context.fillStyle = darkGreen
   context.fillText(giftCardChance, graphX + 0.5 * graphWidth, lineY2 + 14)
@@ -518,7 +518,7 @@ const drawBarGiftCard = function () {
   })
   context.fillStyle = darkGreen
   context.textAlign = 'center'
-  const winProbString = `$${endowment + bonus} Gift Card: ${winProb.toFixed(0)}%`
+  const winProbString = `$${giftValue} Gift Card: ${winProb.toFixed(0)}%`
   context.fillText(winProbString, barX, baseY + 5)
 }
 const drawBarBonus = function () {

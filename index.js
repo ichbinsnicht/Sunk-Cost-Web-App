@@ -65,12 +65,12 @@ import { logStudies, sendMesssage } from './prolific.js'
 
 // parameters
 const subjects = {}
-const numPracticePeriods = 1 // 3 practice periods
+const numPracticePeriods = 3 // 3 practice periods (internal: 1)
 const numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
-const choice1Length = 3 // 15 secs choice1 (internal: 5)
-const feedback1Length = 3 // 5 secs feedback1 (internal: 2)
-const choice2Length = 3 // 15 secs choice2 (internal: 5)
-const feedback2Length = 3 // 5 secs feedback2 (internal: 5)
+const choice1Length = 15 // 15 secs choice1 (internal: 3)
+const feedback1Length = 5 // 5 secs feedback1 (internal: 3)
+const choice2Length = 15 // 15 secs choice2 (internal: 3)
+const feedback2Length = 5 // 5 secs feedback2 (internal: 3)
 const endowment = 3 //  online: 3
 const bonus = 4 // online: {4,6}
 const giftValue = 6 // online: {6,9}
@@ -119,6 +119,8 @@ function createPreSurveyFile (msg) {
   preSurveyReady = true
 }
 function updatePreSurveyFile (msg) {
+  const subject = subjects[msg.id]
+  subject.preSurveyEndTime = getDateString()
   if (!preSurveyReady) createPreSurveyFile(msg)
   let csvString = Object.values(msg).join(',')
   csvString += '\n'
@@ -127,7 +129,7 @@ function updatePreSurveyFile (msg) {
 
 function createDataFile () {
   dataStream = fs.createWriteStream(`data/${dateString}-data.csv`)
-  let csvString = 'study,session,subjectStartTime,period,practice,id,forced1,'
+  let csvString = 'study,session,subjectStartTime, subjectSurveyEndTime, subjectExperimentEndTime, period,practice,id,forced1,'
   csvString += 'forcedScore1,choice1,choice2,score1,score2,endowment,bonus,giftValue,totalScore,'
   csvString += 'outcomeRandom,winPrize,totalCost,earnings,giftAmount'
   csvString += '\n'
@@ -135,7 +137,8 @@ function createDataFile () {
 }
 function updateDataFile (subject) {
   let csvString = ''
-  csvString += `${subject.study},${subject.session},${subject.startTime},${subject.period},`
+  csvString += `${subject.study},${subject.session},${subject.startTime},`
+  csvString += `${subject.preSurveyEndTime},${subject.experimentEndTime},${subject.period},`
   csvString += `${1 - subject.practicePeriodsComplete},${subject.id},`
   csvString += `${subject.hist[subject.period].forced[1]},${subject.hist[subject.period].forcedScore[1]},`
   csvString += `${subject.hist[subject.period].choice[1]},${subject.hist[subject.period].choice[2]},`
@@ -152,6 +155,7 @@ function createPaymentFile () {
   paymentStream.write(csvString)
 }
 function updatePaymentFile (subject) {
+  subject.experimentEndTime = getDateString()
   if (subject.winPrize) assignGift(subject)
   updateDataFile(subject)
   const date = subject.startTime.slice(0, 10)
@@ -317,6 +321,8 @@ function createSubject (msg, socket) {
     session: msg.session,
     socket,
     startTime: getDateString(),
+    preSurveyEndTime: '',
+    experimentEndTime: '',
     preSurveySubmitted: false,
     instructionsComplete: false,
     experimentStarted: false,

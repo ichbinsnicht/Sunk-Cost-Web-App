@@ -61,7 +61,7 @@
 
 import { io } from './server.js'
 import fs from 'fs'
-import { logStudies, sendMesssage } from './prolific.js'
+import { sendMesssage } from './prolific.js'
 
 // parameters
 const subjects = {}
@@ -85,7 +85,6 @@ let paymentStream
 let preSurveyReady = false
 const dateString = getDateString()
 
-logStudies()
 createDataFile()
 createPaymentFile()
 createBonusFile()

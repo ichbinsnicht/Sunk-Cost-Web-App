@@ -93,9 +93,9 @@ const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
 // probForcingInstructionsString
 function getInstructionString () {
   const instructionsString1 = `
-    This is an experiment about decision making. You will receive $${endowment} just for participating. Depending on the decisions you make, you will also receive either a $${giftValue} Starbucks gift card or a bonus of $${bonus}.
+    This is an experiment about decision making. You will receive $${endowment.toFixed(2)} just for participating. Depending on the decisions you make, you will also receive either a bonus of $${bonus.toFixed(2)} or a $${giftValue.toFixed(2)} Starbucks gift card.
     ${imageHTML}
-    This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $${giftValue} Starbucks gift card or the $${bonus} bonus.`
+    This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $${bonus.toFixed(2)} bonus or the $${giftValue.toFixed(2)} Starbucks gift card.`
   const instructionsString2 = `
   Stage 1:<br>
   <ul>
@@ -108,7 +108,7 @@ function getInstructionString () {
       <li> Probability 2 will equal Choice 2.</li>
   </ul>`
   const instructionsString3 = `
-  During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus} bonus or the $${giftValue} Starbucks gift card. <br><br>  Your chance of receiving the $${giftValue} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus} bonus will be 100% minus your chance of receiving the $${giftValue} Starbucks gift card.<br><br>`
+  During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus.toFixed(2)} bonus or the $${giftValue.toFixed(2)} Starbucks gift card. <br><br>  Your chance of receiving the $${giftValue.toFixed(2)} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus.toFixed(2)} bonus will be 100% minus your chance of receiving the $${giftValue.toFixed(2)} Starbucks gift card.<br><br>`
 
   const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
   const readyExperimentString = 'Please click the button below to begin the experiment.'
@@ -439,8 +439,8 @@ const drawBottom = function () {
   context.textBaseline = 'top'
   const probGiftCard = (score[1] + score[2]) * 100
   const probMoney = (1 - score[1] - score[2]) * 100
-  const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${giftValue} gift card.`
-  const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $${bonus} bonus.`
+  const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${giftValue.toFixed(2)} gift card.`
+  const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $${bonus.toFixed(2)} bonus.`
   context.fillStyle = darkGreen
   context.fillText(giftCardChance, graphX + 0.5 * graphWidth, lineY2 + 14)
   context.fillStyle = darkBlue
@@ -518,7 +518,7 @@ const drawBarGiftCard = function () {
   })
   context.fillStyle = darkGreen
   context.textAlign = 'center'
-  const winProbString = `$${giftValue} Gift Card: ${winProb.toFixed(0)}%`
+  const winProbString = `$${giftValue.toFixed(2)} Gift Card: ${winProb.toFixed(0)}%`
   context.fillText(winProbString, barX, baseY + 5)
 }
 const drawBarBonus = function () {
@@ -576,19 +576,19 @@ const drawBarBonus = function () {
   })
   context.fillStyle = darkBlue
   context.textAlign = 'center'
-  const winProbString1 = `$${bonus} Bonus: ${score1.toFixed(0)}%`
-  const winProbString2 = `$${bonus} Bonus: ${winProb.toFixed(0)}%`
+  const winProbString1 = `$${bonus.toFixed(2)} Bonus: ${score1.toFixed(0)}%`
+  const winProbString2 = `$${bonus.toFixed(2)} Bonus: ${winProb.toFixed(0)}%`
   const winProbString = step === 'choice1' || step === 'feedback1' ? winProbString1 : winProbString2
   context.fillText(winProbString, barX, baseY + 5)
 }
 
 const writeOutcome = function () {
   completeTextDiv.innerHTML = ''
-  completeTextDiv.innerHTML += `You will receive $${endowment.toFixed(0)} upon completion.<br>`
-  const bonusTextA = `You won the $${bonus.toFixed(0)} bonus`
-  const bonusTextB = `You did not win the $${bonus.toFixed(0)} bonus`
-  const giftCardTextA = `You won the $${giftValue} Starbucks gift card`
-  const giftCardTextB = `You did not win the $${giftValue} Starbucks gift card`
+  completeTextDiv.innerHTML += `You will receive $${endowment.toFixed(2)} upon completion.<br>`
+  const bonusTextA = `You won the $${bonus.toFixed(2)} bonus`
+  const bonusTextB = `You did not win the $${bonus.toFixed(2)} bonus`
+  const giftCardTextA = `You won the $${giftValue.toFixed(2)} Starbucks gift card`
+  const giftCardTextB = `You did not win the $${giftValue.toFixed(2)} Starbucks gift card`
   completeTextDiv.innerHTML += winPrize ? bonusTextB : giftCardTextB
   completeTextDiv.innerHTML += '<br>'
   completeTextDiv.innerHTML += winPrize ? giftCardTextA : bonusTextA

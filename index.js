@@ -65,12 +65,12 @@ import { sendMesssage } from './prolific.js'
 
 // parameters
 const subjects = {}
-const numPracticePeriods = 1 // 3 practice periods (internal: 1)
+const numPracticePeriods = 3 // 3 practice periods (internal: 1)
 const numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
-const choice1Length = 3 // 15 secs choice1 (internal: 3)
-const feedback1Length = 3 // 5 secs feedback1 (internal: 3)
-const choice2Length = 3 // 15 secs choice2 (internal: 3)
-const feedback2Length = 3 // 5 secs feedback2 (internal: 3)
+const choice1Length = 15 // 15 secs choice1 (internal: 3)
+const feedback1Length = 5 // 5 secs feedback1 (internal: 3)
+const choice2Length = 15 // 15 secs choice2 (internal: 3)
+const feedback2Length = 5 // 5 secs feedback2 (internal: 3)
 const endowment = 3 //  online: 3
 const bonus = 0.50 // online: {4,6}
 const giftValue = 6 // online: {6,9}

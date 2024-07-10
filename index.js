@@ -65,13 +65,13 @@ import { sendMesssage } from './prolific.js'
 
 // parameters
 const subjects = {}
-const numPracticePeriods = 3 // 3 practice periods (internal: 1)
+const numPracticePeriods = 2 // 3 practice periods (internal: 1)
 const numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
-const choice1Length = 15 // 15 secs choice1 (internal: 3)
-const feedback1Length = 5 // 5 secs feedback1 (internal: 3)
-const choice2Length = 15 // 15 secs choice2 (internal: 3)
-const feedback2Length = 5 // 5 secs feedback2 (internal: 3)
-const endowment = 3 //  online: 3
+const choice1Length = 10 // 10 secs choice1 (lab: 15, internal: 3)
+const feedback1Length = 5 // 5 secs choice1 (lab: 5, internal: 3)
+const choice2Length = 10 // 10 secs choice1 (lab: 15, internal: 3)
+const feedback2Length = 5 // 5 secs choice1 (lab: 5, internal: 3)
+const endowment = 2 //  online: 2 {internal: 3}
 const bonus = 0.50 // online: {4,6}
 const giftValue = 6 // online: {6,9}
 const completionURL = 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K'
@@ -82,12 +82,16 @@ let dataStream
 let preSurveyStream
 let bonusStream
 let paymentStream
+let engagementStream
+let clickStream
 let preSurveyReady = false
 const dateString = getDateString()
 
 createDataFile()
 createPaymentFile()
 createBonusFile()
+createEngagementFile()
+createClickFile()
 
 function arange (a, b) {
   return [...Array(b - a + 1).keys()].map(i => i + a)
@@ -147,7 +151,34 @@ function updateDataFile (subject) {
   csvString += '\n'
   dataStream.write(csvString)
 }
-
+function createEngagementFile () {
+  engagementStream = fs.createWriteStream(`data/${dateString}-engagement.csv`)
+  let csvString = 'id,study,session,time,period,step,stage,state,engagement'
+  csvString += '\n'
+  engagementStream.write(csvString)
+}
+function updateEngagementFile (msg) {
+  let csvString = ''
+  csvString += `${msg.id},${msg.study},${msg.session},${msg.time},`
+  csvString += `${msg.period},${msg.step},${msg.stage},`
+  csvString += `${msg.state},${msg.engagement}`
+  csvString += '\n'
+  engagementStream.write(csvString)
+}
+function createClickFile () {
+  clickStream = fs.createWriteStream(`data/${dateString}-click.csv`)
+  let csvString = 'id,study,session,time,period,step,stage,state,countdown,choiceX'
+  csvString += '\n'
+  clickStream.write(csvString)
+}
+function updateClickFile (msg) {
+  let csvString = ''
+  csvString += `${msg.id},${msg.study},${msg.session},${msg.time},`
+  csvString += `${msg.period},${msg.step},${msg.stage},`
+  csvString += `${msg.state},${msg.countdown},${msg.choiceX}`
+  csvString += '\n'
+  clickStream.write(csvString)
+}
 function createPaymentFile () {
   paymentStream = fs.createWriteStream(`data/${dateString}-payment.csv`)
   const csvString = 'date,id,earnings,winPrize,giftAmount,link\n'
@@ -191,6 +222,12 @@ io.on('connection', function (socket) {
     if (!subjects[msg.id]) createSubject(msg, socket) // restart client: client joins but server has record
     socket.emit('clientJoined', { id: msg.id, hist: subjects[msg.id].hist, period: subjects[msg.id].period })
     console.log('Object.keys(subjects)', Object.keys(subjects))
+  })
+  socket.on('clientEngagement', function (msg) {
+    updateEngagementFile(msg)
+  })
+  socket.on('clientClick', function (msg) {
+    updateClickFile(msg)
   })
   socket.on('beginPreSurvey', function (msg) {
     console.log('beginPreSurvey')
@@ -262,6 +299,7 @@ io.on('connection', function (socket) {
   socket.on('clientUpdate', function (msg) { // callback function; msg from client, send msg to client
     const subject = subjects[msg.id]
     if (subject) {
+      subject.clicked = msg.clicked
       const step = subject.step
       const histPeriod = subject.hist[msg.period]
       const choosing = step === 'choice1' || step === 'choice2'
@@ -339,6 +377,7 @@ function createSubject (msg, socket) {
     giftURL: '',
     totalCost: 0,
     earnings: 0,
+    clicked: false,
     hist: {}
   }
   subjects[msg.id] = subject
@@ -362,8 +401,8 @@ function update (subject) { // add presurvey
     subject.state = 'welcome'
   }
   if (subject.state === 'interface') {
-    subject.countdown = subject.countdown - 1
-    if (subject.step === 'choice1' && subject.countdown <= 0) { // end choice1
+    subject.countdown = Math.max(subject.countdown - 1, 0)
+    if (subject.step === 'choice1' && subject.countdown <= 0 && subject.clicked) { // end choice1
       subject.countdown = feedback1Length
       subject.step = 'feedback1'
     }
@@ -371,7 +410,7 @@ function update (subject) { // add presurvey
       subject.countdown = choice2Length
       subject.step = 'choice2'
     }
-    if (subject.step === 'choice2' && subject.countdown <= 0) { // end choice2
+    if (subject.step === 'choice2' && subject.countdown <= 0 && subject.clicked) { // end choice2
       calculateOutcome()
       subject.countdown = feedback2Length
       subject.step = 'feedback2'

@@ -86,6 +86,10 @@ let completionURL = ''
 let giftURL = ''
 let preSurveyQuestion = 0
 let instructionsPage = 1
+let engagement = 0
+let drawing = false
+let time = 0
+let clicked = false
 
 const imageStyle = `width:${1.5 * 14.2}vh;height:${1.5 * 9}vh;margin-left:auto;margin-right:auto;margin-top:3vmin;margin-bottom:3vmin;display:block;`
 const imageHTML = `<img src="GiftCard.png" style="${imageStyle}"/>`
@@ -108,7 +112,7 @@ function getInstructionString () {
       <li> Probability 2 will equal Choice 2.</li>
   </ul>`
   const instructionsString3 = `
-  During each stage, you can adjust your choice by moving your mouse left or right. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus.toFixed(2)} bonus or the $${giftValue.toFixed(2)} Starbucks gift card. <br><br>  Your chance of receiving the $${giftValue.toFixed(2)} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus.toFixed(2)} bonus will be 100% minus your chance of receiving the $${giftValue.toFixed(2)} Starbucks gift card.<br><br>`
+  During each stage, you can select your choice by clicking on the graph with your mouse. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus.toFixed(2)} bonus or the $${giftValue.toFixed(2)} Starbucks gift card. <br><br>  Your chance of receiving the $${giftValue.toFixed(2)} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus.toFixed(2)} bonus will be 100% minus your chance of receiving the $${giftValue.toFixed(2)} Starbucks gift card.<br><br>`
 
   const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
   const readyExperimentString = 'Please click the button below to begin the experiment.'
@@ -183,6 +187,7 @@ window.previousInstructionsPage = function () { instructionsPage-- }
 window.nextInstructionsPage = function () { instructionsPage++ }
 
 window.beginPracticePeriods = function () {
+  clicked = false
   const msg = { id }
   beginPracticePeriodsButton.style.display = 'none'
   socket.emit('beginPracticePeriods', msg)
@@ -190,6 +195,7 @@ window.beginPracticePeriods = function () {
 }
 
 window.beginExperiment = function () {
+  clicked = false
   const msg = { id }
   socket.emit('beginExperiment', msg)
 }
@@ -209,8 +215,27 @@ document.onkeydown = function (event) {
   if (event.key === 'Enter' && state === 'startup') window.joinGame()
 }
 
-document.onmousemove = function (e) {
+document.onmousedown = function (e) {
+  clicked = true
   mouseEvent = e
+  const x0 = canvas.width / 2 - canvas.height / 2
+  const canvasRect = canvas.getBoundingClientRect()
+  mouseX = (mouseEvent.pageX - x0 - canvasRect.left) * 100 / canvas.height
+  const mouseGraphX = (mouseX - graphX) / graphWidth
+  const choiceX = Math.round(0.5 * mouseGraphX * 100) / 100
+  const msg = {
+    id,
+    study,
+    session,
+    time,
+    period,
+    step,
+    stage,
+    state,
+    countdown,
+    choiceX
+  }
+  socket.emit('clientClick', msg)
 }
 
 socket.on('connected', function (msg) {
@@ -218,6 +243,8 @@ socket.on('connected', function (msg) {
 })
 socket.on('clientJoined', function (msg) {
   console.log(`client ${msg.id} joined`)
+  console.log('period:', period)
+  console.log('choice:', choice)
   joined = true
   id = msg.id
   period = msg.period
@@ -227,6 +254,7 @@ socket.on('clientJoined', function (msg) {
   forcedScore = hist[period].forcedScore
   console.log('hist', hist)
   setInterval(update, 10)
+  setInterval(measureEngagement, 1000)
 })
 socket.on('paymentComplete', function (msg) {
   completeButtonDiv.style.display = 'none'
@@ -247,6 +275,7 @@ socket.on('serverUpdateClient', function (msg) {
     console.log('msg.ExperimentStarted', msg.experimentStarted)
     console.log('msg.period', msg.period)
     console.log('msg.step', msg.step)
+    clicked = false
   }
   instructionsTextDiv.innerHTML = getInstructionString()
   step = msg.step
@@ -267,8 +296,24 @@ socket.on('serverUpdateClient', function (msg) {
   giftURL = msg.giftURL
   state = msg.state
 })
-
-const update = function () {
+function measureEngagement () {
+  engagement = drawing ? 1 : 0
+  drawing = false
+  time++
+  const msg = {
+    id,
+    study,
+    session,
+    time,
+    period,
+    step,
+    stage,
+    state,
+    engagement
+  }
+  if (state === 'interface') socket.emit('clientEngagement', msg)
+}
+function update () {
   if (step === 'choice1' || step === 'choice2') updateChoice()
   const msg = {
     id,
@@ -278,7 +323,8 @@ const update = function () {
     step,
     stage,
     currentChoice: choice[stage],
-    currentScore: score[stage]
+    currentScore: score[stage],
+    clicked
   }
   socket.emit('clientUpdate', msg)
   beginPracticePeriodsButton.style.display = (!practicePeriodsComplete && instructionsPage === 4) ? 'inline' : 'none'
@@ -317,6 +363,7 @@ const draw = function () {
   context.clearRect(0, 0, canvas.width, canvas.height)
   if (joined && state === 'interface') drawInterface()
   if (joined && state === 'experimentComplete') writeOutcome()
+  drawing = true
 }
 const setupCanvas = function () {
   xScale = 1 * window.innerWidth
@@ -328,13 +375,12 @@ const setupCanvas = function () {
   context.setTransform(yScale / 100, 0, 0, yScale / 100, xTranslate, yTranslate)
 }
 const updateChoice = function () {
-  const x0 = canvas.width / 2 - canvas.height / 2
-  const canvasRect = canvas.getBoundingClientRect()
-  mouseX = (mouseEvent.pageX - x0 - canvasRect.left) * 100 / canvas.height
   const mouseGraphX = (mouseX - graphX) / graphWidth
-  if (step === 'choice1' || step === 'choice2') {
-    choice[stage] = Math.round(0.5 * Math.max(0, Math.min(1, mouseGraphX)) * 100) / 100
-    score[stage] = forced[stage] * forcedScore[stage] + (1 - forced[stage]) * choice[stage]
+  if (mouseGraphX >= 0 && mouseGraphX <= 1) {
+    if (step === 'choice1' || step === 'choice2') {
+      choice[stage] = Math.round(0.5 * mouseGraphX * 100) / 100
+      score[stage] = forced[stage] * forcedScore[stage] + (1 - forced[stage]) * choice[stage]
+    }
   }
 }
 const drawInterface = function () {
@@ -342,7 +388,7 @@ const drawInterface = function () {
   drawCountdownText()
   if (step === 'feedback1') drawFeedback1Text()
   if (step === 'choice2' || step === 'feedback2') drawBottom()
-  if (step !== 'choice1') {
+  if (step === 'feedback2' || (step === 'choice2' && clicked)) {
     drawBarGiftCard()
     drawBarBonus()
   }
@@ -383,12 +429,19 @@ const drawTop = function () {
     context.arc(graphX + graphWidth * 2 * score[1], lineY1, 1.5, 0, 2 * Math.PI)
     context.fill()
   }
+  if (clicked || step !== 'choice1') {
+    context.textBaseline = 'bottom'
+    context.fillStyle = black
+    const choice1String = `${(choice[1] * 100).toFixed(0)}%`
+    context.fillText(`Choice 1: ${choice1String}`, graphX + graphWidth * 2 * choice[1], lineY1 - tickLength - 4)
+    context.beginPath()
+    context.arc(graphX + graphWidth * 2 * choice[1], lineY1, 0.75, 0, 2 * Math.PI)
+  }
   context.textBaseline = 'bottom'
   context.fillStyle = black
-  const choice1String = `${(choice[1] * 100).toFixed(0)}%`
-  context.fillText(`Choice 1: ${choice1String}`, graphX + graphWidth * 2 * choice[1], lineY1 - tickLength - 4)
-  context.beginPath()
-  context.arc(graphX + graphWidth * 2 * choice[1], lineY1, 0.75, 0, 2 * Math.PI)
+  const mouseClickString1 = 'Please click on the graph to select your choice.'
+  const mouseClickString = step === 'choice1' ? mouseClickString1 : ''
+  context.fillText(mouseClickString, graphX + graphWidth * 0.5, lineY1 + 10)
   context.fill()
   context.fillStyle = black
   context.textBaseline = 'middle'
@@ -421,42 +474,49 @@ const drawBottom = function () {
     context.fillText(xScoreLabel, x, yBottom + tickSpace)
   })
   context.font = labelFont
-  context.textBaseline = 'bottom'
-  context.fillStyle = green
-  const score2String = `${(score[2] * 100).toFixed(0)}%`
-  context.fillText(`Probability 2: ${score2String}`, graphX + graphWidth * 2 * score[2], lineY2 - tickLength - 0.5)
-  context.beginPath()
-  context.fillStyle = green
-  context.arc(graphX + graphWidth * 2 * score[2], lineY2, 1.5, 0, 2 * Math.PI)
-  context.fill()
-  context.textBaseline = 'bottom'
-  context.fillStyle = black
-  const choice2String = `${(choice[2] * 100).toFixed(0)}%`
-  context.fillText(`Choice 2: ${choice2String}`, graphX + graphWidth * 2 * choice[2], lineY2 - tickLength - 4)
-  context.beginPath()
-  context.arc(graphX + graphWidth * 2 * choice[2], lineY2, 0.75, 0, 2 * Math.PI)
-  context.fill()
+  if (clicked || step !== 'choice2') {
+    context.textBaseline = 'bottom'
+    context.fillStyle = green
+    const score2String = `${(score[2] * 100).toFixed(0)}%`
+    context.fillText(`Probability 2: ${score2String}`, graphX + graphWidth * 2 * score[2], lineY2 - tickLength - 0.5)
+    context.beginPath()
+    context.fillStyle = green
+    context.arc(graphX + graphWidth * 2 * score[2], lineY2, 1.5, 0, 2 * Math.PI)
+    context.fill()
+    context.textBaseline = 'bottom'
+    context.fillStyle = black
+    const choice2String = `${(choice[2] * 100).toFixed(0)}%`
+    context.fillText(`Choice 2: ${choice2String}`, graphX + graphWidth * 2 * choice[2], lineY2 - tickLength - 4)
+    context.beginPath()
+    context.arc(graphX + graphWidth * 2 * choice[2], lineY2, 0.75, 0, 2 * Math.PI)
+    context.fill()
+  }
   context.textBaseline = 'top'
-  const probGiftCard = (score[1] + score[2]) * 100
-  const probMoney = (1 - score[1] - score[2]) * 100
-  const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${giftValue.toFixed(2)} gift card.`
-  const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $${bonus.toFixed(2)} bonus.`
-  context.fillStyle = darkGreen
-  context.fillText(giftCardChance, graphX + 0.5 * graphWidth, lineY2 + 14)
-  context.fillStyle = darkBlue
-  context.fillText(moneyChance, graphX + 0.5 * graphWidth, lineY2 + 17.5)
+  const mouseClickString1 = 'Please click on the graph to select your choice.'
+  const mouseClickString = step === 'choice2' ? mouseClickString1 : ''
+  context.fillText(mouseClickString, graphX + graphWidth * 0.5, lineY2 + 10)
+  if (step === 'feedback2' || (step === 'choice2' && clicked)) {
+    const probGiftCard = (score[1] + score[2]) * 100
+    const probMoney = (1 - score[1] - score[2]) * 100
+    const giftCardChance = `You have a ${probGiftCard.toFixed(0)}% chance of winning the $${giftValue.toFixed(2)} gift card.`
+    const moneyChance = `You have a ${probMoney.toFixed(0)}% chance of winning the $${bonus.toFixed(2)} bonus.`
+    context.fillStyle = darkGreen
+    context.fillText(giftCardChance, graphX + 0.5 * graphWidth, lineY2 + 21)
+    context.fillStyle = darkBlue
+    context.fillText(moneyChance, graphX + 0.5 * graphWidth, lineY2 + 24.5)
+  }
   if (step === 'feedback2') {
     context.textAlign = 'center'
     context.fillStyle = 'darkRed'
     const lineComplete = 'Stage 2 Complete'
-    context.fillText(lineComplete, graphX + 0.5 * graphWidth, lineY2 + 21)
+    context.fillText(lineComplete, graphX + 0.5 * graphWidth, lineY2 + 29)
   }
 }
 const drawCountdownText = function () {
   context.fillStyle = 'black'
   context.textBaseline = 'top'
   context.textAlign = 'center'
-  context.fillText(`Countdown: ${countdown}`, graphX + 0.5 * graphWidth, lineY2 + 10)
+  context.fillText(`Countdown: ${countdown}`, graphX + 0.5 * graphWidth, lineY2 + 17.5)
 }
 const drawFeedback1Text = function () {
   context.textBaseline = 'top'
@@ -471,7 +531,7 @@ const drawBarGiftCard = function () {
   context.lineWidth = 0.25
   context.beginPath()
   const barX = 70
-  const baseY = -15
+  const baseY = -10
   const barWidth = 10
   const barHeight = 20
   context.moveTo(barX - 0.5 * barWidth, baseY - barHeight)
@@ -527,7 +587,7 @@ const drawBarBonus = function () {
   context.lineWidth = 0.25
   context.beginPath()
   const barX = 30
-  const baseY = -15
+  const baseY = -10
   const barWidth = 10
   const barHeight = 20
   context.moveTo(barX - 0.5 * barWidth, baseY - barHeight)

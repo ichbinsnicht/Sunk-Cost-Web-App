@@ -216,13 +216,14 @@ document.onkeydown = function (event) {
 }
 
 document.onmousedown = function (e) {
-  clicked = true
   mouseEvent = e
   const x0 = canvas.width / 2 - canvas.height / 2
   const canvasRect = canvas.getBoundingClientRect()
   mouseX = (mouseEvent.pageX - x0 - canvasRect.left) * 100 / canvas.height
   const mouseGraphX = (mouseX - graphX) / graphWidth
   const choiceX = Math.round(0.5 * mouseGraphX * 100) / 100
+  const inbounds = mouseGraphX >= 0 && mouseGraphX <= 1
+  clicked = clicked || inbounds
   const msg = {
     id,
     study,

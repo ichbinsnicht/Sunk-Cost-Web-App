@@ -72,7 +72,7 @@ const feedback1Length = 5 // 5 secs choice1 (lab: 5, internal: 3)
 const choice2Length = 10 // 10 secs choice1 (lab: 15, internal: 3)
 const feedback2Length = 5 // 5 secs choice1 (lab: 5, internal: 3)
 const endowment = 2 //  online: 2 {internal: 3}
-const bonus = 0.50 // online: {4,6}
+const bonus = 1 // online: {4,6}
 const giftValue = 6 // online: {6,9}
 const completionURL = 'https://app.prolific.com/submissions/complete?cc=C1NU8C6K'
 
@@ -343,7 +343,7 @@ function setupHist (subject) {
     subject.hist[i] = {
       choice: { 1: 0, 2: 0 },
       score: { 1: 0, 2: 0 },
-      forcedScore: { 1: 0, 2: 0 },
+      forcedScore: { 1: Math.random() * 0.5, 2: 0 },
       forced: { 1: 1 * (Math.random() > 0.5), 2: 0 },
       outcomeRandom: Math.random()
     }

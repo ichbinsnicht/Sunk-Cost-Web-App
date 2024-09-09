@@ -4,6 +4,12 @@
 // ledger.csv (needs to be empty)
 // links.csv (for that session)
 
+// TO DO:
+// Think about sample selection
+// forcing: 20% or 80% ? (Details not revealed)
+// Framing: Choose one period at random
+// One practice period
+
 // set up web server
 // --------------------------
 // update stage times and practice period numbers for experiment (index.js)

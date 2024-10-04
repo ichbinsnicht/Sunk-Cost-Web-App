@@ -5,10 +5,11 @@
 // links.csv (for that session)
 
 // TO DO:
-// Think about sample selection
-// forcing: 20% or 80% ? (Details not revealed)
-// Framing: Choose one period at random
-// One practice period
+// - forcing: 20% or 80% ? (Details not revealed) Force to 0 or 100
+// - update interface to reflect new instructions (Framing: Choose one period at random)
+// - One practice period
+// - Prolific conditioning:
+// -> Think about sample selection (experience, attention; eliminate student restriction)
 
 // set up web server
 // --------------------------

@@ -103,16 +103,19 @@ function getInstructionString () {
   const instructionsString2 = `
   Stage 1:<br>
   <ul>
-      <li> You will choose a number between 0% and 50%, called Choice 1.</li>
-      <li> Probability 1 will equal Choice 1 or a randomly selected number from 0% to 50%. Both are equally likely.</li>
+      <li> You will choose a number between 0% and 100%, called Choice 1.</li>
+      <li> There is a 50% chance that Probability 1 will equal Choice 1.</li>
+      <li> Otherwise, Probability 1 will be chosen randomly.</li>
   </ul>
   <br>Stage 2:<br>
   <ul>
-      <li> You will choose a number between 0% and 50%, called Choice 2.</li>
+      <li> You will choose a number between 0% and 100%, called Choice 2.</li>
       <li> Probability 2 will equal Choice 2.</li>
   </ul>`
   const instructionsString3 = `
-  During each stage, you can select your choice by clicking on the graph with your mouse. Your choice will be locked in at the end of the stage. At the end of the experiment, you will receive either the $${bonus.toFixed(0)} bonus or the $${giftValue.toFixed(0)} Starbucks gift card. <br><br>  Your chance of receiving the $${giftValue.toFixed(0)} Starbucks gift card will be Probability 1 plus Probability 2. Your chance of receiving the $${bonus.toFixed(0)} bonus will be 100% minus your chance of receiving the $${giftValue.toFixed(0)} Starbucks gift card.<br><br>`
+  During each stage, you can select your choice by clicking on the graph with your mouse. Your choice will be locked in at the end of the stage.
+  
+  <br><br> At the end of the experiment, one of the two stages will be chosen at random. Your chance of receiving the $${giftValue.toFixed(0)} Starbucks gift card will be the probability selected in that stage. Your chance of receiving the $${bonus.toFixed(0)} bonus will be 100% minus your chance of receiving the $${giftValue.toFixed(0)} Starbucks gift card. <br><br>`
 
   const readyPracticeString = `First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
   const readyExperimentString = 'Please click the button below to begin the experiment.'

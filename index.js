@@ -5,11 +5,17 @@
 // links.csv (for that session)
 
 // TO DO:
-// - forcing: 20% or 80% ? (Details not revealed) Force to 0 or 100
+// - client and render classes (client.js, render.js)
+// - discretize choice (gift card or not)
+// - gift card vs bonus as image in rectangle within interface
+// - adding noise in stage 1 (60/40 on whatever you choose/did not choose)
+// - resolve outcome in each stage separately
+// - in stage 2 show history from stage 1 (which is resolved)
 // - update interface to reflect new instructions (Framing: Choose one period at random)
 // - One practice period
 // - Prolific conditioning:
 // -> Think about sample selection (experience, attention; eliminate student restriction)
+// - "we aspire to things we don't have"
 
 // set up web server
 // --------------------------
@@ -72,7 +78,7 @@ import { sendMesssage } from './prolific.js'
 
 // parameters
 const subjects = {}
-const numPracticePeriods = 2 // 3 practice periods (internal: 1)
+const numPracticePeriods = 1 // 3 practice periods (internal: 1)
 const numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
 const choice1Length = 10 // 10 secs choice1 (lab: 15, internal: 3)
 const feedback1Length = 5 // 5 secs choice1 (lab: 5, internal: 3)

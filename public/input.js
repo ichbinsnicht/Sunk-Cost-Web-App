@@ -2,6 +2,7 @@ export class Input {
   constructor (client) {
     this.client = client
     this.renderer = client.renderer
+    this.mouseX = 50
     this.joinGame()
     window.beginPreSurvey = () => this.beginPreSurvey()
     window.nextPreSurveyForm = () => this.nextPreSurveyForm()
@@ -116,5 +117,21 @@ export class Input {
       choiceX
     }
     this.client.socket.emit('clientClick', msg)
+  }
+
+  updateChoice () {
+    const graphX = this.renderer.graphX
+    const graphWidth = this.renderer.graphWidth
+    const mouseGraphX = (this.mouseX - graphX) / graphWidth
+    if (mouseGraphX >= 0 && mouseGraphX <= 1) {
+      if (this.client.step === 'choice1' || this.client.step === 'choice2') {
+        const choice = Math.round(0.5 * mouseGraphX * 100) / 100
+        this.client.choice[this.client.stage] = choice
+        const forced = this.client.forced[this.client.stage]
+        const forcedScore = this.client.forcedScore[this.client.stage]
+        const score = forced * forcedScore + (1 - forced) * choice
+        this.client.score[this.client.stage] = score
+      }
+    }
   }
 }

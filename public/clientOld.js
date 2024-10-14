@@ -158,6 +158,7 @@ window.beginPreSurvey = function () {
   const msg = { id }
   socket.emit('beginPreSurvey', msg)
 }
+
 window.nextPreSurveyForm = function (event) {
   preSurveyForms.forEach(div => {
     div.style.display = 'none'
@@ -184,8 +185,8 @@ window.nextPreSurveyForm = function (event) {
     return false
   }
 }
-window.nextPreSurveyForm()
 
+window.nextPreSurveyForm()
 window.previousInstructionsPage = function () { instructionsPage-- }
 window.nextInstructionsPage = function () { instructionsPage++ }
 

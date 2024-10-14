@@ -1,5 +1,4 @@
 import { io } from './socketIo/socket.io.esm.min.js'
-import { arange } from './math.js'
 import { Renderer } from './renderer.js'
 import { Input } from './input.js'
 import { Instructions } from './instructions.js'
@@ -43,9 +42,6 @@ export class Client {
         window.nextPreSurveyForm(event)
       }
     })
-
-    this.canvas = document.getElementById('canvas')
-    this.context = this.canvas.getContext('2d')
 
     // variables
     this.state = 'startup'
@@ -106,7 +102,7 @@ export class Client {
       this.score = this.hist[this.period].score
       this.forcedScore = this.hist[this.period].forcedScore
       console.log('hist', this.hist)
-      setInterval(() => this.update(), 10) // anonymous function to call contextual this in definition context
+      setInterval(() => this.update(), 10)
       setInterval(() => this.measureEngagement(), 1000)
     })
     this.socket.on('paymentComplete', (msg) => {

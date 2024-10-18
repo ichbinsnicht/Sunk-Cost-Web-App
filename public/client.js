@@ -51,7 +51,6 @@ export class Client {
     this.preSurveyQuestion = 0
     this.startPreSurveyTime = 0
     this.endPreSurveyTime = 0
-    this.clicked = false
     this.winPrize = 0
     this.giftURL = ''
     this.period = 1
@@ -84,8 +83,8 @@ export class Client {
       if (key === 'SESSION_ID') this.session = value
     })
     this.renderer = new Renderer(this)
-    this.input = new Input(this)
     this.instructions = new Instructions(this)
+    this.input = new Input(this)
     this.socket.on('connected', (msg) => {
       console.log('connected')
     })
@@ -127,7 +126,7 @@ export class Client {
         console.log('msg.ExperimentStarted', msg.experimentStarted)
         console.log('msg.period', msg.period)
         console.log('msg.step', msg.step)
-        this.clicked = false
+        this.input.clicked = false
       }
       this.instructionsTextDiv.innerHTML = this.instructions.getInstructionString()
       this.step = msg.step
@@ -151,7 +150,7 @@ export class Client {
   }
 
   update () {
-    if (this.step === 'choice1' || this.step === 'choice2') this.updateChoice()
+    if (this.step === 'choice1' || this.step === 'choice2') this.input.updateChoice()
     const msg = {
       id: this.id,
       study: this.study,
@@ -161,7 +160,7 @@ export class Client {
       stage: this.stage,
       currentChoice: this.choice[this.stage],
       currentScore: this.score[this.stage],
-      clicked: this.clicked
+      clicked: this.input.clicked
     }
     this.socket.emit('clientUpdate', msg)
     this.beginPracticePeriodsButton.style.display =

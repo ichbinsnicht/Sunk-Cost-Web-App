@@ -2,7 +2,9 @@ export class Input {
   constructor (client) {
     this.client = client
     this.renderer = client.renderer
+    this.instructions = client.instructions
     this.mouseX = 50
+    this.clicked = false
     this.joinGame()
     window.beginPreSurvey = () => this.beginPreSurvey()
     window.nextPreSurveyForm = () => this.nextPreSurveyForm()
@@ -61,8 +63,8 @@ export class Input {
     }
   }
 
-  previousInstructionsPage () { this.client.instructionsPage-- }
-  nextInstructionsPage () { this.client.instructionsPage++ }
+  previousInstructionsPage () { this.instructions.instructionsPage-- }
+  nextInstructionsPage () { this.instructions.instructionsPage++ }
 
   beginPracticePeriods () {
     this.client.clicked = false
@@ -97,10 +99,10 @@ export class Input {
 
   onmousedown (event) {
     const mouseEvent = event
-    const x0 = this.client.canvas.width / 2 - this.client.canvas.height / 2
-    const canvasRect = this.client.canvas.getBoundingClientRect()
-    const mouseX = (mouseEvent.pageX - x0 - canvasRect.left) * 100 / this.client.canvas.height
-    const mouseGraphX = (mouseX - this.renderer.graphX) / this.renderer.graphWidth
+    const x0 = this.renderer.canvas.width / 2 - this.renderer.canvas.height / 2
+    const canvasRect = this.renderer.canvas.getBoundingClientRect()
+    this.mouseX = (mouseEvent.pageX - x0 - canvasRect.left) * 100 / this.renderer.canvas.height
+    const mouseGraphX = (this.mouseX - this.renderer.graphX) / this.renderer.graphWidth
     const choiceX = Math.round(0.5 * mouseGraphX * 100) / 100
     const inbounds = mouseGraphX >= 0 && mouseGraphX <= 1
     this.client.clicked = this.client.clicked || inbounds

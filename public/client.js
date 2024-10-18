@@ -85,6 +85,7 @@ export class Client {
     this.renderer = new Renderer(this)
     this.instructions = new Instructions(this)
     this.input = new Input(this)
+    this.renderer.draw()
     this.socket.on('connected', (msg) => {
       console.log('connected')
     })

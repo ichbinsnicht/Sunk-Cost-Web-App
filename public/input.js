@@ -67,7 +67,7 @@ export class Input {
   nextInstructionsPage () { this.instructions.instructionsPage++ }
 
   beginPracticePeriods () {
-    this.client.clicked = false
+    this.clicked = false
     const msg = { id: this.client.id }
     this.client.beginPracticePeriodsButton.style.display = 'none'
     this.client.socket.emit('beginPracticePeriods', msg)
@@ -75,7 +75,7 @@ export class Input {
   }
 
   beginExperiment () {
-    this.client.clicked = false
+    this.clicked = false
     const msg = { id: this.client.id }
     this.client.socket.emit('beginExperiment', msg)
   }
@@ -105,7 +105,7 @@ export class Input {
     const mouseGraphX = (this.mouseX - this.renderer.graphX) / this.renderer.graphWidth
     const choiceX = Math.round(0.5 * mouseGraphX * 100) / 100
     const inbounds = mouseGraphX >= 0 && mouseGraphX <= 1
-    this.client.clicked = this.client.clicked || inbounds
+    this.clicked = this.clicked || inbounds
     const msg = {
       id: this.client.id,
       study: this.client.study,

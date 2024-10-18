@@ -27,11 +27,11 @@ export class Renderer {
 
     this.canvas = document.getElementById('canvas')
     this.context = this.canvas.getContext('2d')
-    this.draw()
   }
 
   draw () {
     window.requestAnimationFrame(() => this.draw())
+    this.input = this.client.input
     this.setupCanvas()
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     if (this.client.joined && this.client.state === 'interface') this.drawInterface()
@@ -66,12 +66,60 @@ export class Renderer {
     this.context.strokeStyle = 'black'
     this.context.lineWidth = 0.25
     this.context.beginPath()
-    const x = this.graphX + this.graphWidth
-    const y = this.lineY1
-    const width = 0.5 * this.graphWidth
-    const height = 0.5 * (this.lineY2 - this.lineY1)
-    this.context.rect(x, y, width, height)
+    const graphX = this.graphX
+    const lineY1 = this.lineY1
+    const graphWidth = this.graphWidth
+    this.context.moveTo(graphX, lineY1)
+    this.context.lineTo(graphX + graphWidth, lineY1)
     this.context.stroke()
+    const numTicks = 6
+    const tickLength = 2
+    const tickSpace = 1
+    this.context.font = this.tickFont
+    this.context.textAlign = 'center'
+    this.context.textBaseline = 'top'
+    arange(numTicks).forEach(i => {
+      const weight = i / (numTicks - 1)
+      const x = (1 - weight) * graphX + weight * (graphX + graphWidth)
+      const yBottom = lineY1 + tickLength
+      this.context.beginPath()
+      this.context.moveTo(x, lineY1)
+      this.context.lineTo(x, yBottom)
+      this.context.stroke()
+      const xScoreLabel = `${weight * 50}%`
+      this.context.textBaseline = 'top'
+      this.context.fillText(xScoreLabel, x, yBottom + tickSpace)
+    })
+    this.context.font = this.labelFont
+    const step = this.client.step
+    const score = this.client.score
+    const choice = this.client.choice
+    if (step !== 'choice1') {
+      this.context.textBaseline = 'bottom'
+      this.context.fillStyle = this.darkGreen
+      const score1String = `${(score[1] * 100).toFixed(0)}%`
+      this.context.fillText(`Probability 1: ${score1String}`, graphX + graphWidth * 2 * score[1], lineY1 - tickLength - 0.5)
+      this.context.beginPath()
+      this.context.arc(graphX + graphWidth * 2 * score[1], lineY1, 1.5, 0, 2 * Math.PI)
+      this.context.fill()
+    }
+    if (this.input.clicked || step !== 'choice1') {
+      this.context.textBaseline = 'bottom'
+      this.context.fillStyle = this.black
+      const choice1String = `${(choice[1] * 100).toFixed(0)}%`
+      this.context.fillText(`Choice 1: ${choice1String}`, graphX + graphWidth * 2 * choice[1], lineY1 - tickLength - 4)
+      this.context.beginPath()
+      this.context.arc(graphX + graphWidth * 2 * choice[1], lineY1, 0.75, 0, 2 * Math.PI)
+    }
+    this.context.textBaseline = 'bottom'
+    this.context.fillStyle = this.black
+    const mouseClickString1 = 'Please click on the graph to select your choice.'
+    const mouseClickString = step === 'choice1' ? mouseClickString1 : ''
+    this.context.fillText(mouseClickString, graphX + graphWidth * 0.5, lineY1 + 10)
+    this.context.fill()
+    this.context.fillStyle = this.black
+    this.context.textBaseline = 'middle'
+    this.context.textAlign = 'left'
   }
 
   drawCountdownText () {

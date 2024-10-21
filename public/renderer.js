@@ -1,4 +1,4 @@
-import { arange } from './math.js'
+import { arange1 } from './math.js'
 export class Renderer {
   constructor (client) {
     this.client = client
@@ -78,7 +78,7 @@ export class Renderer {
     this.context.font = this.tickFont
     this.context.textAlign = 'center'
     this.context.textBaseline = 'top'
-    arange(numTicks).forEach(i => {
+    arange1(numTicks).forEach(i => {
       const weight = i / (numTicks - 1)
       const x = (1 - weight) * graphX + weight * (graphX + graphWidth)
       const yBottom = lineY1 + tickLength
@@ -158,7 +158,7 @@ export class Renderer {
     this.context.font = this.tickFont
     this.context.textAlign = 'center'
     this.context.textBaseline = 'top'
-    arange(numTicks).forEach(i => {
+    arange1(numTicks).forEach(i => {
       const weight = i / (numTicks - 1)
       const x = (1 - weight) * graphX + weight * (graphX + graphWidth)
       const yBottom = lineY2 + tickLength
@@ -245,7 +245,7 @@ export class Renderer {
     this.context.fillStyle = this.black
     this.context.textAlign = 'center'
     this.context.textBaseline = 'top'
-    arange(numTicks).forEach(i => {
+    arange1(numTicks).forEach(i => {
       const weight = i / (numTicks - 1)
       const y = (1 - weight) * baseY + weight * (baseY - barHeight)
       const xRight1 = barX - 0.5 * barWidth
@@ -306,7 +306,7 @@ export class Renderer {
     this.context.fillStyle = this.black
     this.context.textAlign = 'center'
     this.context.textBaseline = 'top'
-    arange(numTicks).forEach(i => {
+    arange1(numTicks).forEach(i => {
       const weight = i / (numTicks - 1)
       const y = (1 - weight) * baseY + weight * (baseY - barHeight)
       const xRight1 = barX - 0.5 * barWidth

@@ -24,9 +24,6 @@ export class Renderer {
     this.drawing = false
     this.xScale = 1
     this.yScale = 1
-
-    this.canvas = document.getElementById('canvas')
-    this.context = this.canvas.getContext('2d')
   }
 
   draw () {

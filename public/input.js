@@ -99,13 +99,8 @@ export class Input {
 
   onmousedown (event) {
     const mouseEvent = event
-    const x0 = this.renderer.canvas.width / 2 - this.renderer.canvas.height / 2
-    const canvasRect = this.renderer.canvas.getBoundingClientRect()
-    this.mouseX = (mouseEvent.pageX - x0 - canvasRect.left) * 100 / this.renderer.canvas.height
-    const mouseGraphX = (this.mouseX - this.renderer.graphX) / this.renderer.graphWidth
-    const choiceX = Math.round(0.5 * mouseGraphX * 100) / 100
-    const inbounds = mouseGraphX >= 0 && mouseGraphX <= 1
-    this.clicked = this.clicked || inbounds
+    this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
+    this.clicked = true
     const msg = {
       id: this.client.id,
       study: this.client.study,
@@ -116,24 +111,18 @@ export class Input {
       stage: this.client.stage,
       state: this.client.state,
       countdown: this.client.countdown,
-      choiceX
+      mouseX: this.mouseX
     }
     this.client.socket.emit('clientClick', msg)
   }
 
   updateChoice () {
-    const graphX = this.renderer.graphX
-    const graphWidth = this.renderer.graphWidth
-    const mouseGraphX = (this.mouseX - graphX) / graphWidth
-    if (mouseGraphX >= 0 && mouseGraphX <= 1) {
-      if (this.client.step === 'choice1' || this.client.step === 'choice2') {
-        const choice = Math.round(0.5 * mouseGraphX * 100) / 100
-        this.client.choice[this.client.stage] = choice
-        const forced = this.client.forced[this.client.stage]
-        const forcedScore = this.client.forcedScore[this.client.stage]
-        const score = forced * forcedScore + (1 - forced) * choice
-        this.client.score[this.client.stage] = score
-      }
+    if (this.client.step === 'choice1' || this.client.step === 'choice2') {
+      const choice = this.mouseX < 0 ? 0 : 1
+      this.client.choice[this.client.stage] = choice
+      const forced = this.client.forced[this.client.stage]
+      const score = forced * (1 - choice) + (1 - forced) * choice
+      this.client.score[this.client.stage] = score
     }
   }
 }

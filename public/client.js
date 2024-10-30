@@ -85,7 +85,6 @@ export class Client {
     this.renderer = new Renderer(this)
     this.instructions = new Instructions(this)
     this.input = new Input(this)
-    this.renderer.draw()
     this.socket.on('connected', (msg) => {
       console.log('connected')
     })
@@ -193,7 +192,7 @@ export class Client {
       this.instructionsDiv.style.display = 'block'
     }
     if (this.joined && this.state === 'interface') {
-      this.interfaceDiv.style.display = 'block'
+      this.interfaceDiv.style.display = 'flex'
     }
     if (this.joined && this.state === 'experimentComplete') {
       this.experimentCompleteDiv.style.display = 'block'

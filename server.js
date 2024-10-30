@@ -70,14 +70,14 @@ export class Server {
         this.scribe.updateClickFile(msg)
       })
       socket.on('beginPreSurvey', (msg) => {
-        console.log('beginPreSurvey')
+        console.log('beginPreSurvey', msg.id)
         const subject = subjects[msg.id]
         if (subject.state === 'welcome') {
           subject.state = 'preSurvey'
         }
       })
       socket.on('submitPreSurvey', (msg) => {
-        console.log('submitPreSurvey')
+        console.log('submitPreSurvey', msg.id)
         const subject = subjects[msg.id]
         this.scribe.updatePreSurveyFile(msg)
         if (subject.state === 'preSurvey') {

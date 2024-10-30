@@ -50,7 +50,6 @@ export class Scribe {
 
   updatePreSurveyFile (msg) {
     const subjects = this.server.game.subjects
-    console.log('subjects', subjects)
     const subject = subjects[msg.id]
     subject.preSurveyEndTime = this.getDateString()
     if (!this.preSurveyReady) this.createPreSurveyFile(msg)
@@ -103,7 +102,7 @@ export class Scribe {
     let csvString = ''
     csvString += `${msg.id},${msg.study},${msg.session},${msg.time},`
     csvString += `${msg.period},${msg.step},${msg.stage},`
-    csvString += `${msg.state},${msg.countdown},${msg.choiceX}`
+    csvString += `${msg.state},${msg.countdown},${msg.mouseX}`
     csvString += '\n'
     this.clickStream.write(csvString)
   }

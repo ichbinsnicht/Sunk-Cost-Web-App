@@ -135,10 +135,20 @@ form {
     margin-left: 0;
     margin-right: 0;
     display: none;
+    flex-direction: column;
     text-align: center;      
     font: 4vmin monospace; 
     border: 0;
     padding: 0;
+    height: 100vh;
+}
+#stage1Div {
+    border: solid blue;
+    height: 50vh;
+}
+#stage2Div {
+    border: solid green;
+    height: 50vh;
 }
 #postSurveyDiv {
     width: 100%;

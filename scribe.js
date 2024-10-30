@@ -131,7 +131,7 @@ export class Scribe {
 
   updateBonusFile (subject) {
     if (subject.winPrize === 0) {
-      const bonus = this.server.bonus
+      const bonus = this.server.game.bonus
       const csvString = `${subject.id},${bonus.toFixed(2)}\n`
       this.bonusStream.write(csvString)
     }

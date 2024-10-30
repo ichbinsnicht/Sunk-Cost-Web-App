@@ -62,7 +62,6 @@ export class Server {
         console.log('joinGame', msg.id)
         if (!subjects[msg.id]) this.game.createSubject(msg, socket)
         socket.emit('clientJoined', { id: msg.id, hist: subjects[msg.id].hist, period: subjects[msg.id].period })
-        console.log('Object.keys(subjects)', Object.keys(subjects))
       })
       socket.on('clientEngagement', (msg) => {
         this.scribe.updateEngagementFile(msg)

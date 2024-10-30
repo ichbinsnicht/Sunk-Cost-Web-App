@@ -12,25 +12,25 @@ export class Instructions {
     const giftValue = this.client.giftValue.toFixed(0)
     const numPracticePeriods = this.client.numPracticePeriods
     const instructionsString1 = `
-      This is an experiment about decision making. You will receive $${endowment} just for participating. Depending on the decisions you make, you will also receive either a bonus of $${bonus} or a $${giftValue} Starbucks gift card.
+      This is an experiment about decision making. You will receive $${endowment} just for participating. Depending on the decisions you make, you will also receive either a $${bonus} bonus or a $${giftValue} Starbucks gift card.
       ${this.imageHTML}
       This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $${bonus} bonus or the $${giftValue} Starbucks gift card.`
     const instructionsString2 = `
       Stage 1:<br>
       <ul>
-          <li> You will choose a number between 0% and 100%, called Choice 1.</li>
-          <li> There is a 50% chance that Probability 1 will equal Choice 1.</li>
-          <li> Otherwise, Probability 1 will be chosen randomly.</li>
+          <li> You will choose either the $${bonus} bonus or the $${giftValue} Starbucks gift card.</li>
+          <li> There is a <b>60%</b> chance that you will win the option you chose.</li>
+          <li> There is a <b>40%</b> chance that you will win the other option.</li>
       </ul>
       <br>Stage 2:<br>
       <ul>
-          <li> You will choose a number between 0% and 100%, called Choice 2.</li>
-          <li> Probability 2 will equal Choice 2.</li>
+          <li> You will choose either the $${bonus} bonus or the $${giftValue} Starbucks gift card.</li>
+          <li> There is a <b>100%</b> chance that you will win the option you chose. </li>
+          <li> There is a <b>0%</b> chance that you will win the other option.</li>
       </ul>`
     const instructionsString3 = `
-      During each stage, you can select your choice by clicking on the graph with your mouse. Your choice will be locked in at the end of the stage.
-      
-      <br><br> At the end of the experiment, one of the two stages will be chosen at random. Your chance of receiving the $${giftValue} Starbucks gift card will be the probability selected in that stage. Your chance of receiving the $${bonus} bonus will be 100% minus your chance of receiving the $${giftValue} Starbucks gift card. <br><br>`
+    
+      <br><br> At the end of the experiment, one of the two stages will be chosen at random. You will receive the option you won in the randomly chosen stage. You will also receive $${endowment} just for participating. <br><br>`
 
     const readyPracticeString = `
       First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`

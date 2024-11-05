@@ -24,6 +24,10 @@ export class Client {
     this.giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
     this.copyURLDiv = document.getElementById('copyURLDiv')
     this.bonusDiv = document.getElementById('bonusDiv')
+    this.dollar1Box = document.getElementById('dollar1Box')
+    this.dollar2Box = document.getElementById('dollar2Box')
+    this.giftCard1Box = document.getElementById('giftCard1Box')
+    this.giftCard2Box = document.getElementById('giftCard2Box')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),

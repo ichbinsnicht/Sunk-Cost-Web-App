@@ -2,6 +2,8 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
+    background-color: rgb(55, 64, 64);
+    color: white
     /* overflow: hidden; */
 }
 #joinGameButton{
@@ -142,13 +144,60 @@ form {
     padding: 0;
     height: 100vh;
 }
-#stage1Div {
-    border: solid blue;
-    height: 50vh;
+.prizeImage{
+    width: auto;
+    height: 20.25vh;
+    display:block;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
 }
-#stage2Div {
-    border: solid green;
-    height: 50vh;
+.imageBox{
+    border: solid 2vh rgb(2, 252, 2, 0);
+    width: 40vw;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;    
+}
+.centerTextBox{
+    text-align:center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+.leftTextBox{
+    text-align:left;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+.stageDiv {
+    flex-direction: column;
+    display: flex;
+}
+#stage1Div{
+    display: flex;
+}
+#stage2Div{
+    display: none;
+}
+ul{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.stageImageDiv {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.stageTextDiv {
+    flex-direction: column;
+    display: flex;
 }
 #postSurveyDiv {
     width: 100%;

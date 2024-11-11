@@ -17,6 +17,9 @@
 // -> Think about sample selection (experience, attention; eliminate student restriction)
 // - "we aspire to things we don't have"
 
+// Literature:
+// ML and Standard Errors List etc. https://www.linkedin.com/posts/johnalist_using-machine-learning-for-efficient-flexible-activity-7261775230426136579-Jvx-?utm_source=share&utm_medium=member_desktop
+
 // set up web server
 // --------------------------
 // update stage times and practice period numbers for experiment (index.js)

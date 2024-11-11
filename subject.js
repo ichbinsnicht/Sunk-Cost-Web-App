@@ -19,7 +19,7 @@ export class Subject {
     this.stage = 1
     this.state = 'startup'
     this.period = 1
-    this.countdown = this.choice1Length
+    this.countdown = this.game.choice1Length
     this.score1 = 0
     this.score2 = 0
     this.winPrize = 0
@@ -40,6 +40,7 @@ export class Subject {
       const forced1 = practice * (i % 2 === 0) + (1 - practice) * (Math.random() < 0.4)
       this.hist[i] = {
         choice: { 1: 0, 2: 0 },
+        ready: { 1: false, 2: false },
         score: { 1: 0, 2: 0 },
         forced: { 1: forced1, 2: 0 }
       }
@@ -61,16 +62,16 @@ export class Subject {
     if (this.state === 'interface') {
       this.countdown = Math.max(this.countdown - 1, 0)
       if (this.step === 'choice1' && this.countdown <= 0 && this.clicked) { // end choice1
-        this.countdown = this.feedback1Length
+        this.countdown = this.game.feedback1Length
         this.step = 'feedback1'
       }
       if (this.step === 'feedback1' && this.countdown <= 0) { // end feedback1
-        this.countdown = this.choice2Length
+        this.countdown = this.game.choice2Length
         this.step = 'choice2'
       }
       if (this.step === 'choice2' && this.countdown <= 0 && this.clicked) { // end choice2
         this.calculateOutcome()
-        this.countdown = this.feedback2Length
+        this.countdown = this.game.feedback2Length
         this.step = 'feedback2'
       }
       if (this.step === 'feedback2' && this.countdown <= 0) { // end feedback2
@@ -87,10 +88,10 @@ export class Subject {
             this.practicePeriodsComplete = true
             this.period = 1
             this.step = 'choice1'
-            this.countdown = this.choice1Length
+            this.countdown = this.game.choice1Length
           }
         } else {
-          this.countdown = this.choice1Length
+          this.countdown = this.game.choice1Length
           this.period += 1
           this.step = 'choice1'
         }

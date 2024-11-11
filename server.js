@@ -66,9 +66,6 @@ export class Server {
       socket.on('clientEngagement', (msg) => {
         this.scribe.updateEngagementFile(msg)
       })
-      socket.on('clientClick', (msg) => {
-        this.scribe.updateClickFile(msg)
-      })
       socket.on('beginPreSurvey', (msg) => {
         console.log('beginPreSurvey', msg.id)
         const subject = subjects[msg.id]
@@ -134,15 +131,27 @@ export class Server {
         }
         socket.emit('serverUpdateManager', reply)
       })
+      socket.on('clientClick', (msg) => {
+        const subject = this.game.subjects[msg.id]
+        if (subject) {
+          const step = subject.step
+          const stateInterface = subject.state === 'interface'
+          const histPeriod = subject.hist[msg.period]
+          const choosing = step === 'choice1' || step === 'choice2'
+          if (stateInterface & choosing) histPeriod.ready[msg.stage] = true
+        }
+        this.scribe.updateClickFile(msg)
+      })
       socket.on('clientUpdate', (msg) => {
-        const subject = subjects[msg.id]
+        const subject = this.game.subjects[msg.id]
         if (subject) {
           subject.clicked = msg.clicked
           const step = subject.step
           const histPeriod = subject.hist[msg.period]
           const choosing = step === 'choice1' || step === 'choice2'
+          const stateInterface = subject.state === 'interface'
           if (subject.period === msg.period && step === msg.step) {
-            if (choosing) {
+            if (stateInterface && choosing) {
               histPeriod.choice[msg.stage] = msg.currentChoice
               histPeriod.score[msg.stage] = msg.currentScore
             }

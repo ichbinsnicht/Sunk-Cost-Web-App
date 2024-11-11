@@ -14,7 +14,7 @@ export class Instructions {
     const instructionsString1 = `
       This is an experiment about decision making. You will receive $${endowment} just for participating. Depending on the decisions you make, you will also receive either a $${bonus} bonus or a $${giftValue} Starbucks gift card.
       ${this.imageHTML}
-      This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which may affect your probability of receiving the $${bonus} bonus or the $${giftValue} Starbucks gift card.`
+      This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which will affect your probability of receiving the $${bonus} bonus or the $${giftValue} Starbucks gift card.`
     const instructionsString2 = `
       Stage 1:<br>
       <ul>

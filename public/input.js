@@ -98,9 +98,14 @@ export class Input {
   }
 
   onmousedown (event) {
+    console.log('this.client.countdown', this.client.countdown)
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
-    this.clicked = true
+    const stepChoice1 = this.client.step === 'choice1'
+    const stepChoice2 = this.client.step === 'choice2'
+    const stepChoice = stepChoice1 || stepChoice2
+    const stateInterface = this.client.state === 'interface'
+    if (stateInterface && stepChoice) this.clicked = true
     const msg = {
       id: this.client.id,
       study: this.client.study,

@@ -153,7 +153,7 @@ form {
 }
 .imageBox{
     border: solid 2vh rgb(2, 252, 2, 0);
-    width: 40vw;
+    width: 60vh;
     flex-direction: row;
     display: flex;
     justify-content: space-evenly;
@@ -175,15 +175,9 @@ form {
     padding-top: 2vh;
     padding-bottom: 2vh;
 }
-.stageDiv {
+#stageDiv {
     flex-direction: column;
     display: flex;
-}
-#stage1Div{
-    display: flex;
-}
-#stage2Div{
-    display: none;
 }
 ul{
     margin-top: 0;

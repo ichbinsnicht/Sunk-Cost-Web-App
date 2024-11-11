@@ -8,19 +8,21 @@ export class Renderer {
   draw () {
     this.input = this.client.input
     this.drawing = true
-    if (this.input.clicked) {
-      const dollarBox = this.client.stage === 1 ? this.client.dollar1Box : this.client.dollar2Box
-      const giftCardBox = this.client.stage === 1 ? this.client.giftCard1Box : this.client.giftCard2Box
+    this.client.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
+    const ready = this.client.hist[this.client.period].ready[this.client.stage]
+    if (ready) {
       const choice = this.client.choice[this.client.stage]
-      console.log('choice', choice)
       if (choice === 0) {
-        dollarBox.style.border = 'solid  2vh rgb(0, 255, 0, 1)'
-        giftCardBox.style.border = 'solid 2vh rgb(0, 0, 0, 0)'
+        this.client.dollarBox.style.border = 'solid  2vh rgb(0, 255, 0, 1)'
+        this.client.giftCardBox.style.border = 'solid 2vh rgb(0, 0, 0, 0)'
+        this.client.choiceText.innerHTML = 'You chose the $1 bonus.'
       } else {
-        dollarBox.style.border = 'solid 2vh rgb(0, 0, 0, 0)'
-        giftCardBox.style.border = 'solid 2vh rgb(0, 255, 0, 1)'
+        this.client.dollarBox.style.border = 'solid 2vh rgb(0, 0, 0, 0)'
+        this.client.giftCardBox.style.border = 'solid 2vh rgb(0, 255, 0, 1)'
+        this.client.choiceText.innerHTML = 'You chose the $6 Starbucks gift card.'
       }
-      console.log('dollarBox.style.border', dollarBox.style.border)
+    } else {
+      this.client.choiceText.innerHTML = 'Please select an option.'
     }
   }
 }

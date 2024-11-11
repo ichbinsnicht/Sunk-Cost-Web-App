@@ -24,10 +24,12 @@ export class Client {
     this.giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
     this.copyURLDiv = document.getElementById('copyURLDiv')
     this.bonusDiv = document.getElementById('bonusDiv')
-    this.dollar1Box = document.getElementById('dollar1Box')
-    this.dollar2Box = document.getElementById('dollar2Box')
-    this.giftCard1Box = document.getElementById('giftCard1Box')
-    this.giftCard2Box = document.getElementById('giftCard2Box')
+    this.dollarBox = document.getElementById('dollarBox')
+    this.giftCardBox = document.getElementById('giftCardBox')
+    this.countdownText = document.getElementById('countdownText')
+    this.choiceText = document.getElementById('choiceText')
+    this.bonusProbText = document.getElementById('bonusProbText')
+    this.giftCardProbText = document.getElementById('giftCardProbText')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -159,7 +161,7 @@ export class Client {
       id: this.id,
       study: this.study,
       session: this.session,
-      period: this.session,
+      period: this.period,
       step: this.step,
       stage: this.stage,
       currentChoice: this.choice[this.stage],

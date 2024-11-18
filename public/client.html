@@ -163,6 +163,7 @@
         </div>
         <div id="interfaceDiv">  
             <div id="stageDiv" >
+                <div id="stageTitle">Stage 1</div>
                 <div class="stageImageDiv">
                     <div id="dollarBox" class="imageBox">
                         <img src="Dollar.jpg" class="prizeImage">
@@ -174,12 +175,21 @@
                 <div class="stageTextDiv">
                     <div id="countdownText" class="centerTextBox">Countdown: 10</div>
                     <div id="choiceText" class="centerTextBox">Please select an option.</div>
-                    <div class="leftTextBox">
-                        If this stage is selected, you will have a 
+                    <div id="probTextBox" class="leftTextBox">
+                        If <span id="currentStageText">this stage</span> is selected, 
+                        you will have a 
                         <ul>
-                            <li> <b id="bonusProbText">60%</b> chance of winning the $1 bonus.</li>
-                            <li> <b id="giftCardProbText">40%</b> chance of winning the $6 Starbucks gift card.</li>
+                            <li> <b id="probText1">60%</b> chance of winning the 
+                                <span id="prizeText1">the option you chose</span>.
+                            </li>
+                            <li> <b id="probText2">40%</b> chance of winning the 
+                                <span id="prizeText2">the other option</span>.
+                            </li>
                         </ul>
+                    </div>
+                    <div id="outcomeTextBox" class="leftTextBox"> 
+                        If <span id="feedbackStageText">this stage</span> is selected,
+                        you will win <span id="outcomeText">the option you chose</span>.
                     </div>
                 </div>
             </div>

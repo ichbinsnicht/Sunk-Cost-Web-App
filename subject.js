@@ -20,6 +20,8 @@ export class Subject {
     this.state = 'startup'
     this.period = 1
     this.countdown = this.game.choice1Length
+    this.numPeriods = this.game.numPeriods
+    this.numPracticePeriods = this.game.numPracticePeriods
     this.score1 = 0
     this.score2 = 0
     this.winPrize = 0
@@ -79,6 +81,11 @@ export class Subject {
           this.game.server.scribe.updateDataFile(this)
         }
         const maxPeriod = this.experimentStarted ? this.numPeriods : this.numPracticePeriods
+        console.log('this.period', this.period)
+        console.log('maxPeriod', maxPeriod)
+        console.log('this.numPeriods', this.numPeriods)
+        console.log('this.numPracticePeriods', this.numPracticePeriods)
+        console.log('experimentStarted', this.experimentStarted)
         if (this.period >= maxPeriod) {
           if (this.experimentStarted) {
             this.step = 'end'

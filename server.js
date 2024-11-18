@@ -93,7 +93,7 @@ export class Server {
         const subject = subjects[msg.id]
         if (subject.practicePeriodsComplete && subject.state === 'instructions') {
           subject.experimentStarted = true
-          this.game.setupHist(subject)
+          subject.setupHist(subject)
           subject.state = 'interface'
         }
       })

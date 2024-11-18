@@ -42,8 +42,25 @@ export class Scribe {
   createDataFile () {
     this.dataStream = fs.createWriteStream(`data/${this.dateString}-data.csv`)
     let csvString = 'study,session,subjectStartTime, subjectSurveyEndTime, subjectExperimentEndTime, period,practice,id,forced1,'
-    csvString += 'forcedScore1,choice1,choice2,score1,score2,endowment,bonus,giftValue,totalScore,'
+    csvString += 'choice1,choice2,score1,score2,endowment,bonus,giftValue,totalScore,'
     csvString += 'outcomeRandom,winPrize,totalCost,earnings,giftAmount'
+    csvString += '\n'
+    this.dataStream.write(csvString)
+  }
+
+  updateDataFile (subject) {
+    const endowment = this.server.endowment
+    const bonus = this.server.bonus
+    const giftValue = this.server.giftValue
+    let csvString = ''
+    csvString += `${subject.study},${subject.session},${subject.startTime},`
+    csvString += `${subject.preSurveyEndTime},${subject.experimentEndTime},${subject.period},`
+    csvString += `${1 - subject.practicePeriodsComplete},${subject.id},`
+    csvString += `${subject.hist[subject.period].forced[1]},`
+    csvString += `${subject.hist[subject.period].choice[1]},${subject.hist[subject.period].choice[2]},`
+    csvString += `${subject.hist[subject.period].score[1]},${subject.hist[subject.period].score[2]},`
+    csvString += `${endowment},${bonus},${giftValue},${subject.totalScore},${subject.outcomeRandom},`
+    csvString += `${subject.winPrize},${subject.totalCost},${subject.earnings},${subject.giftAmount}`
     csvString += '\n'
     this.dataStream.write(csvString)
   }
@@ -56,23 +73,6 @@ export class Scribe {
     let csvString = Object.values(msg).join(',')
     csvString += '\n'
     this.preSurveyStream.write(csvString)
-  }
-
-  updateDataFile (subject) {
-    const endowment = this.server.endowment
-    const bonus = this.server.bonus
-    const giftValue = this.server.giftValue
-    let csvString = ''
-    csvString += `${subject.study},${subject.session},${subject.startTime},`
-    csvString += `${subject.preSurveyEndTime},${subject.experimentEndTime},${subject.period},`
-    csvString += `${1 - subject.practicePeriodsComplete},${subject.id},`
-    csvString += `${subject.hist[subject.period].forced[1]},${subject.hist[subject.period].forcedScore[1]},`
-    csvString += `${subject.hist[subject.period].choice[1]},${subject.hist[subject.period].choice[2]},`
-    csvString += `${subject.hist[subject.period].score[1]},${subject.hist[subject.period].score[2]},`
-    csvString += `${endowment},${bonus},${giftValue},${subject.totalScore},${subject.outcomeRandom},`
-    csvString += `${subject.winPrize},${subject.totalCost},${subject.earnings},${subject.giftAmount}`
-    csvString += '\n'
-    this.dataStream.write(csvString)
   }
 
   createEngagementFile () {

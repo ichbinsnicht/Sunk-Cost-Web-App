@@ -28,8 +28,16 @@ export class Client {
     this.giftCardBox = document.getElementById('giftCardBox')
     this.countdownText = document.getElementById('countdownText')
     this.choiceText = document.getElementById('choiceText')
-    this.bonusProbText = document.getElementById('bonusProbText')
-    this.giftCardProbText = document.getElementById('giftCardProbText')
+    this.prizeText1 = document.getElementById('prizeText1')
+    this.prizeText2 = document.getElementById('prizeText2')
+    this.probText1 = document.getElementById('probText1')
+    this.probText2 = document.getElementById('probText2')
+    this.stageTitle = document.getElementById('stageTitle')
+    this.probTextBox = document.getElementById('probTextBox')
+    this.outcomeTextBox = document.getElementById('outcomeTextBox')
+    this.outcomeText = document.getElementById('outcomeText')
+    this.feedbackStageText = document.getElementById('feedbackStageText')
+    this.currentStageText = document.getElementById('currentStageText')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -66,7 +74,6 @@ export class Client {
     this.time = 0
     this.choice = { 1: 0, 2: 0 }
     this.score = { 1: 0, 2: 0 }
-    this.forcedScore = { 1: 0, 2: 0 }
     this.forced = { 1: 0, 2: 0 }
     this.hist = {}
     this.practicePeriodsComplete = false
@@ -105,7 +112,6 @@ export class Client {
       this.hist = msg.hist
       this.choice = this.hist[this.period].choice
       this.score = this.hist[this.period].score
-      this.forcedScore = this.hist[this.period].forcedScore
       console.log('hist', this.hist)
       setInterval(() => this.update(), 10)
       setInterval(() => this.measureEngagement(), 1000)
@@ -147,7 +153,6 @@ export class Client {
       this.winPrize = msg.winPrize
       this.giftValue = msg.giftValue
       this.endowment = msg.endowment
-      this.forcedScore = msg.hist[msg.period].forcedScore
       this.forced = msg.hist[msg.period].forced
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL

@@ -36,8 +36,12 @@ export class Subject {
   }
 
   setupHist () {
-    const nPeriods = Math.max(this.game.numPracticePeriods, this.game.numPeriods)
-    const practice = 1 * !this.game.practicePeriodsComplete
+    const practice = 1 * !this.practicePeriodsComplete
+    console.log('practice', practice)
+    console.log('this.practicePeriodsComplete', this.practicePeriodsComplete)
+    const nPractice = this.game.numPracticePeriods
+    const nPaid = this.game.numPeriods
+    const nPeriods = practice === 1 ? nPractice : nPaid
     arange2(1, nPeriods).forEach(i => {
       const forced1 = practice * (i % 2 === 0) + (1 - practice) * (Math.random() < 0.4)
       this.hist[i] = {
@@ -47,6 +51,10 @@ export class Subject {
         forced: { 1: forced1, 2: 0 }
       }
     })
+    console.log('this.hist', this.hist)
+    console.log('nPeriods', nPeriods)
+    console.log('nPaid', nPaid)
+    console.log('nPractice', nPractice)
   }
 
   calculateOutcome () {
@@ -54,7 +62,7 @@ export class Subject {
     this.score1 = currentHist.score[1]
     this.score2 = currentHist.score[2]
     this.winPrize = this.selectedStage === 1 ? this.score1 : this.score2
-    this.earnings = this.endowment + this.bonus * (1 - this.winPrize)
+    this.earnings = this.game.endowment + this.game.bonus * (1 - this.winPrize)
   }
 
   update () { // add presurvey
@@ -96,6 +104,7 @@ export class Subject {
             this.period = 1
             this.step = 'choice1'
             this.countdown = this.game.choice1Length
+            this.setupHist()
           }
         } else {
           this.countdown = this.game.choice1Length

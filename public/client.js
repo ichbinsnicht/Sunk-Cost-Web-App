@@ -138,6 +138,8 @@ export class Client {
         console.log('msg.ExperimentStarted', msg.experimentStarted)
         console.log('msg.period', msg.period)
         console.log('msg.step', msg.step)
+      }
+      if (this.stage !== msg.stage) {
         this.input.clicked = false
       }
       this.instructionsTextDiv.innerHTML = this.instructions.getInstructionString()

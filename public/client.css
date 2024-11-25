@@ -151,6 +151,18 @@ form {
     margin-top: 5vh;
     margin-bottom: 5vh;
 }
+#probText1{
+    color: limegreen;
+}
+#probText2{
+    color: limegreen;
+}
+#prizeText1{
+    color: rgb(0, 136, 255)
+}
+#prizeText2{
+    color: rgba(255, 0, 0, 0.719)
+}
 .imageBox{
     border: solid 2vh rgb(2, 252, 2, 0);
     width: 60vh;

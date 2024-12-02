@@ -27,7 +27,13 @@ export class Client {
     this.dollarBox = document.getElementById('dollarBox')
     this.giftCardBox = document.getElementById('giftCardBox')
     this.countdownText = document.getElementById('countdownText')
+    this.requestText = document.getElementById('requestText')
     this.choiceText = document.getElementById('choiceText')
+    this.choseText = document.getElementById('choseText')
+    this.choseItemText = document.getElementById('choseItemText')
+    this.wonText = document.getElementById('wonText')
+    this.wonItemText = document.getElementById('wonItemText')
+    this.wonTextBox = document.getElementById('wonTextBox')
     this.prizeText1 = document.getElementById('prizeText1')
     this.prizeText2 = document.getElementById('prizeText2')
     this.probText1 = document.getElementById('probText1')
@@ -98,10 +104,18 @@ export class Client {
     this.renderer = new Renderer(this)
     this.instructions = new Instructions(this)
     this.input = new Input(this)
+    this.setup()
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        window.location.reload()
+      }
+    })
+  }
+
+  setup () {
     this.socket.on('connected', (msg) => {
       console.log('connected')
     })
-
     this.socket.on('clientJoined', (msg) => {
       console.log(`client ${msg.id} joined`)
       console.log('period:', this.period)
@@ -142,7 +156,7 @@ export class Client {
       if (this.stage !== msg.stage) {
         this.input.clicked = false
       }
-      this.instructionsTextDiv.innerHTML = this.instructions.getInstructionString()
+      this.instructions.updateInstructions()
       this.step = msg.step
       this.stage = msg.stage
       this.experimentStarted = msg.experimentStarted

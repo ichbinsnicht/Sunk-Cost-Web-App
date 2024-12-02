@@ -63,8 +63,15 @@ export class Input {
     }
   }
 
-  previousInstructionsPage () { this.instructions.instructionsPage-- }
-  nextInstructionsPage () { this.instructions.instructionsPage++ }
+  previousInstructionsPage () {
+    this.instructions.instructionsPage--
+    console.log('this.instructions.instructionsPage', this.instructions.instructionsPage)
+  }
+
+  nextInstructionsPage () {
+    this.instructions.instructionsPage++
+    console.log('this.instructions.instructionsPage', this.instructions.instructionsPage)
+  }
 
   beginPracticePeriods () {
     this.clicked = false
@@ -101,6 +108,7 @@ export class Input {
     console.log('this.client.countdown', this.client.countdown)
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
+    this.updateChoice()
     const stepChoice1 = this.client.step === 'choice1'
     const stepChoice2 = this.client.step === 'choice2'
     const stepChoice = stepChoice1 || stepChoice2

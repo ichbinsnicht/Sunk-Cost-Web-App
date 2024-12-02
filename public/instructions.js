@@ -1,53 +1,47 @@
 export class Instructions {
   constructor (client) {
-    this.imageStyle = `width:${1.5 * 14.2}vh;height:${1.5 * 9}vh;margin-left:auto;margin-right:auto;margin-top:3vmin;margin-bottom:3vmin;display:block;`
-    this.imageHTML = `<img src="GiftCard.png" style="${this.imageStyle}"/>`
+    this.endowment1 = document.getElementById('endowment1')
+    this.endowment2 = document.getElementById('endowment2')
+    this.bonus1 = document.getElementById('bonus1')
+    this.bonus2 = document.getElementById('bonus2')
+    this.bonus3 = document.getElementById('bonus3')
+    this.bonus4 = document.getElementById('bonus4')
+    this.giftValue1 = document.getElementById('giftValue1')
+    this.giftValue2 = document.getElementById('giftValue2')
+    this.giftValue3 = document.getElementById('giftValue3')
+    this.giftValue4 = document.getElementById('giftValue4')
+    this.practicePeriods = document.getElementById('practicePeriods')
+    this.instructionsTextDiv1 = document.getElementById('instructionsTextDiv1')
+    this.instructionsTextDiv2 = document.getElementById('instructionsTextDiv2')
+    this.instructionsTextDiv3 = document.getElementById('instructionsTextDiv3')
+    this.instructionsTextDiv4Practice = document.getElementById('instructionsTextDiv4Practice')
+    this.instructionsTextDiv4Experiment = document.getElementById('instructionsTextDiv4Experiment')
     this.instructionsPage = 1
     this.client = client
   }
 
-  getInstructionString () {
+  updateInstructions () {
     const endowment = this.client.endowment.toFixed(0)
     const bonus = this.client.bonus.toFixed(0)
     const giftValue = this.client.giftValue.toFixed(0)
     const numPracticePeriods = this.client.numPracticePeriods
-    const instructionsString1 = `
-      This is an experiment about decision making. You will receive $${endowment} just for participating. Depending on the decisions you make, you will also receive either a $${bonus} bonus or a $${giftValue} Starbucks gift card.
-      ${this.imageHTML}
-      This experiment will have two stages: stage 1 and stage 2. In each stage, you will make a choice which will affect your probability of receiving the $${bonus} bonus or the $${giftValue} Starbucks gift card.`
-    const instructionsString2 = `
-      Stage 1:<br>
-      <ul>
-          <li> You will choose either the $${bonus} bonus or the $${giftValue} Starbucks gift card.</li>
-          <li> There is a <b>60%</b> chance that you will win the option you chose.</li>
-          <li> There is a <b>40%</b> chance that you will win the other option.</li>
-      </ul>
-      <br>Stage 2:<br>
-      <ul>
-          <li> You will choose either the $${bonus} bonus or the $${giftValue} Starbucks gift card.</li>
-          <li> There is a <b>100%</b> chance that you will win the option you chose. </li>
-          <li> There is a <b>0%</b> chance that you will win the other option.</li>
-      </ul>`
-    const instructionsString3 = `
-    
-      <br><br> At the end of the experiment, one of the two stages will be chosen at random. You will receive the option you won in the randomly chosen stage. You will also receive $${endowment} just for participating. <br><br>`
-
-    const readyPracticeString = `
-      First, you will participate in ${numPracticePeriods} practice periods. The practice periods will not affect your final earnings. They are just for practice. Afterwards, you will start the experiment. <br><br> Please click the button below to begin the practice periods.`
-    const readyExperimentString = 'Please click the button below to begin the experiment.'
-
-    const readyString = this.client.practicePeriodsComplete
-      ? readyExperimentString
-      : readyPracticeString
-    const instructionsString4 = readyString
-
-    const instructionsStrings = [
-      instructionsString1,
-      instructionsString2,
-      instructionsString3,
-      instructionsString4
-    ]
-
-    return instructionsStrings[this.instructionsPage - 1]
+    this.endowment1.innerHTML = endowment
+    this.endowment2.innerHTML = endowment
+    this.bonus1.innerHTML = bonus
+    this.bonus2.innerHTML = bonus
+    this.bonus3.innerHTML = bonus
+    this.bonus4.innerHTML = bonus
+    this.giftValue1.innerHTML = giftValue
+    this.giftValue2.innerHTML = giftValue
+    this.giftValue3.innerHTML = giftValue
+    this.giftValue4.innerHTML = giftValue
+    this.practicePeriods.innerHTML = numPracticePeriods
+    this.instructionsTextDiv1.style.display = this.instructionsPage === 1 ? 'block' : 'none'
+    this.instructionsTextDiv2.style.display = this.instructionsPage === 2 ? 'block' : 'none'
+    this.instructionsTextDiv3.style.display = this.instructionsPage === 3 ? 'block' : 'none'
+    const showPractice4 = this.instructionsPage === 4 && !this.client.practicePeriodsComplete
+    const showExperiment4 = this.instructionsPage === 4 && this.client.practicePeriodsComplete
+    this.instructionsTextDiv4Practice.style.display = showPractice4 ? 'block' : 'none'
+    this.instructionsTextDiv4Experiment.style.display = showExperiment4 ? 'block' : 'none'
   }
 }

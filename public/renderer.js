@@ -36,21 +36,27 @@ export class Renderer {
     this.client.giftCardBox.style.border = `solid 2vh ${black}`
     if (this.client.input.clicked) {
       const choice = this.client.choice[this.client.stage]
+      this.client.requestText.style.display = 'none'
+      this.client.choiceText.style.display = 'block'
       if (choice === 0) {
         this.client.dollarBox.style.border = `solid 2vh ${blue}`
         this.client.giftCardBox.style.border = `solid 2vh ${black}`
-        this.client.choiceText.innerHTML = 'You chose the $1 bonus.'
+        this.client.choseItemText.innerHTML = '$1 bonus'
         this.client.prizeText1.innerHTML = '$1 bonus'
         this.client.prizeText2.innerHTML = '$6 Starbucks gift card'
       } else {
         this.client.dollarBox.style.border = `solid 2vh ${black}`
         this.client.giftCardBox.style.border = `solid 2vh ${blue}`
-        this.client.choiceText.innerHTML = 'You chose the $6 Starbucks gift card.'
+        this.client.choseItemText.innerHTML = '$6 Starbucks gift card'
         this.client.prizeText1.innerHTML = '$6 Starbucks gift card'
         this.client.prizeText2.innerHTML = '$1 bonus'
       }
     } else {
-      this.client.choiceText.innerHTML = 'Please select an option.'
+      this.client.dollarBox.style.border = `solid 2vh ${black}`
+      this.client.giftCardBox.style.border = `solid 2vh ${black}`
+      this.client.requestText.innerHTML = 'Please select an option.'
+      this.client.requestText.style.display = 'block'
+      this.client.choiceText.style.display = 'none'
       this.client.prizeText1.innerHTML = 'the option you chose'
       this.client.prizeText2.innerHTML = 'the other option'
     }
@@ -58,16 +64,23 @@ export class Renderer {
       this.client.stageTitle.innerHTML += ' Feedback'
       this.client.probTextBox.style.display = 'none'
       this.client.outcomeTextBox.style.display = 'block'
+      this.client.requestText.style.display = 'none'
+      this.client.choiceText.style.display = 'block'
+      this.client.wonTextBox.style.display = 'block'
       const forced = this.client.forced[this.client.stage]
       const choice = this.client.choice[this.client.stage]
       const prize = forced ? 1 - choice : choice
       const prizeText = prize === 0 ? '$1 bonus' : '$6 Starbucks gift card'
       this.client.outcomeText.innerHTML = `${prizeText}`
+      this.client.wonItemText.innerHTML = `${prizeText}`
+      this.client.wonItemText.style.color = forced ? 'rgb(255, 0, 0)' : 'rgb(0, 136, 255)'
+      this.client.outcomeText.style.color = forced ? 'rgb(255, 0, 0)' : 'rgb(0, 136, 255)'
       if (prize === 0) this.client.dollarBox.style.outline = `solid 2vh ${green}`
       if (prize === 1) this.client.giftCardBox.style.outline = `solid 2vh ${green}`
     } else {
       this.client.probTextBox.style.display = 'block'
       this.client.outcomeTextBox.style.display = 'none'
+      this.client.wonTextBox.style.display = 'none'
       this.client.dollarBox.style.outline = `solid 2vh ${black}`
       this.client.giftCardBox.style.outline = `solid 2vh ${black}`
     }
@@ -87,7 +100,7 @@ export class Renderer {
     const copyURLDiv = this.client.copyURLDiv
     const bonusDiv = this.client.bonusDiv
     completeTextDiv.innerHTML = ''
-    completeTextDiv.innerHTML += `You will receive $${endowment.toFixed(0)} upon completion.<br>`
+    completeTextDiv.innerHTML += `You will get $${endowment.toFixed(0)} upon completion.<br>`
     const bonusTextA = `You won the $${bonus.toFixed(0)} bonus.`
     const bonusTextB = `You did not win the $${bonus.toFixed(0)} bonus.`
     const giftCardTextA = `You won the $${giftValue.toFixed(0)} Starbucks gift card.`
@@ -96,9 +109,6 @@ export class Renderer {
     completeTextDiv.innerHTML += '<br>'
     completeTextDiv.innerHTML += winPrize ? giftCardTextA : bonusTextA
     giftBitLinkDiv.innerHTML = ''
-    console.log('winPrize', winPrize)
-    console.log('completionURL', completionURL)
-    console.log('giftURL', giftURL)
     paymentLink.href = completionURL
     paymentLink.target = '_self'
     copyURLDiv.style.display = 'none'

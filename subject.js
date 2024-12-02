@@ -14,7 +14,7 @@ export class Subject {
     this.preSurveySubmitted = false
     this.instructionsComplete = false
     this.experimentStarted = false
-    this.practicePeriodsComplete = false
+    this.practicePeriodsComplete = true
     this.step = 'choice1'
     this.stage = 1
     this.state = 'startup'
@@ -42,9 +42,9 @@ export class Subject {
     const nPractice = this.game.numPracticePeriods
     const nPaid = this.game.numPeriods
     const nPeriods = practice === 1 ? nPractice : nPaid
-    arange2(1, nPeriods).forEach(i => {
-      const forced1 = practice * (i % 2 === 0) + (1 - practice) * (Math.random() < 0.4)
-      this.hist[i] = {
+    arange2(1, nPeriods).forEach(period => {
+      const forced1 = practice * (period % 2 === 1) + (1 - practice) * (Math.random() < 0.4)
+      this.hist[period] = {
         choice: { 1: 0, 2: 0 },
         ready: { 1: false, 2: false },
         score: { 1: 0, 2: 0 },

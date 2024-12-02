@@ -58,6 +58,7 @@ export class Server {
     const subjects = this.game.subjects
     this.io.on('connection', (socket) => {
       socket.emit('connected')
+      console.log(`connected ${socket.id}`)
       socket.on('joinGame', (msg) => {
         console.log('joinGame', msg.id)
         if (!subjects[msg.id]) this.game.createSubject(msg, socket)
@@ -180,6 +181,7 @@ export class Server {
         } else { // restart server: solving issue that client does not know that
           this.game.createSubject(msg, socket)
           socket.emit('clientJoined', { id: msg.id })
+          console.log('clientJoined', msg.id)
         }
       })
     })

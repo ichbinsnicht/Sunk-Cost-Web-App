@@ -3,8 +3,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: rgb(55, 64, 64);
-    color: white
+    color: white;
     /* overflow: hidden; */
+}
+a {
+    color: rgb(0, 170, 255);
 }
 #joinGameButton{
     font: 5vmin monospace;
@@ -145,6 +148,9 @@ form {
     padding-left: 10;
     padding-right: 10;
     padding-bottom: 0;
+}
+#instructionsTextDiv3Experiment{
+    text-align: center;  
 }
 #idInput{
     font: 10vmin monospace;

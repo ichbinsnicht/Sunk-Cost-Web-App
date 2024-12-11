@@ -191,15 +191,15 @@ export class Client {
     }
     this.socket.emit('clientUpdate', msg)
     this.beginPracticePeriodsButton.style.display =
-      (!this.practicePeriodsComplete && this.instructions.instructionsPage === 4)
+      (!this.practicePeriodsComplete && this.instructions.instructionsPage === 3)
         ? 'inline'
         : 'none'
     this.beginExperimentButton.style.display =
-      this.practicePeriodsComplete ? 'inline' : 'none'
+      this.practicePeriodsComplete && this.instructions.instructionsPage === 3 ? 'inline' : 'none'
     this.previousPageButton.style.display =
       this.instructions.instructionsPage === 1 ? 'none' : 'inline'
     this.nextPageButton.style.display =
-      this.instructions.instructionsPage === 4 ? 'none' : 'inline'
+      this.instructions.instructionsPage === 3 ? 'none' : 'inline'
     this.instructionsDiv.style.display = 'none'
     this.welcomeDiv.style.display = 'none'
     this.pleaseWaitDiv.style.display = 'none'

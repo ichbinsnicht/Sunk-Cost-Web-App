@@ -54,7 +54,6 @@ export class Renderer {
     } else {
       this.client.dollarBox.style.border = `solid 2vh ${black}`
       this.client.giftCardBox.style.border = `solid 2vh ${black}`
-      this.client.requestText.innerHTML = 'Please select an option.'
       this.client.requestText.style.display = 'block'
       this.client.choiceText.style.display = 'none'
       this.client.prizeText1.innerHTML = 'the option you chose'

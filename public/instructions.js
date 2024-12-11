@@ -5,17 +5,14 @@ export class Instructions {
     this.bonus1 = document.getElementById('bonus1')
     this.bonus2 = document.getElementById('bonus2')
     this.bonus3 = document.getElementById('bonus3')
-    this.bonus4 = document.getElementById('bonus4')
     this.giftValue1 = document.getElementById('giftValue1')
     this.giftValue2 = document.getElementById('giftValue2')
     this.giftValue3 = document.getElementById('giftValue3')
-    this.giftValue4 = document.getElementById('giftValue4')
     this.practicePeriods = document.getElementById('practicePeriods')
     this.instructionsTextDiv1 = document.getElementById('instructionsTextDiv1')
     this.instructionsTextDiv2 = document.getElementById('instructionsTextDiv2')
-    this.instructionsTextDiv3 = document.getElementById('instructionsTextDiv3')
-    this.instructionsTextDiv4Practice = document.getElementById('instructionsTextDiv4Practice')
-    this.instructionsTextDiv4Experiment = document.getElementById('instructionsTextDiv4Experiment')
+    this.instructionsTextDiv3Practice = document.getElementById('instructionsTextDiv3Practice')
+    this.instructionsTextDiv3Experiment = document.getElementById('instructionsTextDiv3Experiment')
     this.instructionsPage = 1
     this.client = client
   }
@@ -30,18 +27,15 @@ export class Instructions {
     this.bonus1.innerHTML = bonus
     this.bonus2.innerHTML = bonus
     this.bonus3.innerHTML = bonus
-    this.bonus4.innerHTML = bonus
     this.giftValue1.innerHTML = giftValue
     this.giftValue2.innerHTML = giftValue
     this.giftValue3.innerHTML = giftValue
-    this.giftValue4.innerHTML = giftValue
     this.practicePeriods.innerHTML = numPracticePeriods
     this.instructionsTextDiv1.style.display = this.instructionsPage === 1 ? 'block' : 'none'
     this.instructionsTextDiv2.style.display = this.instructionsPage === 2 ? 'block' : 'none'
-    this.instructionsTextDiv3.style.display = this.instructionsPage === 3 ? 'block' : 'none'
-    const showPractice4 = this.instructionsPage === 4 && !this.client.practicePeriodsComplete
-    const showExperiment4 = this.instructionsPage === 4 && this.client.practicePeriodsComplete
-    this.instructionsTextDiv4Practice.style.display = showPractice4 ? 'block' : 'none'
-    this.instructionsTextDiv4Experiment.style.display = showExperiment4 ? 'block' : 'none'
+    const showPractice3 = this.instructionsPage === 3 && !this.client.practicePeriodsComplete
+    const showExperiment3 = this.instructionsPage === 3 && this.client.practicePeriodsComplete
+    this.instructionsTextDiv3Practice.style.display = showPractice3 ? 'block' : 'none'
+    this.instructionsTextDiv3Experiment.style.display = showExperiment3 ? 'block' : 'none'
   }
 }

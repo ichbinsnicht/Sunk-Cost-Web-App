@@ -6,6 +6,7 @@ nohup node . & disown
 
 ## Stop Running Program in the Background
 pgrep node
+
 kill [ID]
 
 ## View Background Processes

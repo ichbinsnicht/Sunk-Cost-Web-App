@@ -295,6 +295,21 @@ button {
 .surveyQuestionDiv {
     margin: auto;
 }
+.quizQuestionDiv {
+    margin: auto;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+    outline: 0.2vmin solid white;
+    padding: 1vmin;
+    font: 3vmin monospace;
+    width: 100vmin;
+}
+.quizInput {
+    text-align: center;
+    margin: 2vh;
+    width: 20vh;
+    font: 3vmin monospace;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -323,6 +338,7 @@ legend {
     width: 50vh;
     font: 5vmin monospace;
 }
+
 .postSurveySubmit {
     font: 5vmin monospace;
 }

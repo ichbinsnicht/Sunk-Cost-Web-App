@@ -147,7 +147,7 @@ export class Scribe {
     fs.writeFileSync('links/ledger.csv', ledger.join('\n'))
     fs.writeFileSync('links/remaining.csv', remainingLinks.join('\n'))
     subject.giftURL = link
-    const giftValue = this.server.giftValue
+    const giftValue = this.server.game.giftValue
     subject.giftAmount = subject.winPrize === 1 ? giftValue : 0
   }
 }

@@ -44,6 +44,8 @@ export class Client {
     this.outcomeText = document.getElementById('outcomeText')
     this.feedbackStageText = document.getElementById('feedbackStageText')
     this.currentStageText = document.getElementById('currentStageText')
+    this.understandingQuiz = document.getElementById('understandingQuiz')
+    this.beginExperimentText = document.getElementById('beginExperimentText')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -71,6 +73,7 @@ export class Client {
     this.preSurveyQuestion = 0
     this.startPreSurveyTime = 0
     this.endPreSurveyTime = 0
+    this.quizComplete = false
     this.winPrize = 0
     this.giftURL = ''
     this.period = 1
@@ -194,8 +197,12 @@ export class Client {
       (!this.practicePeriodsComplete && this.instructions.instructionsPage === 3)
         ? 'inline'
         : 'none'
+    const showBeginExperimentButton =
+      this.practicePeriodsComplete &&
+      this.instructions.instructionsPage === 3 &&
+      this.quizComplete
     this.beginExperimentButton.style.display =
-      this.practicePeriodsComplete && this.instructions.instructionsPage === 3 ? 'inline' : 'none'
+      showBeginExperimentButton ? 'inline' : 'none'
     this.previousPageButton.style.display =
       this.instructions.instructionsPage === 1 ? 'none' : 'inline'
     this.nextPageButton.style.display =
@@ -205,6 +212,8 @@ export class Client {
     this.pleaseWaitDiv.style.display = 'none'
     this.preSurveyDiv.style.display = 'none'
     this.interfaceDiv.style.display = 'none'
+    this.understandingQuiz.style.display = this.quizComplete ? 'none' : 'block'
+    this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
     if (this.joined && this.state === 'startup') {
       this.pleaseWaitDiv.style.display = 'block'

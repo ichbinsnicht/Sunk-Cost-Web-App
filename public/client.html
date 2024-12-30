@@ -184,7 +184,7 @@
                         </li>
                     </ul>
                     <br>At the end of the experiment, one of the two stages will be selected at 
-                    random. You will get the option you <span class="yellowText">won</span> 
+                    random with a 50% chance of selecting either stage. You will get the option you <span class="yellowText">won</span> 
                     in the randomly selected stage. 
                     You will also get $<span id="endowment2">X</span> just for participating.
                 </div>
@@ -197,7 +197,30 @@
                     <br><br> Please click the button below to begin the practice periods.
                 </div>
                 <div id="instructionsTextDiv3Experiment">
-                    Please click the button below to begin the experiment.
+                    <div id="understandingQuiz">
+                        Understanding Quiz <br>
+                            <div class="quizQuestionDiv">
+                                <b>Question 1</b>: If you choose the gift card in stage 1, 
+                                what is the probability that you will win the gift card in stage 1? <br>
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> %
+                            </div>
+                            <div class="quizQuestionDiv">
+                                <b>Question 2</b>: If you choose the gift card in stage 2, 
+                                what is the probability that you will win the gift card in stage 2? <br>
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> %
+                            </div>
+                            <div class="quizQuestionDiv">
+                                <b>Question 3</b>: At the end of the experiment, what is the probability 
+                                that you get the item you won in stage 2? <br>
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> %
+                            </div>
+                            <button type="button" id="submitQuiz">
+                                Submit Quiz
+                            </button>
+                    </div>
+                    <div id="beginExperimentText">
+                        Please click the button below to begin the experiment.
+                    </div>
                 </div>
             </div> <br>
             <div>

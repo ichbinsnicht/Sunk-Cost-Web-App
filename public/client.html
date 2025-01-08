@@ -184,7 +184,7 @@
                         </li>
                     </ul>
                     <br>At the end of the experiment, one of the two stages will be selected at 
-                    random with a 50% chance of selecting either stage. You will get the option you <span class="yellowText">won</span> 
+                    random with a <span class="greenText">50%</span> chance of selecting either stage. You will get the option you <span class="yellowText">won</span> 
                     in the randomly selected stage. 
                     You will also get $<span id="endowment2">X</span> just for participating.
                 </div>
@@ -212,9 +212,9 @@
                             <div class="quizQuestionDiv">
                                 <b>Question 3</b>: At the end of the experiment, what is the probability 
                                 that you get the item you won in stage 2? <br>
-                                <input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> %
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %
                             </div>
-                            <button type="button" id="submitQuiz">
+                            <button type="button" id="submitQuizButton" onclick="submitQuiz()">
                                 Submit Quiz
                             </button>
                     </div>
@@ -254,13 +254,17 @@
                 <div class="stageTextDiv">
                     <div id="requestText" class="centerTextBox">Please click to choose an option.</div>
                     <div id="choiceText" class="centerTextBox">
-                        You <span id="choseText">chose</span> the <span id="choseItemText">$1 bonus</span> in this stage.
+                        You <span id="choseText">chose</span> the 
+                        <span id="choseItemText">$1 bonus</span> in 
+                        <span id="currentStageText1">this stage</span>.
                     </div>
                     <div id="wonTextBox">You <span class="yellowText">won</span> the 
-                        <span id="wonItemText">$1 bonus</span> in this stage.</div>
+                        <span id="wonItemText">$1 bonus</span> in 
+                        <span id="currentStageText2">this stage</span>.
+                    </div>
                     <br><br>
                     <div id="probTextBox" class="leftTextBox">
-                        If <span id="currentStageText">this stage</span> is selected, 
+                        If <span id="currentStageText3">this stage</span> is selected, 
                         you will have a 
                         <ul>
                             <li> <b id="probText1">60%</b> chance of getting the 

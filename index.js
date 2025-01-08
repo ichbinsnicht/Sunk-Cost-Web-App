@@ -5,17 +5,7 @@
 // links.csv (for that session)
 
 // TO DO:
-// - client and render classes (client.js, render.js)
-// - discretize choice (gift card or not)
-// - gift card vs bonus as image in rectangle within interface
-// - adding noise in stage 1 (60/40 on whatever you choose/did not choose)
-// - resolve outcome in each stage separately
-// - in stage 2 show history from stage 1 (which is resolved)
-// - update interface to reflect new instructions (Framing: Choose one period at random)
-// - One practice period
-// - Prolific conditioning:
-// -> Think about sample selection (experience, attention; eliminate student restriction)
-// - "we aspire to things we don't have"
+// - run experiment
 
 // Literature:
 // ML and Standard Errors List etc. https://www.linkedin.com/posts/johnalist_using-machine-learning-for-efficient-flexible-activity-7261775230426136579-Jvx-?utm_source=share&utm_medium=member_desktop

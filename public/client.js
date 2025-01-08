@@ -2,6 +2,7 @@ import { io } from './socketIo/socket.io.esm.min.js'
 import { Renderer } from './renderer.js'
 import { Input } from './input.js'
 import { Instructions } from './instructions.js'
+import { Quiz } from './quiz.js'
 
 export class Client {
   constructor () {
@@ -43,7 +44,9 @@ export class Client {
     this.outcomeTextBox = document.getElementById('outcomeTextBox')
     this.outcomeText = document.getElementById('outcomeText')
     this.feedbackStageText = document.getElementById('feedbackStageText')
-    this.currentStageText = document.getElementById('currentStageText')
+    this.currentStageText1 = document.getElementById('currentStageText1')
+    this.currentStageText2 = document.getElementById('currentStageText2')
+    this.currentStageText3 = document.getElementById('currentStageText3')
     this.understandingQuiz = document.getElementById('understandingQuiz')
     this.beginExperimentText = document.getElementById('beginExperimentText')
     this.preSurveyForms = [
@@ -106,6 +109,7 @@ export class Client {
     })
     this.renderer = new Renderer(this)
     this.instructions = new Instructions(this)
+    this.quiz = new Quiz(this)
     this.input = new Input(this)
     this.setup()
     window.addEventListener('pageshow', (event) => {

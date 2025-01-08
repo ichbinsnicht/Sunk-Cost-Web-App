@@ -16,13 +16,17 @@ export class Renderer {
     this.client.stageTitle.innerHTML = practiceComplete ? '' : `Practice ${this.client.period} `
     if (this.client.stage === 1) {
       this.client.stageTitle.innerHTML += 'Stage 1'
-      this.client.currentStageText.innerHTML = 'Stage 1'
+      this.client.currentStageText1.innerHTML = 'Stage 1'
+      this.client.currentStageText2.innerHTML = 'Stage 1'
+      this.client.currentStageText3.innerHTML = 'Stage 1'
       this.client.feedbackStageText.innerHTML = 'Stage 1'
       this.client.probText1.innerHTML = '60%'
       this.client.probText2.innerHTML = '40%'
     } else {
       this.client.stageTitle.innerHTML += 'Stage 2'
-      this.client.currentStageText.innerHTML = 'Stage 2'
+      this.client.currentStageText1.innerHTML = 'Stage 2'
+      this.client.currentStageText2.innerHTML = 'Stage 2'
+      this.client.currentStageText3.innerHTML = 'Stage 2'
       this.client.feedbackStageText.innerHTML = 'Stage 2'
       this.client.probText1.innerHTML = '100%'
       this.client.probText2.innerHTML = '0%'

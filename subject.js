@@ -1,4 +1,4 @@
-import { arange2 } from './public/math.js'
+import { arange2, choose } from './public/math.js'
 
 export class Subject {
   constructor (game, msg, socket) {
@@ -42,13 +42,15 @@ export class Subject {
     const nPractice = this.game.numPracticePeriods
     const nPaid = this.game.numPeriods
     const nPeriods = practice === 1 ? nPractice : nPaid
+    const min = choose([0, 34, 67])
     arange2(1, nPeriods).forEach(period => {
-      const forced1 = practice * (period % 2 === 1) + (1 - practice) * (Math.random() < 0.4)
       this.hist[period] = {
         choice: { 1: 0, 2: 0 },
         ready: { 1: false, 2: false },
-        score: { 1: 0, 2: 0 },
-        forced: { 1: forced1, 2: 0 }
+        score: { 1: 0, 2: 0 }, // vestigial code
+        forced: { 1: 0, 2: 0 }, // vestigial code
+        min,
+        max: min + 33 // 3 treatment regions
       }
     })
     console.log('this.hist', this.hist)

@@ -1,3 +1,9 @@
+:root{
+    --sliderMin: 30%;
+    --sliderMax: 70%;
+    --hiddenColor: rgba(177, 172, 172); 
+    --showColor: rgb(0, 255, 0);
+}
 body {
     width: 100%;
     margin: 0;
@@ -228,6 +234,44 @@ form {
     margin-right: auto;
     padding-top: 2vh;
     padding-bottom: 2vh;
+}
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 1vmin;
+    width: 100vmin;
+    background: white;
+    cursor: pointer;
+    outline: none;
+    border-radius: 16px;
+}
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 3vmin; /* Set a specific slider handle width */
+    height: 3vmin; /* Slider handle height */
+    cursor: pointer; /* Cursor on hover */
+    background: #007bff; /* Blue handle */
+    border-radius: 50%;
+    border: none;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 3vmin; /* Set a specific slider handle width */
+    height: 3vmin; /* Slider handle height */
+    cursor: pointer; /* Cursor on hover */
+    background: #007bff;
+    border-radius: 50%;
+    border: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, var(--hiddenColor) var(--sliderMin), var(--showColor) var(--sliderMin), var(--showColor) var(--sliderMax), var(--hiddenColor)  var(--sliderMax));
+    border-radius: 3vmin;
+}
+/* For Firefox */
+input[type="range"]::-moz-range-track {
+    background: linear-gradient(to right, var(--hiddenColor) var(--sliderMin), var(--showColor) var(--sliderMin), var(--showColor) var(--sliderMax), var(--hiddenColor)  var(--sliderMax));
+    border-radius: 3vmin;
 }
 #stageDiv {
     flex-direction: column;

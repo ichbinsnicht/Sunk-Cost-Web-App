@@ -8,7 +8,7 @@ export class Game {
     this.subjects = {}
     this.numPracticePeriods = 2 // 2 practice periods (internal: 1)
     this.numPeriods = 1 // 1 period, numPeriods > numPracticePeriods (internal: 1)
-    this.choice1Length = 30 // 30 secs choice1 (lab: 15, internal: 3)
+    this.choice1Length = 10000 // 30 secs choice1 (lab: 15, internal: 3)
     this.feedback1Length = 15 // 15 secs choice1 (lab: 5, internal: 3)
     this.choice2Length = 30 // 30 secs choice1 (lab: 15, internal: 3)
     this.feedback2Length = 15 // 15 secs choice1 (lab: 5, internal: 3)

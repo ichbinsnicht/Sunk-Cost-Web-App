@@ -25,8 +25,6 @@ export class Client {
     this.giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
     this.copyURLDiv = document.getElementById('copyURLDiv')
     this.bonusDiv = document.getElementById('bonusDiv')
-    this.dollarBox = document.getElementById('dollarBox')
-    this.giftCardBox = document.getElementById('giftCardBox')
     this.countdownText = document.getElementById('countdownText')
     this.requestText = document.getElementById('requestText')
     this.choiceText = document.getElementById('choiceText')

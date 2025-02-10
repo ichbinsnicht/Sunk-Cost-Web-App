@@ -7,7 +7,11 @@ export class Renderer {
 
   draw () {
     window.requestAnimationFrame(() => this.draw())
-    if (this.client.input == null) return
+    if (this.client.input == null) return // guard statement
+    const sliderMin = this.client.hist[this.client.period].min
+    const sliderMax = this.client.hist[this.client.period].max
+    document.documentElement.style.setProperty('--sliderMin', `${sliderMin}%`)
+    document.documentElement.style.setProperty('--sliderMax', `${sliderMax}%`)
     this.input = this.client.input
     this.drawing = true
     this.client.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
@@ -31,33 +35,20 @@ export class Renderer {
       this.client.probText1.innerHTML = '100%'
       this.client.probText2.innerHTML = '0%'
     }
-    const black = 'rgb(0, 0, 0, 0)'
-    const green = 'rgb(0, 255, 0, 1)'
-    const blue = 'rgb(0, 0, 255, 1)'
-    this.client.dollarBox.style.outline = `solid 2vh ${black}`
-    this.client.giftCardBox.style.outline = `solid 2vh ${black}`
-    this.client.dollarBox.style.border = `solid 2vh ${black}`
-    this.client.giftCardBox.style.border = `solid 2vh ${black}`
     if (this.client.input.clicked) {
       const choice = this.client.choice[this.client.stage]
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
       if (choice === 0) {
-        this.client.dollarBox.style.border = `solid 2vh ${blue}`
-        this.client.giftCardBox.style.border = `solid 2vh ${black}`
         this.client.choseItemText.innerHTML = '$1 bonus'
         this.client.prizeText1.innerHTML = '$1 bonus'
         this.client.prizeText2.innerHTML = '$6 Starbucks gift card'
       } else {
-        this.client.dollarBox.style.border = `solid 2vh ${black}`
-        this.client.giftCardBox.style.border = `solid 2vh ${blue}`
         this.client.choseItemText.innerHTML = '$6 Starbucks gift card'
         this.client.prizeText1.innerHTML = '$6 Starbucks gift card'
         this.client.prizeText2.innerHTML = '$1 bonus'
       }
     } else {
-      this.client.dollarBox.style.border = `solid 2vh ${black}`
-      this.client.giftCardBox.style.border = `solid 2vh ${black}`
       this.client.requestText.style.display = 'block'
       this.client.choiceText.style.display = 'none'
       this.client.prizeText1.innerHTML = 'the option you chose'
@@ -78,14 +69,10 @@ export class Renderer {
       this.client.wonItemText.innerHTML = `${prizeText}`
       this.client.wonItemText.style.color = forced ? 'rgb(255, 0, 0)' : 'rgb(0, 136, 255)'
       this.client.outcomeText.style.color = forced ? 'rgb(255, 0, 0)' : 'rgb(0, 136, 255)'
-      if (prize === 0) this.client.dollarBox.style.outline = `solid 2vh ${green}`
-      if (prize === 1) this.client.giftCardBox.style.outline = `solid 2vh ${green}`
     } else {
       this.client.probTextBox.style.display = 'block'
       this.client.outcomeTextBox.style.display = 'none'
       this.client.wonTextBox.style.display = 'none'
-      this.client.dollarBox.style.outline = `solid 2vh ${black}`
-      this.client.giftCardBox.style.outline = `solid 2vh ${black}`
     }
     this.writeOutcome()
   }

@@ -138,23 +138,22 @@ export class Server {
           const step = subject.step
           const stateInterface = subject.state === 'interface'
           const histPeriod = subject.hist[msg.period]
-          const choosing = step === 'choice1' || step === 'choice2'
-          if (stateInterface & choosing) histPeriod.ready[msg.stage] = true
+          const choosing = step === 'choice'
+          if (stateInterface & choosing) histPeriod.ready = true
         }
         this.scribe.updateClickFile(msg)
       })
       socket.on('clientUpdate', (msg) => {
         const subject = this.game.subjects[msg.id]
         if (subject) {
-          subject.clicked = msg.clicked
+          subject.chosen = msg.chosen
           const step = subject.step
           const histPeriod = subject.hist[msg.period]
-          const choosing = step === 'choice1' || step === 'choice2'
+          const choosing = step === 'choice'
           const stateInterface = subject.state === 'interface'
           if (subject.period === msg.period && step === msg.step) {
             if (stateInterface && choosing) {
-              histPeriod.choice[msg.stage] = msg.currentChoice
-              histPeriod.score[msg.stage] = msg.currentScore
+              histPeriod.choice = msg.currentChoice
             }
           }
           const reply = {
@@ -165,7 +164,6 @@ export class Server {
             numPracticePeriods: this.game.numPracticePeriods,
             endowment: this.game.endowment,
             step: subject.step,
-            stage: subject.stage,
             countdown: subject.countdown,
             outcomeRandom: subject.outcomeRandom,
             winPrize: subject.winPrize,

@@ -16,7 +16,7 @@ export class Renderer {
     this.input = this.client.input
     this.drawing = true
     this.client.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
-    const feedback = this.client.step === 'feedback1' || this.client.step === 'feedback2'
+    const feedback = this.client.step === 'feedback'
     const practiceComplete = this.client.practicePeriodsComplete
     this.client.stageTitle.innerHTML = practiceComplete ? '' : `Practice ${this.client.period} `
     if (this.client.stage === 1) {
@@ -24,7 +24,7 @@ export class Renderer {
       this.client.currentStageText1.innerHTML = 'Stage 1'
       this.client.currentStageText2.innerHTML = 'Stage 1'
       this.client.currentStageText3.innerHTML = 'Stage 1'
-      this.client.feedbackStageText.innerHTML = 'Stage 1'
+      this.client.feedbackStageText.innerHTML = 'Stage 1 Feedback'
       this.client.probText1.innerHTML = '60%'
       this.client.probText2.innerHTML = '40%'
     } else {
@@ -36,8 +36,8 @@ export class Renderer {
       this.client.probText1.innerHTML = '100%'
       this.client.probText2.innerHTML = '0%'
     }
-    if (this.client.input.clicked) {
-      const choice = this.client.choice[this.client.stage]
+    if (this.client.input.chosen) {
+      const choice = this.client.choice
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
       if (choice === 0) {
@@ -62,14 +62,13 @@ export class Renderer {
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
       this.client.wonTextBox.style.display = 'block'
-      const forced = this.client.forced[this.client.stage]
-      const choice = this.client.choice[this.client.stage]
-      const prize = forced ? 1 - choice : choice
+      const choice = this.client.choice
+      const prize = choice
       const prizeText = prize === 0 ? '$1 bonus' : '$6 Starbucks gift card'
       this.client.outcomeText.innerHTML = `${prizeText}`
       this.client.wonItemText.innerHTML = `${prizeText}`
-      this.client.wonItemText.style.color = forced ? 'rgb(255, 0, 0)' : 'rgb(0, 136, 255)'
-      this.client.outcomeText.style.color = forced ? 'rgb(255, 0, 0)' : 'rgb(0, 136, 255)'
+      this.client.wonItemText.style.color = 'rgb(0, 136, 255)'
+      this.client.outcomeText.style.color = 'rgb(255, 0, 0)'
     } else {
       this.client.probTextBox.style.display = 'block'
       this.client.outcomeTextBox.style.display = 'none'

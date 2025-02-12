@@ -4,7 +4,7 @@ export class Input {
     this.renderer = client.renderer
     this.instructions = client.instructions
     this.mouseX = 50
-    this.clicked = false
+    this.chosen = false
     this.joinGame()
     window.beginPreSurvey = () => this.beginPreSurvey()
     window.nextPreSurveyForm = () => this.nextPreSurveyForm()
@@ -20,14 +20,14 @@ export class Input {
     window.onmousedown = (event) => this.onmousedown(event)
     this.slider = document.getElementById('slider')
     this.slider.addEventListener('input', () => {
+      this.chosen = true
       document.documentElement.style.setProperty('--thumbOpacity', 1)
       const sliderMin = this.client.hist[this.client.period].min
       const sliderMax = this.client.hist[this.client.period].max
       if (this.slider.value < sliderMin) this.slider.value = sliderMin
       if (this.slider.value > sliderMax) this.slider.value = sliderMax
       const choice = this.slider.value / 100
-      this.client.choice[this.client.stage] = choice
-      this.client.score[this.client.stage] = choice // potential redundancy
+      this.client.choice = choice
     })
   }
 
@@ -85,7 +85,7 @@ export class Input {
   }
 
   beginPracticePeriods () {
-    this.clicked = false
+    this.chosen = false
     const msg = { id: this.client.id }
     this.client.beginPracticePeriodsButton.style.display = 'none'
     this.client.socket.emit('beginPracticePeriods', msg)
@@ -93,7 +93,7 @@ export class Input {
   }
 
   beginExperiment () {
-    this.clicked = false
+    this.chosen = false
     const msg = { id: this.client.id }
     this.client.socket.emit('beginExperiment', msg)
   }
@@ -119,12 +119,6 @@ export class Input {
     console.log('this.client.countdown', this.client.countdown)
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
-    this.updateChoice()
-    const stepChoice1 = this.client.step === 'choice1'
-    const stepChoice2 = this.client.step === 'choice2'
-    const stepChoice = stepChoice1 || stepChoice2
-    const stateInterface = this.client.state === 'interface'
-    if (stateInterface && stepChoice) this.clicked = true
     const msg = {
       id: this.client.id,
       study: this.client.study,
@@ -138,15 +132,5 @@ export class Input {
       mouseX: this.mouseX
     }
     this.client.socket.emit('clientClick', msg)
-  }
-
-  updateChoice () {
-    if (this.client.step === 'choice1' || this.client.step === 'choice2') {
-      const choice = this.mouseX < 0 ? 0 : 1
-      this.client.choice[this.client.stage] = choice
-      const forced = this.client.forced[this.client.stage]
-      const score = forced * (1 - choice) + (1 - forced) * choice
-      this.client.score[this.client.stage] = score
-    }
   }
 }

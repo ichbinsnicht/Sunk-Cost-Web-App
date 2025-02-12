@@ -42,8 +42,8 @@ export class Scribe {
   createDataFile () {
     this.dataStream = fs.createWriteStream(`data/${this.dateString}-data.csv`)
     let csvString = 'study,session,subjectStartTime, subjectSurveyEndTime, subjectExperimentEndTime,'
-    csvString += 'period,practice,id,forced1,'
-    csvString += 'choice1,choice2,score1,score2,endowment,bonus,giftValue,'
+    csvString += 'period,practice,id,'
+    csvString += 'choice1,choice2,endowment,bonus,giftValue,'
     csvString += 'winPrize,totalCost,earnings,giftAmount'
     csvString += '\n'
     this.dataStream.write(csvString)
@@ -57,9 +57,7 @@ export class Scribe {
     csvString += `${subject.study},${subject.session},${subject.startTime},`
     csvString += `${subject.preSurveyEndTime},${subject.experimentEndTime},${subject.period},`
     csvString += `${1 - subject.practicePeriodsComplete},${subject.id},`
-    csvString += `${subject.hist[subject.period].forced[1]},`
     csvString += `${subject.hist[subject.period].choice[1]},${subject.hist[subject.period].choice[2]},`
-    csvString += `${subject.hist[subject.period].score[1]},${subject.hist[subject.period].score[2]},`
     csvString += `${endowment},${bonus},${giftValue},`
     csvString += `${subject.winPrize},${subject.totalCost},${subject.earnings},${subject.giftAmount}`
     csvString += '\n'

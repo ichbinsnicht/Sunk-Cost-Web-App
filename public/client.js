@@ -82,9 +82,7 @@ export class Client {
     this.stage = 1
     this.countdown = 60 // seconds
     this.time = 0
-    this.choice = { 1: 0, 2: 0 }
-    this.score = { 1: 0, 2: 0 }
-    this.forced = { 1: 0, 2: 0 }
+    this.choice = 0
     this.hist = {}
     this.practicePeriodsComplete = false
     this.engagement = 0
@@ -130,7 +128,6 @@ export class Client {
       this.period = msg.period
       this.hist = msg.hist
       this.choice = this.hist[this.period].choice
-      this.score = this.hist[this.period].score
       console.log('hist', this.hist)
       setInterval(() => this.update(), 10)
       setInterval(() => this.measureEngagement(), 1000)
@@ -144,12 +141,6 @@ export class Client {
     })
     this.socket.on('serverUpdateClient', (msg) => {
       this.joined = true
-      const changePeriod =
-        this.period !== msg.period ||
-        this.experimentStarted !== msg.experimentStarted
-      if (changePeriod) {
-        this.score = { 1: 0, 2: 0 }
-      }
       if (this.state !== 'preSurvey' && msg.state === 'preSurvey') {
         this.startPreSurveyTime = Date.now()
       }
@@ -158,12 +149,8 @@ export class Client {
         console.log('msg.period', msg.period)
         console.log('msg.step', msg.step)
       }
-      if (this.stage !== msg.stage) {
-        this.input.clicked = false
-      }
       this.instructions.updateInstructions()
       this.step = msg.step
-      this.stage = msg.stage
       this.experimentStarted = msg.experimentStarted
       this.practicePeriodsComplete = msg.practicePeriodsComplete
       this.numPracticePeriods = msg.numPracticePeriods
@@ -174,7 +161,6 @@ export class Client {
       this.winPrize = msg.winPrize
       this.giftValue = msg.giftValue
       this.endowment = msg.endowment
-      this.forced = msg.hist[msg.period].forced
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL
       this.state = msg.state
@@ -182,7 +168,6 @@ export class Client {
   }
 
   update () {
-    if (this.step === 'choice1' || this.step === 'choice2') this.input.updateChoice()
     const msg = {
       id: this.id,
       study: this.study,
@@ -190,10 +175,10 @@ export class Client {
       period: this.period,
       step: this.step,
       stage: this.stage,
-      currentChoice: this.choice[this.stage],
-      currentScore: this.score[this.stage],
-      clicked: this.input.clicked
+      currentChoice: this.choice, // change currentChoice to choice
+      chosen: this.input.chosen
     }
+    console.log('this.input.chosen', this.input.chosen)
     this.socket.emit('clientUpdate', msg)
     this.beginPracticePeriodsButton.style.display =
       (!this.practicePeriodsComplete && this.instructions.instructionsPage === 3)

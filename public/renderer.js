@@ -8,6 +8,7 @@ export class Renderer {
   draw () {
     window.requestAnimationFrame(() => this.draw())
     if (this.client.input == null) return // guard statement
+    if (this.client.hist[this.client.period] == null) return // guard statement
     const sliderMin = this.client.hist[this.client.period].min
     const sliderMax = this.client.hist[this.client.period].max
     document.documentElement.style.setProperty('--sliderMin', `${sliderMin}%`)

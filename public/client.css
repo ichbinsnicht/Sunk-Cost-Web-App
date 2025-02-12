@@ -3,6 +3,7 @@
     --sliderMax: 70%;
     --hiddenColor: rgba(177, 172, 172); 
     --showColor: rgb(0, 255, 0);
+    --thumbOpacity: 0;
 }
 body {
     width: 100%;
@@ -255,6 +256,7 @@ input[type="range"]::-webkit-slider-thumb {
     background: #007bff; /* Blue handle */
     border-radius: 50%;
     border: none;
+    opacity: var(--thumbOpacity);
 }
 input[type="range"]::-moz-range-thumb {
     width: 3vmin; /* Set a specific slider handle width */
@@ -263,6 +265,7 @@ input[type="range"]::-moz-range-thumb {
     background: #007bff;
     border-radius: 50%;
     border: none;
+    opacity: var(--thumbOpacity);
 }
 input[type="range"]::-webkit-slider-runnable-track {
     background: linear-gradient(to right, var(--hiddenColor) var(--sliderMin), var(--showColor) var(--sliderMin), var(--showColor) var(--sliderMax), var(--hiddenColor)  var(--sliderMax));

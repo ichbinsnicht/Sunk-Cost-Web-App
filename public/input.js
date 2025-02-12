@@ -18,6 +18,17 @@ export class Input {
     window.copyGiftLink = () => this.copyGiftLink()
     window.onkeydown = (event) => this.onkeydown(event)
     window.onmousedown = (event) => this.onmousedown(event)
+    this.slider = document.getElementById('slider')
+    this.slider.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--thumbOpacity', 1)
+      const sliderMin = this.client.hist[this.client.period].min
+      const sliderMax = this.client.hist[this.client.period].max
+      if (this.slider.value < sliderMin) this.slider.value = sliderMin
+      if (this.slider.value > sliderMax) this.slider.value = sliderMax
+      const choice = this.slider.value / 100
+      this.client.choice[this.client.stage] = choice
+      this.client.score[this.client.stage] = choice // potential redundancy
+    })
   }
 
   joinGame () { // method of class Input

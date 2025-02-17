@@ -106,7 +106,7 @@ export class Server {
           const reply = {
             id: subject.id
           }
-          if (subject.winPrize) sendMesssage(subject.id, `Your gift card is here: ${subject.giftURL}`)
+          if (subject.winGiftCard) sendMesssage(subject.id, `Your gift card is here: ${subject.giftURL}`)
           socket.emit('paymentComplete', reply)
         }
       })
@@ -121,7 +121,7 @@ export class Server {
             countdown: subject.countdown,
             state: subject.state,
             earnings: subject.earnings,
-            winPrize: subject.winPrize,
+            winGiftCard: subject.winGiftCard,
             practice: !subject.practicePeriodsComplete
           }
         })
@@ -166,7 +166,7 @@ export class Server {
             step: subject.step,
             countdown: subject.countdown,
             outcomeRandom: subject.outcomeRandom,
-            winPrize: subject.winPrize,
+            winGiftCard: subject.winGiftCard,
             giftValue: this.game.giftValue,
             totalCost: subject.totalCost,
             earnings: subject.earnings,

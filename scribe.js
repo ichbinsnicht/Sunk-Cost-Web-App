@@ -44,7 +44,7 @@ export class Scribe {
     let csvString = 'study,session,subjectStartTime, subjectSurveyEndTime, subjectExperimentEndTime,'
     csvString += 'period,practice,id,'
     csvString += 'choice1,choice2,endowment,bonus,giftValue,'
-    csvString += 'winPrize,totalCost,earnings,giftAmount'
+    csvString += 'winGiftCard,totalCost,earnings,giftAmount'
     csvString += '\n'
     this.dataStream.write(csvString)
   }
@@ -59,7 +59,7 @@ export class Scribe {
     csvString += `${1 - subject.practicePeriodsComplete},${subject.id},`
     csvString += `${subject.hist[subject.period].choice[1]},${subject.hist[subject.period].choice[2]},`
     csvString += `${endowment},${bonus},${giftValue},`
-    csvString += `${subject.winPrize},${subject.totalCost},${subject.earnings},${subject.giftAmount}`
+    csvString += `${subject.winGiftCard},${subject.totalCost},${subject.earnings},${subject.giftAmount}`
     csvString += '\n'
     this.dataStream.write(csvString)
   }
@@ -108,17 +108,17 @@ export class Scribe {
 
   createPaymentFile () {
     this.paymentStream = fs.createWriteStream(`data/${this.dateString}-payment.csv`)
-    const csvString = 'date,id,earnings,winPrize,giftAmount,link\n'
+    const csvString = 'date,id,earnings,winGiftCard,giftAmount,link\n'
     this.paymentStream.write(csvString)
   }
 
   updatePaymentFile (subject) {
     subject.experimentEndTime = this.getDateString()
-    if (subject.winPrize) this.assignGift(subject)
+    if (subject.winGiftCard) this.assignGift(subject)
     this.updateDataFile(subject)
     const date = subject.startTime.slice(0, 10)
     let csvString = `${date},${subject.id},${subject.earnings.toFixed(0)},`
-    csvString += `${subject.winPrize},${subject.giftAmount},`
+    csvString += `${subject.winGiftCard},${subject.giftAmount},`
     csvString += `${subject.giftURL}\n`
     this.paymentStream.write(csvString)
   }
@@ -128,7 +128,7 @@ export class Scribe {
   }
 
   updateBonusFile (subject) {
-    if (subject.winPrize === 0) {
+    if (subject.winGiftCard === 0) {
       const bonus = this.server.game.bonus
       const csvString = `${subject.id},${bonus.toFixed(2)}\n`
       this.bonusStream.write(csvString)
@@ -146,6 +146,6 @@ export class Scribe {
     fs.writeFileSync('links/remaining.csv', remainingLinks.join('\n'))
     subject.giftURL = link
     const giftValue = this.server.game.giftValue
-    subject.giftAmount = subject.winPrize === 1 ? giftValue : 0
+    subject.giftAmount = subject.winGiftCard === 1 ? giftValue : 0
   }
 }

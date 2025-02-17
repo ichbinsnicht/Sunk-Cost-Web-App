@@ -242,39 +242,19 @@
         </div>
         <div id="interfaceDiv">  
             <div id="stageDiv" >
-                <div id="stageTitle">Stage 1</div>
+                <div id="stepTitle">Choice</div>
                 <div class="stageImageDiv">
                     <img src="Dollar.jpg" class="prizeImage">
                     <input id="slider" type="range" min="0" max="100" value="50">
                     <img src="GiftCard.png" class="prizeImage">
                 </div>
                 <div class="stageTextDiv">
-                    <div id="requestText" class="centerTextBox">Please use the slider to select a probability.</div>
+                    <div id="requestText" class="centerTextBox">Please use the slider to select your probabilities.</div>
                     <div id="choiceText" class="centerTextBox">
-                        You <span id="choseText">chose</span> the 
-                        <span id="choseItemText">$1 bonus</span> in 
-                        <span id="currentStageText1">this stage</span>.
-                    </div>
-                    <div id="wonTextBox">You <span class="yellowText">won</span> the 
-                        <span id="wonItemText">$1 bonus</span> in 
-                        <span id="currentStageText2">this stage</span>.
-                    </div>
-                    <br><br>
-                    <div id="probTextBox" class="leftTextBox">
-                        If <span id="currentStageText3">this stage</span> is selected, 
-                        you will have a 
-                        <ul>
-                            <li> <b id="probText1">60%</b> chance of getting the 
-                                <span id="prizeText1">the option you chose</span>.
-                            </li>
-                            <li> <b id="probText2">40%</b> chance of getting the 
-                                <span id="prizeText2">the other option</span>.
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="outcomeTextBox" class="leftTextBox"> 
-                        If <span id="feedbackStageText">this stage</span> is selected,
-                        you will get the <span id="outcomeText">option you chose</span>.
+                        You have a 
+                        <span id="probTextGiftCard">X</span>% chance of winning the $6 Starbucks gift card. <br><br>
+                        You have a 
+                        <span id="probTextBonus">1-X</span>% chance of winning the $1 bonus.
                     </div>
                     <div id="countdownText" class="centerTextBox">Countdown: 10</div>
                 </div>

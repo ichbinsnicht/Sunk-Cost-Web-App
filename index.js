@@ -1,11 +1,13 @@
+// TO DO:
+// - alter instructions
+// - alter quiz
+// - run experiment
+
 // For each session:
 // -----------------------------------
 // remaining.csv (needs to be empty)
 // ledger.csv (needs to be empty)
 // links.csv (for that session)
-
-// TO DO:
-// - run experiment
 
 // Literature:
 // ML and Standard Errors List etc. https://www.linkedin.com/posts/johnalist_using-machine-learning-for-efficient-flexible-activity-7261775230426136579-Jvx-?utm_source=share&utm_medium=member_desktop

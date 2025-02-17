@@ -21,7 +21,7 @@ export class Subject {
     this.countdown = this.game.choice1Length
     this.numPeriods = this.game.numPeriods
     this.numPracticePeriods = this.game.numPracticePeriods
-    this.winPrize = 0
+    this.winGiftCard = 0
     this.giftAmount = 0
     this.giftURL = ''
     this.totalCost = 0
@@ -39,13 +39,13 @@ export class Subject {
     const nPractice = this.game.numPracticePeriods
     const nPaid = this.game.numPeriods
     const nPeriods = practice === 1 ? nPractice : nPaid
-    const min = choose([0, 34, 67])
+    const min = choose([0, 25, 50, 75])
     arange2(1, nPeriods).forEach(period => {
       this.hist[period] = {
         choice: 0,
         ready: false,
         min,
-        max: min + 33 // 3 treatment regions
+        max: min + 25 // 4 treatment regions
       }
     })
     console.log('this.hist', this.hist)
@@ -55,7 +55,8 @@ export class Subject {
   }
 
   calculateOutcome () {
-    this.earnings = this.game.endowment + this.game.bonus * (1 - this.winPrize)
+    this.winGiftCard = Math.random() < this.hist[1].choice ? 1 : 0
+    this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard)
   }
 
   update () { // add presurvey
@@ -63,9 +64,10 @@ export class Subject {
       this.state = 'welcome'
     }
     if (this.state === 'interface') {
-      this.countdown = Math.max(this.countdown - 1, 0)
-      console.log('this.chosen', this.chosen)
-      if (this.step === 'choice' && this.countdown <= 0 && this.chosen) { // end choice1
+      if (this.chosen) {
+        this.countdown = Math.max(this.countdown - 1, 0)
+      }
+      if (this.step === 'choice' && this.countdown <= 0) { // end choice1
         this.calculateOutcome()
         this.countdown = this.game.feedback1Length
         this.step = 'feedback'

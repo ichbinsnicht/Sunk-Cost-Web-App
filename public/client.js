@@ -28,25 +28,15 @@ export class Client {
     this.countdownText = document.getElementById('countdownText')
     this.requestText = document.getElementById('requestText')
     this.choiceText = document.getElementById('choiceText')
-    this.choseText = document.getElementById('choseText')
-    this.choseItemText = document.getElementById('choseItemText')
-    this.wonText = document.getElementById('wonText')
-    this.wonItemText = document.getElementById('wonItemText')
-    this.wonTextBox = document.getElementById('wonTextBox')
-    this.prizeText1 = document.getElementById('prizeText1')
-    this.prizeText2 = document.getElementById('prizeText2')
-    this.probText1 = document.getElementById('probText1')
-    this.probText2 = document.getElementById('probText2')
-    this.stageTitle = document.getElementById('stageTitle')
-    this.probTextBox = document.getElementById('probTextBox')
-    this.outcomeTextBox = document.getElementById('outcomeTextBox')
-    this.outcomeText = document.getElementById('outcomeText')
+    this.choseText = document.getElementById('choseText') // potential vestigial code
+    this.choseItemText = document.getElementById('choseItemText') // potential vestigial code
+    this.stepTitle = document.getElementById('stepTitle')
+    this.probTextGiftCard = document.getElementById('probTextGiftCard')
+    this.probTextBonus = document.getElementById('probTextBonus')
     this.feedbackStageText = document.getElementById('feedbackStageText')
-    this.currentStageText1 = document.getElementById('currentStageText1')
-    this.currentStageText2 = document.getElementById('currentStageText2')
-    this.currentStageText3 = document.getElementById('currentStageText3')
     this.understandingQuiz = document.getElementById('understandingQuiz')
     this.beginExperimentText = document.getElementById('beginExperimentText')
+    this.slider = document.getElementById('slider')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -75,7 +65,7 @@ export class Client {
     this.startPreSurveyTime = 0
     this.endPreSurveyTime = 0
     this.quizComplete = false
-    this.winPrize = 0
+    this.winGiftCard = 0
     this.giftURL = ''
     this.period = 1
     this.step = 'choice1'
@@ -158,7 +148,7 @@ export class Client {
       this.period = msg.period
       this.hist = msg.hist
       this.bonus = msg.bonus
-      this.winPrize = msg.winPrize
+      this.winGiftCard = msg.winGiftCard
       this.giftValue = msg.giftValue
       this.endowment = msg.endowment
       this.completionURL = msg.completionURL
@@ -178,7 +168,6 @@ export class Client {
       currentChoice: this.choice, // change currentChoice to choice
       chosen: this.input.chosen
     }
-    console.log('this.input.chosen', this.input.chosen)
     this.socket.emit('clientUpdate', msg)
     this.beginPracticePeriodsButton.style.display =
       (!this.practicePeriodsComplete && this.instructions.instructionsPage === 3)
@@ -202,6 +191,8 @@ export class Client {
     this.understandingQuiz.style.display = this.quizComplete ? 'none' : 'block'
     this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
+    this.slider.disabled = this.step !== 'choice'
+    console.log('this.step', this.step)
     if (this.joined && this.state === 'startup') {
       this.pleaseWaitDiv.style.display = 'block'
     }

@@ -104,7 +104,7 @@ export class Input {
   }
 
   goToGiftCard () {
-    if (this.client.winPrize) setTimeout(() => { window.location.href = this.client.giftURL }, 100)
+    if (this.client.winGiftCard) setTimeout(() => { window.location.href = this.client.giftURL }, 100)
   }
 
   copyGiftLink () {

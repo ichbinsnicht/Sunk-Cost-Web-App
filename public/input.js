@@ -18,17 +18,6 @@ export class Input {
     window.copyGiftLink = () => this.copyGiftLink()
     window.onkeydown = (event) => this.onkeydown(event)
     window.onmousedown = (event) => this.onmousedown(event)
-    this.slider = document.getElementById('slider')
-    this.slider.addEventListener('input', () => {
-      this.chosen = true
-      document.documentElement.style.setProperty('--thumbOpacity', 1)
-      const sliderMin = this.client.hist[this.client.period].min
-      const sliderMax = this.client.hist[this.client.period].max
-      if (this.slider.value < sliderMin) this.slider.value = sliderMin
-      if (this.slider.value > sliderMax) this.slider.value = sliderMax
-      const choice = this.slider.value / 100
-      this.client.choice = choice
-    })
   }
 
   joinGame () { // method of class Input
@@ -119,6 +108,7 @@ export class Input {
     console.log('this.client.countdown', this.client.countdown)
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
+    console.log('this.mouseX', this.mouseX)
     const msg = {
       id: this.client.id,
       study: this.client.study,
@@ -130,6 +120,10 @@ export class Input {
       state: this.client.state,
       countdown: this.client.countdown,
       mouseX: this.mouseX
+    }
+    if (this.client.step === 'choice' & this.client.state === 'interface') {
+      this.chosen = true
+      this.client.choice = this.mouseX > 0 ? 1 : 0
     }
     this.client.socket.emit('clientClick', msg)
   }

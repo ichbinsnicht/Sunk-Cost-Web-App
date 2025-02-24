@@ -2,6 +2,8 @@ export class Renderer {
   constructor (client) {
     this.client = client
     this.input = client.input
+    this.cardImageDiv = document.getElementById('cardImageDiv')
+    this.dollarImageDiv = document.getElementById('dollarImageDiv')
     this.draw()
   }
 
@@ -9,34 +11,35 @@ export class Renderer {
     window.requestAnimationFrame(() => this.draw())
     if (this.client.input == null) return // guard statement
     if (this.client.hist[this.client.period] == null) return // guard statement
-    const sliderMin = this.client.hist[this.client.period].min
-    const sliderMax = this.client.hist[this.client.period].max
-    document.documentElement.style.setProperty('--sliderMin', `${sliderMin}%`)
-    document.documentElement.style.setProperty('--sliderMax', `${sliderMax}%`)
     this.input = this.client.input
     this.drawing = true
     this.client.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
     const feedback = this.client.step === 'feedback'
     this.client.stepTitle.innerHTML = 'Choice'
+    console.log('this.chosen', this.client.input.chosen)
     if (this.client.input.chosen) {
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
       this.client.probTextGiftCard.innerHTML = `${(this.client.choice * 100).toFixed(0)}`
       this.client.probTextBonus.innerHTML = `${(100 - this.client.choice * 100).toFixed(0)}`
+      const choice1 = this.client.choice === 1
+      this.cardImageDiv.style.outlineColor = choice1 ? 'rgb(0, 0, 255)' : 'rgba(0, 0, 0, 0)'
+      this.dollarImageDiv.style.outlineColor = choice1 ? 'rgba(0, 0, 0, 0)' : 'rgb(0, 0, 255)'
     } else {
       this.client.requestText.style.display = 'block'
       this.client.choiceText.style.display = 'none'
+      this.cardImageDiv.style.outlineColor = 'rgba(0, 0, 0, 0)'
+      this.dollarImageDiv.style.outlineColor = 'rgba(0, 0, 0, 0)'
     }
     if (feedback) {
       this.client.stepTitle.innerHTML = ' Feedback'
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
-      this.client.wonTextBox.style.display = 'block'
       const choice = this.client.choice
       const prize = choice
-      const prizeText = prize === 0 ? '$1 bonus' : '$6 Starbucks gift card'
-      this.client.wonItemText.innerHTML = `${prizeText}`
-      this.client.wonItemText.style.color = 'rgb(0, 136, 255)'
+      // const prizeText = prize === 0 ? '$1 bonus' : '$6 Starbucks gift card'
+      // this.client.wonItemText.innerHTML = `${prizeText}`
+      // this.client.wonItemText.style.color = 'rgb(0, 136, 255)'
     }
     this.writeOutcome()
   }

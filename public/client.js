@@ -36,7 +36,6 @@ export class Client {
     this.feedbackStageText = document.getElementById('feedbackStageText')
     this.understandingQuiz = document.getElementById('understandingQuiz')
     this.beginExperimentText = document.getElementById('beginExperimentText')
-    this.slider = document.getElementById('slider')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -68,7 +67,7 @@ export class Client {
     this.winGiftCard = 0
     this.giftURL = ''
     this.period = 1
-    this.step = 'choice1'
+    this.step = 'choice'
     this.stage = 1
     this.countdown = 60 // seconds
     this.time = 0
@@ -139,6 +138,12 @@ export class Client {
         console.log('msg.period', msg.period)
         console.log('msg.step', msg.step)
       }
+      if (this.period !== msg.period) {
+        console.log('msg.period', msg.period)
+        console.log('this.period', this.period)
+        this.input.chosen = false
+        console.log('this.input.chosen', this.input.chosen)
+      }
       this.instructions.updateInstructions()
       this.step = msg.step
       this.experimentStarted = msg.experimentStarted
@@ -191,8 +196,6 @@ export class Client {
     this.understandingQuiz.style.display = this.quizComplete ? 'none' : 'block'
     this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
-    this.slider.disabled = this.step !== 'choice'
-    console.log('this.step', this.step)
     if (this.joined && this.state === 'startup') {
       this.pleaseWaitDiv.style.display = 'block'
     }

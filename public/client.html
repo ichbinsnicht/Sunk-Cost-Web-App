@@ -243,7 +243,7 @@
         <div id="interfaceDiv">  
             <div id="stageDiv" >
                 <div id="stepTitle">Choice</div>
-                <div class="stageImageDiv">
+                <div id="stageImageDiv">
                     <div class="prizeImageDiv" id="dollarImageDiv">
                         <img src="Dollar.jpg" class="prizeImage">
                     </div>
@@ -251,13 +251,17 @@
                         <img src="GiftCard.png" class="prizeImage">
                     </div>
                 </div>
+
                 <div class="stageTextDiv">
-                    <div id="requestText" class="centerTextBox">Please use the slider to select your probabilities.</div>
+                    <div id="requestText" class="centerTextBox">Please click to choose an option.</div>
                     <div id="choiceText" class="centerTextBox">
-                        You have a 
-                        <span id="probTextGiftCard">X</span>% chance of winning the $6 Starbucks gift card. <br><br>
-                        You have a 
-                        <span id="probTextBonus">1-X</span>% chance of winning the $1 bonus.
+                        You chose the <span id="choiceSpan">X</span>.
+                    </div>
+                    <div id="forcedText" class="centerTextBox">
+                        You were <span style="color: red;">forced</span> to select the <span id="forcedSpan">Y</span>.
+                    </div>
+                    <div id="unforcedText" class="centerTextBox">
+                        You selected the <span id="unforcedSpan">X</span>.
                     </div>
                     <div id="countdownText" class="centerTextBox">Countdown: 10</div>
                 </div>

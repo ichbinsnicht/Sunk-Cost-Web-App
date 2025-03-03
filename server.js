@@ -172,6 +172,7 @@ export class Server {
             earnings: subject.earnings,
             hist: subject.hist,
             bonus: this.game.bonus,
+            forcedDirection: subject.forcedDirection,
             completionURL: subject.state === 'experimentComplete' ? this.completionURL : '',
             giftURL: subject.state === 'experimentComplete' ? subject.giftURL : ''
           }

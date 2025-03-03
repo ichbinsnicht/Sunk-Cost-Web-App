@@ -31,8 +31,6 @@ export class Client {
     this.choseText = document.getElementById('choseText') // potential vestigial code
     this.choseItemText = document.getElementById('choseItemText') // potential vestigial code
     this.stepTitle = document.getElementById('stepTitle')
-    this.probTextGiftCard = document.getElementById('probTextGiftCard')
-    this.probTextBonus = document.getElementById('probTextBonus')
     this.feedbackStageText = document.getElementById('feedbackStageText')
     this.understandingQuiz = document.getElementById('understandingQuiz')
     this.beginExperimentText = document.getElementById('beginExperimentText')
@@ -54,6 +52,8 @@ export class Client {
         window.nextPreSurveyForm(event)
       }
     })
+    this.stageImageDiv = document.getElementById('stageImageDiv')
+    this.stageImageDiv.style.flexDirection = Math.random() < 0.5 ? 'row' : 'row-reverse'
 
     // variables
     this.state = 'startup'
@@ -81,6 +81,7 @@ export class Client {
     this.giftValue = 0
     this.endowment = 0
     this.completionURL = ''
+    this.forcedDirection = 0
 
     this.socket = io()
     // URL: http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
@@ -143,6 +144,7 @@ export class Client {
         console.log('this.period', this.period)
         this.input.chosen = false
         console.log('this.input.chosen', this.input.chosen)
+        this.stageImageDiv.style.flexDirection = Math.random() < 0.5 ? 'row' : 'row-reverse'
       }
       this.instructions.updateInstructions()
       this.step = msg.step
@@ -159,6 +161,7 @@ export class Client {
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL
       this.state = msg.state
+      this.forcedDirection = msg.forcedDirection
     })
   }
 

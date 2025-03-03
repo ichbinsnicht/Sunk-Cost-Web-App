@@ -246,7 +246,7 @@ ul{
     margin-top: 0;
     margin-bottom: 0;
 }
-.stageImageDiv {
+#stageImageDiv {
     flex-direction: row;
     display: flex;
     justify-content: space-evenly;

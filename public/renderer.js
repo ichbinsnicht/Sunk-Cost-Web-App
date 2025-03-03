@@ -4,6 +4,13 @@ export class Renderer {
     this.input = client.input
     this.cardImageDiv = document.getElementById('cardImageDiv')
     this.dollarImageDiv = document.getElementById('dollarImageDiv')
+    this.forcedText = document.getElementById('forcedText')
+    this.unforcedText = document.getElementById('unforcedText')
+    this.countdownText = document.getElementById('countdownText')
+    this.choiceSpan = document.getElementById('choiceSpan')
+    this.forcedSpan = document.getElementById('forcedSpan')
+    this.unforcedSpan = document.getElementById('unforcedSpan')
+    this.countdownSpan = document.getElementById('countdownSpan')
     this.draw()
   }
 
@@ -16,30 +23,51 @@ export class Renderer {
     this.client.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
     const feedback = this.client.step === 'feedback'
     this.client.stepTitle.innerHTML = 'Choice'
-    console.log('this.chosen', this.client.input.chosen)
+    this.forcedText.style.display = 'none'
+    this.unforcedText.style.display = 'block'
+    this.unforcedText.style.visibility = 'hidden'
+    const forcedDirection = this.client.forcedDirection
+    const giftString = '$6 gift card'
+    const dollarString = '$1 bonus'
+    this.forcedSpan.innerHTML = forcedDirection === 1 ? giftString : dollarString
     if (this.client.input.chosen) {
+      this.countdownText.style.display = 'block'
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
-      this.client.probTextGiftCard.innerHTML = `${(this.client.choice * 100).toFixed(0)}`
-      this.client.probTextBonus.innerHTML = `${(100 - this.client.choice * 100).toFixed(0)}`
       const choice1 = this.client.choice === 1
+      this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
+      this.unforcedSpan.innerHTML = choice1 ? giftString : dollarString
       this.cardImageDiv.style.outlineColor = choice1 ? 'rgb(0, 0, 255)' : 'rgba(0, 0, 0, 0)'
       this.dollarImageDiv.style.outlineColor = choice1 ? 'rgba(0, 0, 0, 0)' : 'rgb(0, 0, 255)'
     } else {
+      this.countdownText.style.display = 'none'
       this.client.requestText.style.display = 'block'
       this.client.choiceText.style.display = 'none'
       this.cardImageDiv.style.outlineColor = 'rgba(0, 0, 0, 0)'
       this.dollarImageDiv.style.outlineColor = 'rgba(0, 0, 0, 0)'
     }
     if (feedback) {
+      const choice1 = this.client.choice === 1
+      this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
+      this.unforcedSpan.innerHTML = choice1 ? giftString : dollarString
+      const forced = this.client.hist[this.client.period].forced
+      const opposite = this.client.forcedDirection !== this.client.choice
+      this.forcedText.style.display = forced && opposite ? 'block' : 'none'
+      this.unforcedText.style.display = forced && opposite ? 'none' : 'block'
+      this.unforcedText.style.visibility = 'visible'
+      this.countdownText.style.display = 'block'
       this.client.stepTitle.innerHTML = ' Feedback'
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
-      const choice = this.client.choice
-      const prize = choice
-      // const prizeText = prize === 0 ? '$1 bonus' : '$6 Starbucks gift card'
-      // this.client.wonItemText.innerHTML = `${prizeText}`
-      // this.client.wonItemText.style.color = 'rgb(0, 136, 255)'
+      if (forced && opposite) {
+        const forced1 = this.client.forcedDirection === 1
+        this.cardImageDiv.style.outlineColor = forced1 ? 'rgb(255, 0, 0)' : 'rgba(0, 0, 0, 0)'
+        this.dollarImageDiv.style.outlineColor = forced1 ? 'rgba(0, 0, 0, 0)' : 'rgb(255, 0, 0)'
+      } else {
+        const choice1 = this.client.choice === 1
+        this.cardImageDiv.style.outlineColor = choice1 ? 'rgb(0, 0, 255)' : 'rgba(0, 0, 0, 0)'
+        this.dollarImageDiv.style.outlineColor = choice1 ? 'rgba(0, 0, 0, 0)' : 'rgb(0, 0, 255)'
+      }
     }
     this.writeOutcome()
   }

@@ -1,6 +1,7 @@
 // TO DO:
-// - alter instructions
-// - alter quiz
+// - update data recording (forcing)
+// - update instructions
+// - update quiz
 // - run experiment
 
 // For each session:

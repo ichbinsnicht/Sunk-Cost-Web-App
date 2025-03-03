@@ -27,6 +27,7 @@ export class Subject {
     this.totalCost = 0
     this.earnings = 0
     this.chosen = false
+    this.forcedDirection = choose([0, 1]) // 0 - money, 1 - gift card
     this.hist = {}
     this.selectedStage = Math.random() < 0.5 ? 1 : 2 // make sure to use it
     this.setupHist()
@@ -39,13 +40,11 @@ export class Subject {
     const nPractice = this.game.numPracticePeriods
     const nPaid = this.game.numPeriods
     const nPeriods = practice === 1 ? nPractice : nPaid
-    const min = choose([0, 25, 50, 75])
     arange2(1, nPeriods).forEach(period => {
       this.hist[period] = {
         choice: 0,
         ready: false,
-        min,
-        max: min + 25 // 4 treatment regions
+        forced: Math.random() < 0.4
       }
     })
     console.log('this.hist', this.hist)
@@ -55,7 +54,9 @@ export class Subject {
   }
 
   calculateOutcome () {
-    this.winGiftCard = Math.random() < this.hist[1].choice ? 1 : 0
+    const choice = this.hist[this.period].choice
+    const forced = this.hist[this.period].forced
+    this.winGiftCard = forced ? this.forcedDirection : choice
     this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard)
   }
 

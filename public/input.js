@@ -108,6 +108,8 @@ export class Input {
     console.log('this.client.countdown', this.client.countdown)
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
+    const direction = this.client.stageImageDiv.style.flexDirection
+    console.log('direction', direction)
     console.log('this.mouseX', this.mouseX)
     const msg = {
       id: this.client.id,
@@ -122,8 +124,10 @@ export class Input {
       mouseX: this.mouseX
     }
     if (this.client.step === 'choice' & this.client.state === 'interface') {
+      const right = direction === 'row' ? 1 : 0
+      const left = direction === 'row' ? 0 : 1
       this.chosen = true
-      this.client.choice = this.mouseX > 0 ? 1 : 0
+      this.client.choice = this.mouseX > 0 ? right : left
     }
     this.client.socket.emit('clientClick', msg)
   }

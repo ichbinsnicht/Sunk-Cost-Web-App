@@ -18,7 +18,6 @@ export class Client {
     this.nextPageButton = document.getElementById('nextPageButton')
     this.interfaceDiv = document.getElementById('interfaceDiv')
     this.experimentCompleteDiv = document.getElementById('experimentCompleteDiv')
-    this.completeButtonDiv = document.getElementById('completeButtonDiv')
     this.paymentDiv = document.getElementById('paymentDiv')
     this.completeTextDiv = document.getElementById('completeTextDiv')
     this.paymentLink = document.getElementById('paymentLink')
@@ -34,6 +33,7 @@ export class Client {
     this.feedbackStageText = document.getElementById('feedbackStageText')
     this.understandingQuiz = document.getElementById('understandingQuiz')
     this.beginExperimentText = document.getElementById('beginExperimentText')
+    this.nextPeriodButton = document.getElementById('nextPeriodButton')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -81,7 +81,7 @@ export class Client {
     this.giftValue = 0
     this.endowment = 0
     this.completionURL = ''
-    this.forcedDirection = 0
+    this.forcedGiftCard = 0
 
     this.socket = io()
     // URL: http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
@@ -123,10 +123,7 @@ export class Client {
       setInterval(() => this.measureEngagement(), 1000)
     })
     this.socket.on('paymentComplete', (msg) => {
-      this.completeButtonDiv.style.display = 'none'
-      this.paymentDiv.style.display = 'block'
       console.log('paymentComplete', msg)
-      console.log('completeButtonDiv', this.completeButtonDiv.style.display)
       console.log('paymentDiv', this.paymentDiv.style.display)
     })
     this.socket.on('serverUpdateClient', (msg) => {
@@ -161,7 +158,8 @@ export class Client {
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL
       this.state = msg.state
-      this.forcedDirection = msg.forcedDirection
+      this.forcedGiftCard = msg.forcedGiftCard
+      this.numPeriods = msg.numPeriods
     })
   }
 
@@ -196,6 +194,7 @@ export class Client {
     this.pleaseWaitDiv.style.display = 'none'
     this.preSurveyDiv.style.display = 'none'
     this.interfaceDiv.style.display = 'none'
+    this.nextPeriodButton.style.display = 'none'
     this.understandingQuiz.style.display = this.quizComplete ? 'none' : 'block'
     this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
@@ -213,6 +212,12 @@ export class Client {
     }
     if (this.joined && this.state === 'interface') {
       this.interfaceDiv.style.display = 'flex'
+    }
+    if (this.step === 'feedback' && this.countdown <= 0) {
+      this.nextPeriodButton.style.display = 'block'
+    }
+    if (this.period >= this.numPeriods) {
+      this.nextPeriodButton.innerHTML = 'See Results'
     }
     if (this.joined && this.state === 'experimentComplete') {
       this.experimentCompleteDiv.style.display = 'block'

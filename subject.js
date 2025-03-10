@@ -1,4 +1,5 @@
 import { arange2, choose } from './public/math.js'
+import { sendMesssage } from './prolific.js'
 
 export class Subject {
   constructor (game, msg, socket) {
@@ -13,12 +14,11 @@ export class Subject {
     this.experimentEndTime = ''
     this.preSurveySubmitted = false
     this.instructionsComplete = false
-    this.experimentStarted = false
     this.practicePeriodsComplete = true
     this.step = 'choice'
     this.state = 'startup'
     this.period = 1
-    this.countdown = this.game.choice1Length
+    this.countdown = this.game.choiceLength
     this.numPeriods = this.game.numPeriods
     this.numPracticePeriods = this.game.numPracticePeriods
     this.winGiftCard = 0
@@ -27,7 +27,7 @@ export class Subject {
     this.totalCost = 0
     this.earnings = 0
     this.chosen = false
-    this.forcedDirection = choose([0, 1]) // 0 - money, 1 - gift card
+    this.forcedGiftCard = choose([0, 1]) // 0 - money, 1 - gift card
     this.hist = {}
     this.selectedStage = Math.random() < 0.5 ? 1 : 2 // make sure to use it
     this.setupHist()
@@ -37,10 +37,7 @@ export class Subject {
     const practice = 1 * !this.practicePeriodsComplete
     console.log('practice', practice)
     console.log('this.practicePeriodsComplete', this.practicePeriodsComplete)
-    const nPractice = this.game.numPracticePeriods
-    const nPaid = this.game.numPeriods
-    const nPeriods = practice === 1 ? nPractice : nPaid
-    arange2(1, nPeriods).forEach(period => {
+    arange2(1, this.numPeriods).forEach(period => {
       this.hist[period] = {
         choice: 0,
         ready: false,
@@ -48,16 +45,34 @@ export class Subject {
       }
     })
     console.log('this.hist', this.hist)
-    console.log('nPeriods', nPeriods)
-    console.log('nPaid', nPaid)
-    console.log('nPractice', nPractice)
   }
 
   calculateOutcome () {
     const choice = this.hist[this.period].choice
     const forced = this.hist[this.period].forced
-    this.winGiftCard = forced ? this.forcedDirection : choice
+    this.winGiftCard = forced ? this.forcedGiftCard : choice
     this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard)
+  }
+
+  nextPeriod () {
+    this.game.server.scribe.updateDataFile(this)
+    if (this.period >= this.numPeriods) {
+      this.step = 'end'
+      this.state = 'experimentComplete'
+      this.game.server.scribe.updatePaymentFile(this)
+      this.game.server.scribe.updateBonusFile(this)
+      const reply = { id: this.id }
+      if (this.winGiftCard) {
+        sendMesssage(this.id, `Your gift card is here: ${this.giftURL}`)
+      }
+      this.socket.emit('paymentComplete', reply)
+      return
+    }
+    this.countdown = this.game.choiceLength
+    this.period += 1
+    this.step = 'choice'
+    console.log('this.period', this.period)
+    console.log('this.numPeriods', this.numPeriods)
   }
 
   update () { // add presurvey
@@ -70,36 +85,8 @@ export class Subject {
       }
       if (this.step === 'choice' && this.countdown <= 0) { // end choice1
         this.calculateOutcome()
-        this.countdown = this.game.feedback1Length
+        this.countdown = this.game.feedbackLength
         this.step = 'feedback'
-      }
-      if (this.step === 'feedback' && this.countdown <= 0) { // end feedback2
-        if (this.practicePeriodsComplete === false) {
-          this.game.server.scribe.updateDataFile(this)
-        }
-        const maxPeriod = this.experimentStarted ? this.numPeriods : this.numPracticePeriods
-        console.log('this.period', this.period)
-        console.log('maxPeriod', maxPeriod)
-        console.log('this.numPeriods', this.numPeriods)
-        console.log('this.numPracticePeriods', this.numPracticePeriods)
-        console.log('experimentStarted', this.experimentStarted)
-        if (this.period >= maxPeriod) {
-          if (this.experimentStarted) {
-            this.step = 'end'
-            this.state = 'experimentComplete'
-          } else {
-            this.state = 'instructions'
-            this.practicePeriodsComplete = true
-            this.period = 1
-            this.step = 'choice'
-            this.countdown = this.game.choice1Length
-            this.setupHist()
-          }
-        } else {
-          this.countdown = this.game.choice1Length
-          this.period += 1
-          this.step = 'choice'
-        }
       }
     }
   }

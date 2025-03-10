@@ -5,7 +5,6 @@ import https from 'https'
 import { Server as SocketIoServer } from 'socket.io'
 import { fileURLToPath } from 'url'
 import fs from 'fs-extra'
-import { sendMesssage } from './prolific.js'
 import { Game } from './game.js'
 import { Scribe } from './scribe.js'
 
@@ -98,18 +97,6 @@ export class Server {
           subject.state = 'interface'
         }
       })
-      socket.on('requestPayment', (msg) => {
-        const subject = subjects[msg.id]
-        if (subject.state === 'experimentComplete') {
-          this.scribe.updatePaymentFile(subject)
-          this.scribe.updateBonusFile(subject)
-          const reply = {
-            id: subject.id
-          }
-          if (subject.winGiftCard) sendMesssage(subject.id, `Your gift card is here: ${subject.giftURL}`)
-          socket.emit('paymentComplete', reply)
-        }
-      })
       socket.on('managerUpdate', (msg) => {
         const ids = Object.keys(subjects)
         const subjectsArray = Object.values(subjects)
@@ -143,6 +130,11 @@ export class Server {
         }
         this.scribe.updateClickFile(msg)
       })
+      socket.on('nextPeriod', (msg) => {
+        const subject = this.game.subjects[msg.id]
+        const ready = subject.step === 'feedback' && subject.countdown <= 0
+        if (ready) subject.nextPeriod()
+      })
       socket.on('clientUpdate', (msg) => {
         const subject = this.game.subjects[msg.id]
         if (subject) {
@@ -172,7 +164,8 @@ export class Server {
             earnings: subject.earnings,
             hist: subject.hist,
             bonus: this.game.bonus,
-            forcedDirection: subject.forcedDirection,
+            numPeriods: this.game.numPeriods,
+            forcedGiftCard: subject.forcedGiftCard,
             completionURL: subject.state === 'experimentComplete' ? this.completionURL : '',
             giftURL: subject.state === 'experimentComplete' ? subject.giftURL : ''
           }

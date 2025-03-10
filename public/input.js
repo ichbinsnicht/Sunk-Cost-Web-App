@@ -13,11 +13,17 @@ export class Input {
     window.nextInstructionsPage = () => this.nextInstructionsPage()
     window.beginPracticePeriods = () => this.beginPracticePeriods()
     window.beginExperiment = () => this.beginExperiment()
-    window.requestPayment = () => this.requestPayment()
     window.goToGiftCard = () => this.goToGiftCard()
     window.copyGiftLink = () => this.copyGiftLink()
     window.onkeydown = (event) => this.onkeydown(event)
     window.onmousedown = (event) => this.onmousedown(event)
+    this.client.nextPeriodButton.onclick = () => this.nextPeriod()
+  }
+
+  nextPeriod () {
+    console.log('nextPeriod')
+    const msg = { id: this.client.id }
+    this.client.socket.emit('nextPeriod', msg)
   }
 
   joinGame () { // method of class Input
@@ -85,11 +91,6 @@ export class Input {
     this.chosen = false
     const msg = { id: this.client.id }
     this.client.socket.emit('beginExperiment', msg)
-  }
-
-  requestPayment () {
-    const msg = { id: this.client.id }
-    this.client.socket.emit('requestPayment', msg)
   }
 
   goToGiftCard () {

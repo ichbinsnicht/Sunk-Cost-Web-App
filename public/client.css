@@ -254,6 +254,10 @@ ul{
     padding-top: 2vh;
     padding-bottom: 2vh; 
 }
+#nextPeriodButton {
+    padding: 1vmin; 
+    border-radius: 1vmin;
+}
 .stageTextDiv {
     flex-direction: column;
     display: flex;
@@ -365,20 +369,7 @@ legend {
     margin-right: auto;
     margin-top: 8vh;
 }
-#requestPaymentButton{
-    margin: 2vh;
-    font: 5vmin monospace;
-}
 #paymentDiv{
-    display: none;
-    text-align: center;
-    font: 5vmin monospace;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 8vh;
-}
-#completeButtonDiv{
     display: block;
     text-align: center;
     font: 5vmin monospace;

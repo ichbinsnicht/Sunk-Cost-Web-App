@@ -151,50 +151,28 @@
                     receive either a $<span id="bonus1">X</span> bonus or a 
                     $<span id="giftValue1">X</span> Starbucks gift card.
                     
-                    <img src="GiftCard.png" id="giftImage"/>
-
-                    This experiment will have two stages: stage 1 and stage 2. 
-                    In each stage, you will make a <span class="blueText">choice</span> 
-                    which will affect your <span class="greenText">chance</span> 
-                    of getting the $<span id="bonus2">X</span> bonus or 
-                    the $<span id="giftValue2">X</span> Starbucks gift card.</div>
-                <div id="instructionsTextDiv2">
-                    In each stage, you will choose either the $<span id="bonus3">X</span> bonus or 
-                    the $<span id="giftValue3">X</span> Starbucks gift card.<br><br>
-                    In Stage 1:<br>
-                    <ul>
-                        <li> There will be a <span class="greenText">60%</span> chance that you 
-                            <span class="yellowText">win</span> 
-                            <span class="blueText">the option you chose</span>.
-                        </li>
-                        <li> There will be a <span class="greenText">40%</span> chance that you 
-                            <span class="yellowText">win</span> 
-                            <span class="redText">the other option</span>.
-                        </li>
-                    </ul>
-                    <br>In Stage 2:<br>
-                    <ul>
-                        <li> There will be a <span class="greenText">100%</span> chance that you 
-                            <span class="yellowText">win</span> 
-                            <span class="blueText">the option you chose</span>. 
-                        </li>
-                        <li> There will be a <span class="greenText">0%</span> chance that you 
-                            <span class="yellowText">win</span>
-                            <span class="redText">the other option</span>.
-                        </li>
-                    </ul>
-                    <br>At the end of the experiment, one of the two stages will be selected at 
-                    random with a <span class="greenText">50%</span> chance of selecting either stage. You will get the option you <span class="yellowText">won</span> 
-                    in the randomly selected stage. 
-                    You will also get $<span id="endowment2">X</span> just for participating.
+                    <div id="instructionsImageDiv">
+                        <div class="instructionsPrizeImageDiv">
+                            <img src="Dollar.jpg" class="instructionsPrizeImage">
+                        </div>
+                        <div class="instructionsPrizeImageDiv">
+                            <img src="GiftCard.png" class="instructionsPrizeImage">
+                        </div>
+                    </div>
                 </div>
-                <div id="instructionsTextDiv3Practice">
-                    First, you will participate in $<span id="practicePeriods">X</span> 
-                    practice periods. 
-                    The practice periods will not affect your final earnings. 
-                    They are just for practice. Afterwards, you will start the experiment. 
-                    
-                    <br><br> Please click the button below to begin the practice periods.
+                <div id="instructionsTextDiv2"> 
+                    This experiment will have multiple periods. In each period, 
+                    you will choose between 
+                    the $<span id="bonus2">X</span> bonus or 
+                    the $<span id="giftValue2">X</span> Starbucks gift card.<br><br>
+
+                    There is a 60% chance that you will select the option you chose.
+                    There is a 40% chance that the computer will 
+                    <span class="redText">force</span> you to select an option.
+
+                    <br><br>At the end of the experiment, one period will be selected at 
+                    random. You will receive the item you selected in that period.
+                    You will also get $<span id="endowment2">X</span> just for participating.
                 </div>
                 <div id="instructionsTextDiv3Experiment">
                     <div id="understandingQuiz">
@@ -230,7 +208,7 @@
                 <button type="button" onclick="nextInstructionsPage()" id="nextPageButton">
                     Next Page
                 </button>
-            </div>
+            </div> 
             <div>
                 <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">
                     Begin Practice

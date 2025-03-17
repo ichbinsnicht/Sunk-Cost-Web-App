@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { arange2, choose } from './public/math.js'
 
 export class Scribe {
   constructor (server) {
@@ -115,7 +116,7 @@ export class Scribe {
 
   createPaymentFile () {
     this.paymentStream = fs.createWriteStream(`data/${this.dateString}-payment.csv`)
-    const csvString = 'date,id,earnings,winGiftCard,giftAmount,link\n'
+    const csvString = 'date,id,period,earnings,winGiftCard,link\n'
     this.paymentStream.write(csvString)
   }
 
@@ -123,8 +124,10 @@ export class Scribe {
     subject.experimentEndTime = this.getDateString()
     if (subject.winGiftCard) this.assignGift(subject)
     const date = subject.startTime.slice(0, 10)
-    let csvString = `${date},${subject.id},${subject.earnings.toFixed(0)},`
-    csvString += `${subject.winGiftCard},${subject.giftAmount},`
+    const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
+    const earnings = subject.hist[subject.randomPeriod].earnings
+    let csvString = `${date},${subject.id},${subject.randomPeriod},${earnings.toFixed(0)},`
+    csvString += `${winGiftCard},`
     csvString += `${subject.giftURL}\n`
     this.paymentStream.write(csvString)
   }
@@ -134,7 +137,8 @@ export class Scribe {
   }
 
   updateBonusFile (subject) {
-    if (subject.winGiftCard === 0) {
+    const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
+    if (winGiftCard === 0) {
       const bonus = this.server.game.bonus
       const csvString = `${subject.id},${bonus.toFixed(2)}\n`
       this.bonusStream.write(csvString)
@@ -151,7 +155,5 @@ export class Scribe {
     fs.writeFileSync('links/ledger.csv', ledger.join('\n'))
     fs.writeFileSync('links/remaining.csv', remainingLinks.join('\n'))
     subject.giftURL = link
-    const giftValue = this.server.game.giftValue
-    subject.giftAmount = subject.winGiftCard === 1 ? giftValue : 0
   }
 }

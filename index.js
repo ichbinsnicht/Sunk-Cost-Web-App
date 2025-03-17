@@ -1,6 +1,4 @@
 // TO DO:
-// - update data recording (forcing)
-// - update instructions
 // - update quiz
 // - run experiment
 

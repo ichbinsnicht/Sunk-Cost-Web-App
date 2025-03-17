@@ -26,6 +26,7 @@ export class Subject {
     this.giftURL = ''
     this.totalCost = 0
     this.earnings = 0
+    this.randomPeriod = choose(arange2(1, this.numPeriods))
     this.chosen = false
     this.forcedGiftCard = choose([0, 1]) // 0 - money, 1 - gift card
     this.hist = {}
@@ -41,7 +42,9 @@ export class Subject {
       this.hist[period] = {
         choice: 0,
         ready: false,
-        forced: Math.random() < 0.4
+        forced: Math.random() < 0.4,
+        winGiftCard: 0,
+        earnings: 0
       }
     })
     console.log('this.hist', this.hist)
@@ -52,6 +55,10 @@ export class Subject {
     const forced = this.hist[this.period].forced
     this.winGiftCard = forced ? this.forcedGiftCard : choice
     this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard)
+    this.hist[this.period].winGiftCard = this.winGiftCard
+    this.hist[this.period].earnings = this.earnings
+    const giftValue = this.game.giftValue
+    this.giftAmount = this.winGiftCard === 1 ? giftValue : 0
   }
 
   nextPeriod () {

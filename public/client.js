@@ -186,7 +186,7 @@ export class Client {
     this.beginExperimentButton.style.display =
       showBeginExperimentButton ? 'inline' : 'none'
     this.previousPageButton.style.display =
-      this.instructions.instructionsPage === 1 ? 'none' : 'inline'
+      this.instructions.instructionsPage === 1 || this.quizComplete ? 'none' : 'inline'
     this.nextPageButton.style.display =
       this.instructions.instructionsPage === 3 ? 'none' : 'inline'
     this.instructionsDiv.style.display = 'none'

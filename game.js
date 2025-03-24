@@ -6,9 +6,9 @@ export class Game {
     this.scribe = this.server.scribe
     this.numSubjects = 0
     this.subjects = {}
-    this.numPeriods = 2 // 1 period, numPeriods > numPracticePeriods (internal: 1)
-    this.choiceLength = 3 // 30 secs choice1 (lab: 15, internal: 3)
-    this.feedbackLength = 2 // 15 secs choice1 (lab: 5, internal: 3)
+    this.numPeriods = 30 // 1 period, numPeriods > numPracticePeriods (internal: 1)
+    this.choiceLength = 2 // 30 secs choice1 (lab: 15, internal: 3)
+    this.feedbackLength = 3 // 15 secs choice1 (lab: 5, internal: 3)
     this.endowment = 2 //  online: 2 {internal: 3}
     this.bonus = 1 // online: {4,6}
     this.giftValue = 6 // online: {6,9}

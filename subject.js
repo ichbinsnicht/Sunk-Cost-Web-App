@@ -11,7 +11,9 @@ export class Subject {
     this.socket = socket
     this.startTime = this.game.server.scribe.getDateString()
     this.preSurveyEndTime = ''
+    this.quizEndTime = ''
     this.experimentEndTime = ''
+    this.quizSubmitted = false
     this.preSurveySubmitted = false
     this.instructionsComplete = false
     this.practicePeriodsComplete = true
@@ -80,6 +82,11 @@ export class Subject {
     this.step = 'choice'
     console.log('this.period', this.period)
     console.log('this.numPeriods', this.numPeriods)
+  }
+
+  onQuizComplete () {
+    this.quizEndTime = this.game.server.scribe.getDateString()
+    this.quizSubmitted = true
   }
 
   update () { // add presurvey

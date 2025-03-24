@@ -89,6 +89,11 @@ export class Server {
           console.log('beginPracticePeriods', msg.id)
         }
       })
+      socket.on('quizComplete', (msg) => {
+        const subject = subjects[msg.id]
+        console.log('quizComplete', subject.id)
+        subject.onQuizComplete()
+      })
       socket.on('beginExperiment', (msg) => {
         const subject = subjects[msg.id]
         if (subject.practicePeriodsComplete && subject.state === 'instructions') {

@@ -11,9 +11,9 @@ export class Quiz {
   }
 
   submitQuiz () {
-    const correctAnswer1 = Number(this.quiz1.value) === 60
-    const correctAnswer2 = Number(this.quiz2.value) === 100
-    const correctAnswer3 = Number(this.quiz3.value) === 50
+    const correctAnswer1 = Number(this.quiz1.value) === 1
+    const correctAnswer2 = Number(this.quiz2.value) === 6
+    const correctAnswer3 = Number(this.quiz3.value) === 40
     if (!correctAnswer1) {
       window.alert('Question 1 is incorrect. Please try again.')
       return
@@ -28,5 +28,6 @@ export class Quiz {
     }
     console.log('All Correct!')
     this.client.quizComplete = true
+    this.client.socket.emit('quizComplete', { id: this.client.id })
   }
 }

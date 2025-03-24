@@ -166,9 +166,9 @@
                     the $<span id="bonus2">X</span> bonus or 
                     the $<span id="giftValue2">X</span> Starbucks gift card.<br><br>
 
-                    There is a 60% chance that you will select the option you chose.
+                    There is a 60% chance that you will automatically select the option you chose.
                     There is a 40% chance that the computer will 
-                    <span class="redText">force</span> you to select an option.
+                    <span class="redText">force</span> you to select an option it chooses.
 
                     <br><br>At the end of the experiment, one period will be selected at 
                     random. You will receive the item you selected in that period.
@@ -178,18 +178,17 @@
                     <div id="understandingQuiz">
                         Understanding Quiz <br>
                             <div class="quizQuestionDiv">
-                                <b>Question 1</b>: If you choose the gift card in stage 1, 
-                                what is the probability that you will win the gift card in stage 1? <br>
-                                <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> %
+                                <b>Question 1</b>: What is the amount of the dollar bonus you might receive? <br>
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> $
                             </div>
                             <div class="quizQuestionDiv">
-                                <b>Question 2</b>: If you choose the gift card in stage 2, 
-                                what is the probability that you will win the gift card in stage 2? <br>
-                                <input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> %
+                                <b>Question 2</b>: What is the amount of the Starbucks gift card you might receive? <br>
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> $
                             </div>
                             <div class="quizQuestionDiv">
-                                <b>Question 3</b>: At the end of the experiment, what is the probability 
-                                that you get the item you won in stage 2? <br>
+                                <b>Question 3</b>: In each period, what is the chance that 
+                                the computer will force you to select an option it chooses?
+                                <br>
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %
                             </div>
                             <button type="button" id="submitQuizButton" onclick="submitQuiz()">

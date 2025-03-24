@@ -1,6 +1,7 @@
 // TO DO:
-// - update quiz
+// set parameters (period time, numbers of periods, etc.)
 // - run experiment
+// - money and gift cards?
 
 // For each session:
 // -----------------------------------

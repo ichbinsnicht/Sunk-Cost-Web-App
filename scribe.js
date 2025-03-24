@@ -1,5 +1,4 @@
 import fs from 'fs'
-import { arange2, choose } from './public/math.js'
 
 export class Scribe {
   constructor (server) {
@@ -42,7 +41,7 @@ export class Scribe {
 
   createDataFile () {
     this.dataStream = fs.createWriteStream(`data/${this.dateString}-data.csv`)
-    let csvString = 'study,session,subjectStartTime, subjectSurveyEndTime, subjectExperimentEndTime,'
+    let csvString = 'study,session,startTime,surveyEndTime,quizEndTime,experimentEndTime,'
     csvString += 'period,id,forced,forcedGiftCard,overruled,'
     csvString += 'choice,endowment,bonus,giftValue,'
     csvString += 'winGiftCard,totalCost,earnings,giftAmount'
@@ -52,6 +51,7 @@ export class Scribe {
 
   updateDataFile (subject) {
     console.log('subject.period', subject.period)
+    if (subject.period >= subject.numPeriods) subject.experimentEndTime = this.getDateString()
     const endowment = this.server.game.endowment
     const bonus = this.server.game.bonus
     const giftValue = this.server.game.giftValue
@@ -61,7 +61,8 @@ export class Scribe {
     const overruled = forcedGiftCard === choice ? 0 : forced
     let csvString = ''
     csvString += `${subject.study},${subject.session},${subject.startTime},`
-    csvString += `${subject.preSurveyEndTime},${subject.experimentEndTime},${subject.period},`
+    csvString += `${subject.preSurveyEndTime},${subject.quizEndTime},`
+    csvString += `${subject.experimentEndTime},${subject.period},`
     csvString += `${subject.id},`
     csvString += `${forced},${forcedGiftCard},${overruled},`
     csvString += `${choice},`
@@ -121,7 +122,6 @@ export class Scribe {
   }
 
   updatePaymentFile (subject) {
-    subject.experimentEndTime = this.getDateString()
     if (subject.winGiftCard) this.assignGift(subject)
     const date = subject.startTime.slice(0, 10)
     const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard

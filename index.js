@@ -1,4 +1,5 @@
 // TO DO:
+// fix issue where people get the money and the gift card (see latest pilot!)
 // set parameters (period time, numbers of periods, etc.)
 // - run experiment
 // - money and gift cards?

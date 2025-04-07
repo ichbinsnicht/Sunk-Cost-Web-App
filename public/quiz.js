@@ -13,7 +13,7 @@ export class Quiz {
   submitQuiz () {
     const correctAnswer1 = Number(this.quiz1.value) === 1
     const correctAnswer2 = Number(this.quiz2.value) === 6
-    const correctAnswer3 = Number(this.quiz3.value) === 40
+    const correctAnswer3 = Number(this.quiz3.value) === 50
     if (!correctAnswer1) {
       window.alert('Question 1 is incorrect. Please try again.')
       return

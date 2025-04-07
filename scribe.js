@@ -122,10 +122,10 @@ export class Scribe {
   }
 
   updatePaymentFile (subject) {
-    if (subject.winGiftCard) this.assignGift(subject)
     const date = subject.startTime.slice(0, 10)
     const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
     const earnings = subject.hist[subject.randomPeriod].earnings
+    if (winGiftCard) this.assignGift(subject)
     let csvString = `${date},${subject.id},${subject.randomPeriod},${earnings.toFixed(0)},`
     csvString += `${winGiftCard},`
     csvString += `${subject.giftURL}\n`

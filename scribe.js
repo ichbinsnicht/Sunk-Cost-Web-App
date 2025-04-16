@@ -42,7 +42,7 @@ export class Scribe {
   createDataFile () {
     this.dataStream = fs.createWriteStream(`data/${this.dateString}-data.csv`)
     let csvString = 'study,session,startTime,surveyEndTime,quizEndTime,experimentEndTime,'
-    csvString += 'period,id,forced,forcedGiftCard,overruled,'
+    csvString += 'period,id,forced,forceDir,overruled,'
     csvString += 'choice,endowment,bonus,giftValue,'
     csvString += 'winGiftCard,totalCost,earnings,giftAmount'
     csvString += '\n'
@@ -56,15 +56,15 @@ export class Scribe {
     const bonus = this.server.game.bonus
     const giftValue = this.server.game.giftValue
     const forced = subject.hist[subject.period].forced ? 1 : 0
-    const forcedGiftCard = subject.forcedGiftCard
+    const forceDir = subject.hist[subject.period].forceDir
     const choice = subject.hist[subject.period].choice
-    const overruled = forcedGiftCard === choice ? 0 : forced
+    const overruled = forceDir === choice ? 0 : forced
     let csvString = ''
     csvString += `${subject.study},${subject.session},${subject.startTime},`
     csvString += `${subject.preSurveyEndTime},${subject.quizEndTime},`
     csvString += `${subject.experimentEndTime},${subject.period},`
     csvString += `${subject.id},`
-    csvString += `${forced},${forcedGiftCard},${overruled},`
+    csvString += `${forced},${forceDir},${overruled},`
     csvString += `${choice},`
     csvString += `${endowment},${bonus},${giftValue},`
     csvString += `${subject.winGiftCard},${subject.totalCost},${subject.earnings},${subject.giftAmount}`

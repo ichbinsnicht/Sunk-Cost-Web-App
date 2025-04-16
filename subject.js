@@ -30,7 +30,6 @@ export class Subject {
     this.earnings = 0
     this.randomPeriod = choose(arange2(1, this.numPeriods))
     this.chosen = false
-    this.forcedGiftCard = choose([0, 1]) // choose([0, 1])  // 0 - money, 1 - gift card
     this.hist = {}
     this.selectedStage = Math.random() < 0.5 ? 1 : 2 // make sure to use it
     this.setupHist()
@@ -45,6 +44,7 @@ export class Subject {
         choice: 0,
         ready: false,
         forced: Math.random() < 0.5,
+        forceDir: choose([0, 1]), // choose([0, 1])  // 0 - money, 1 - gift card
         winGiftCard: 0,
         earnings: 0
       }
@@ -55,7 +55,8 @@ export class Subject {
   calculateOutcome () {
     const choice = this.hist[this.period].choice
     const forced = this.hist[this.period].forced
-    this.winGiftCard = forced ? this.forcedGiftCard : choice
+    const forceDir = this.hist[this.period].forceDir
+    this.winGiftCard = forced ? forceDir : choice
     this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard)
     this.hist[this.period].winGiftCard = this.winGiftCard
     this.hist[this.period].earnings = this.earnings

@@ -26,10 +26,10 @@ export class Renderer {
     this.forcedText.style.display = 'none'
     this.unforcedText.style.display = 'block'
     this.unforcedText.style.visibility = 'hidden'
-    const forcedGiftCard = this.client.forcedGiftCard
+    const forceDir = this.client.hist[this.client.period].forceDir
     const giftString = '$6 gift card'
     const dollarString = '$1 bonus'
-    this.forcedSpan.innerHTML = forcedGiftCard === 1 ? giftString : dollarString
+    this.forcedSpan.innerHTML = forceDir === 1 ? giftString : dollarString
     if (this.client.input.chosen) {
       this.countdownText.style.display = 'block'
       this.client.requestText.style.display = 'none'
@@ -51,7 +51,7 @@ export class Renderer {
       this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
       this.unforcedSpan.innerHTML = choice1 ? giftString : dollarString
       const forced = this.client.hist[this.client.period].forced
-      const opposite = this.client.forcedGiftCard !== this.client.choice
+      const opposite = forceDir !== this.client.choice
       this.forcedText.style.display = forced && opposite ? 'block' : 'none'
       this.unforcedText.style.display = forced && opposite ? 'none' : 'block'
       this.unforcedText.style.visibility = 'visible'
@@ -60,7 +60,7 @@ export class Renderer {
       this.client.requestText.style.display = 'none'
       this.client.choiceText.style.display = 'block'
       if (forced && opposite) {
-        const forced1 = this.client.forcedGiftCard === 1
+        const forced1 = forceDir === 1
         this.cardImageDiv.style.outlineColor = forced1 ? 'rgb(255, 0, 0)' : 'rgba(0, 0, 0, 0)'
         this.dollarImageDiv.style.outlineColor = forced1 ? 'rgba(0, 0, 0, 0)' : 'rgb(255, 0, 0)'
       } else {

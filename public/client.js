@@ -81,7 +81,6 @@ export class Client {
     this.giftValue = 0
     this.endowment = 0
     this.completionURL = ''
-    this.forcedGiftCard = 0
 
     this.socket = io()
     // URL: http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
@@ -158,7 +157,6 @@ export class Client {
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL
       this.state = msg.state
-      this.forcedGiftCard = msg.forcedGiftCard
       this.numPeriods = msg.numPeriods
     })
   }

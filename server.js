@@ -170,7 +170,6 @@ export class Server {
             hist: subject.hist,
             bonus: this.game.bonus,
             numPeriods: this.game.numPeriods,
-            forcedGiftCard: subject.forcedGiftCard,
             completionURL: subject.state === 'experimentComplete' ? this.completionURL : '',
             giftURL: subject.state === 'experimentComplete' ? subject.giftURL : ''
           }

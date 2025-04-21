@@ -43,7 +43,7 @@ export class Subject {
       this.hist[period] = {
         choice: 0,
         ready: false,
-        forced: Math.random() < 0.5,
+        forced: Math.random() < 0.4,
         forceDir: choose([0, 1]), // choose([0, 1])  // 0 - money, 1 - gift card
         winGiftCard: 0,
         earnings: 0

@@ -170,8 +170,8 @@
                     There is a 40% chance that the computer will 
                     <span class="redText">force</span> you to select an option it chooses.
 
-                    <br><br>At the end of the experiment, one period will be selected at 
-                    random. You will receive the item you selected in that period.
+                    <br><br>At the end of the experiment, you will receive the item you 
+                    selected in one randomly selected period. 
                     You will also get $<span id="endowment2">X</span> just for participating.
                 </div>
                 <div id="instructionsTextDiv3Experiment">
@@ -191,6 +191,16 @@
                                 <br>
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %
                             </div>
+                            <div class="quizQuestionDiv">
+                                <b>Question 4</b>: At the end of the experiment, you will receive the item you 
+                                selected in 
+                                <select name="quiz4" id="quiz4">
+                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
+                                    <option value="last" class="mcSelection">the last period.</option>
+                                    <option value="random" class="mcSelection">one randomly selected period.</option>
+                                    <option value="first" class="mcSelection">the first period.</option>
+                                </select>
+                            </div>
                             <button type="button" id="submitQuizButton" onclick="submitQuiz()">
                                 Submit Quiz
                             </button>
@@ -199,7 +209,7 @@
                         Please click the button below to begin the experiment.
                     </div>
                 </div>
-            </div> <br>
+            </div>
             <div>
                 <button type="button" onclick="previousInstructionsPage()" id="previousPageButton">
                     Previous Page

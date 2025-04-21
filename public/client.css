@@ -334,6 +334,12 @@ button {
     font: 3vmin monospace;
     width: 100vmin;
 }
+.mcSelection{
+    font: 3vmin monospace;
+}
+#quiz4 {
+    font: 3vmin monospace;
+}
 .quizInput {
     text-align: center;
     margin: 2vh;

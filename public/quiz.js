@@ -3,6 +3,7 @@ export class Quiz {
     this.quiz1 = document.getElementById('quiz1')
     this.quiz2 = document.getElementById('quiz2')
     this.quiz3 = document.getElementById('quiz3')
+    this.quiz4 = document.getElementById('quiz4')
     this.submitQuizButton = document.getElementById('submitQuizButton')
     this.understandingQuiz = document.getElementById('understandingQuiz')
     this.beginExperimentText = document.getElementById('beginExperimentText')
@@ -14,6 +15,7 @@ export class Quiz {
     const correctAnswer1 = Number(this.quiz1.value) === 1
     const correctAnswer2 = Number(this.quiz2.value) === 6
     const correctAnswer3 = Number(this.quiz3.value) === 40
+    const correctAnswer4 = this.quiz4.value === 'random'
     if (!correctAnswer1) {
       window.alert('Question 1 is incorrect. Please try again.')
       return
@@ -24,6 +26,14 @@ export class Quiz {
     }
     if (!correctAnswer3) {
       window.alert('Question 3 is incorrect. Please try again.')
+      return
+    }
+    if (this.quiz4.value === 'choose') {
+      window.alert('Please select an answer to Question 4.')
+      return
+    }
+    if (!correctAnswer4) {
+      window.alert('Question 4 is incorrect. Please try again.')
       return
     }
     console.log('All Correct!')

@@ -6,6 +6,7 @@ export class Instructions {
     this.bonus2 = document.getElementById('bonus2')
     this.giftValue1 = document.getElementById('giftValue1')
     this.giftValue2 = document.getElementById('giftValue2')
+    this.extraEndowment = document.getElementById('extraEndowment')
     this.instructionsTextDiv1 = document.getElementById('instructionsTextDiv1')
     this.instructionsTextDiv2 = document.getElementById('instructionsTextDiv2')
     this.instructionsTextDiv3Experiment = document.getElementById('instructionsTextDiv3Experiment')
@@ -17,6 +18,7 @@ export class Instructions {
     const endowment = this.client.endowment.toFixed(0)
     const bonus = this.client.bonus.toFixed(0)
     const giftValue = this.client.giftValue.toFixed(0)
+    this.extraEndowment.innerHTML = this.client.extraEndowment.toFixed(0)
     this.endowment1.innerHTML = endowment
     this.endowment2.innerHTML = endowment
     this.bonus1.innerHTML = bonus

@@ -9,7 +9,9 @@ export class Game {
     this.numPeriods = 25 // 25 periods, numPeriods > numPracticePeriods (internal: 1)
     this.choiceLength = 2 // 30 secs choice1 (lab: 15, internal: 3)
     this.feedbackLength = 5 // 15 secs choice1 (lab: 5, internal: 3)
-    this.endowment = 2 //  online: 2 {internal: 3}
+    this.baseEndowment = 2 // 2 (lab: 2, internal: 3)
+    this.extraEndowment = 3
+    this.endowment = this.baseEndowment + this.extraEndowment
     this.bonus = 1 // online: {4,6}
     this.giftValue = 6 // online: {6,9}
     setInterval(() => this.updateSubjects(), 1000)

@@ -145,9 +145,9 @@
         <div id="instructionsDiv"> 
             <div id="instructionsTextDiv">
                 <div id="instructionsTextDiv1">
-                    This is an experiment about decision making. You will receive 
+                    This is an experiment about decision making. You will start with 
                     $<span id="endowment1">X</span> just for participating. 
-                    Depending on the decisions you make, you will also 
+                    Depending on the decisions you make, you may also 
                     receive either a $<span id="bonus1">X</span> bonus or a 
                     $<span id="giftValue1">X</span> Starbucks gift card.
                     
@@ -162,49 +162,73 @@
                 </div>
                 <div id="instructionsTextDiv2"> 
                     This experiment will have multiple periods. In each period, 
-                    you will choose between 
-                    the $<span id="bonus2">X</span> bonus or 
-                    the $<span id="giftValue2">X</span> Starbucks gift card.<br><br>
+                    the computer will randomly choose between 
+                    the $<span id="giftValue2">X</span> Starbucks gift card and 
+                    the $<span id="bonus2">X</span> bonus. Then you will choose between 
+                    these two options.<br><br>
 
-                    There is a 60% chance that you will automatically select the option you chose.
-                    There is a 40% chance that the computer will 
-                    <span class="redText">force</span> you to select an option it chooses.
+                    There is a 50% chance that the computer will be a <span class="redText">dictator</span>. 
+                    If the computer is a dictator, then your <span class="redText">cost will be  
+                    $<span id="extraEndowment">X</span></span> and 
+                    you will be <span class="redText">forced</span> to select the option chosen by the computer.
+                    If the computer is not a dictator, then you will automatically select the option you chose
+                    and your cost will be $0.
 
-                    <br><br>At the end of the experiment, you will receive the item you 
-                    selected in one randomly selected period. 
-                    You will also get $<span id="endowment2">X</span> just for participating.
+                    <br><br>At the end of the experiment, you will get $<span id="endowment2">X</span> just for 
+                    participating. You will also receive the item you selected in one random period
+                    and pay your cost from that period. 
+                    
                 </div>
                 <div id="instructionsTextDiv3Experiment">
                     <div id="understandingQuiz">
                         Understanding Quiz <br>
                             <div class="quizQuestionDiv">
-                                <b>Question 1</b>: What is the amount of the dollar bonus you might receive? <br>
-                                <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> $
+                                <b>Question 1</b>: If the computer is not a dictator and you choose a different option 
+                                from the computer, then what will your cost be? <br>
+                                <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> $</div>
                             </div>
                             <div class="quizQuestionDiv">
-                                <b>Question 2</b>: What is the amount of the Starbucks gift card you might receive? <br>
-                                <input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> $
+                                <b>Question 2</b>: If the computer is a dictator and you choose the same option 
+                                as the computer, then what will your cost be? <br>
+                                <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> $</div>
                             </div>
                             <div class="quizQuestionDiv">
                                 <b>Question 3</b>: In each period, what is the chance that 
-                                the computer will force you to select an option it chooses?
+                                the computer will be a dictator?
                                 <br>
-                                <input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %
-                            </div>
-                            <div class="quizQuestionDiv">
-                                <b>Question 4</b>: At the end of the experiment, you will receive the item you 
-                                selected in 
-                                <select name="quiz4" id="quiz4">
-                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
-                                    <option value="last" class="mcSelection">the last period.</option>
-                                    <option value="random" class="mcSelection">one randomly selected period.</option>
-                                    <option value="first" class="mcSelection">the first period.</option>
-                                </select>
+                                <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %</div>
                             </div>
                             <button type="button" id="submitQuizButton" onclick="submitQuiz()">
                                 Submit Quiz
                             </button>
                     </div>
+                    <div id="instructionsTextDiv4Experiment">
+                        <div id="understandingQuiz">
+                            Understanding Quiz <br>
+                                <div class="quizQuestionDiv">
+                                    <b>Question 4</b>: At the end of the experiment, you will receive the item you 
+                                    selected in 
+                                    <select name="quiz4" id="quiz4">
+                                        <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
+                                        <option value="last" class="mcSelection">the last period.</option>
+                                        <option value="random" class="mcSelection">one randomly selected period.</option>
+                                        <option value="first" class="mcSelection">the first period.</option>
+                                    </select>
+                                </div>
+                                <div class="quizQuestionDiv">
+                                    <b>Question 5</b>: If the computer is a dictator and you choose a different option 
+                                    from the computer, then what will your cost be? <br>
+                                    <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz5" id="quiz5" required> $</div>
+                                </div>
+                                <div class="quizQuestionDiv">
+                                    <b>Question 6</b>: If the computer is not a dictator and you choose the same option 
+                                    as the computer, then what will your cost be? <br>
+                                    <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz6" id="quiz6" required> $</div>
+                                </div>
+                                <button type="button" id="submitQuizButton" onclick="submitQuiz()">
+                                    Submit Quiz
+                                </button>
+                        </div>
                     <div id="beginExperimentText">
                         Please click the button below to begin the experiment.
                     </div>

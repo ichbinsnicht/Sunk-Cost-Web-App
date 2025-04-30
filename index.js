@@ -1,29 +1,28 @@
-// TO DO:
-// Point 1
-// - issue with clients being stuck! (see Prolific messages)
-// set parameters (period time, numbers of periods, etc.)
-// - run experiment
-// - money and gift cards?
-
-// 
+// TO-DO NOW - experimental design adjustments for salient penalty of forcing and revealing forceDir:
+// finish quiz (q5,q6, nextPage button, submit button)
+// interface:
 // - strengthen negative attachment to forcing (resentment of being forced):
 // --> reveal forcedDir in every period
 // --> reveal forced in every period
 // --> penalize subjects when they are forced (regardless of forcedDir & choice)
 // ----> penality through an endowment reduction
 
+// TO DO LATER:
+// set parameters (period time, numbers of periods, etc.)
+// - run experiment
+// - money and gift cards?
 
 // Other thoughts from Vechta:
-// - Hypothetical WTA of starbucks gift card? 
+// - Hypothetical WTA of starbucks gift card?
 // - How often do you visit starbucks?
 // - Strategy method of $6 SB $1 cash (as a control variable)
 
 // failure of current experiment: solution anchoring effect ((3-2), (1-2)  bonus switch)
 // Anchoring - Further Design Thoughts:
-// Stage 1 - Rationality 
+// Stage 1 - Rationality
 // pick bonus more often in T1 than in T2
-// 
-// Stage 2 - Rationality 
+//
+// Stage 2 - Rationality
 // pick bonus equally often for T1 and T2
 
 // Stage 2 - Habit Formation

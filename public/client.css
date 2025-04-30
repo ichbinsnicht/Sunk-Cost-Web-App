@@ -332,7 +332,8 @@ button {
     outline: 0.2vmin solid white;
     padding: 1vmin;
     font: 3vmin monospace;
-    width: 100vmin;
+    width: 120vmin;
+    text-align: left;
 }
 .mcSelection{
     font: 3vmin monospace;
@@ -345,6 +346,9 @@ button {
     margin: 2vh;
     width: 20vh;
     font: 3vmin monospace;
+}
+.quizInputDiv {
+    text-align: center;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

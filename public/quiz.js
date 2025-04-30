@@ -12,9 +12,9 @@ export class Quiz {
   }
 
   submitQuiz () {
-    const correctAnswer1 = Number(this.quiz1.value) === 1
-    const correctAnswer2 = Number(this.quiz2.value) === 6
-    const correctAnswer3 = Number(this.quiz3.value) === 40
+    const correctAnswer1 = Number(this.quiz1.value) === 0
+    const correctAnswer2 = Number(this.quiz2.value) === this.client.extraEndowment
+    const correctAnswer3 = Number(this.quiz3.value) === 50
     const correctAnswer4 = this.quiz4.value === 'random'
     if (!correctAnswer1) {
       window.alert('Question 1 is incorrect. Please try again.')

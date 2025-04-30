@@ -80,6 +80,7 @@ export class Client {
     this.bonus = 0
     this.giftValue = 0
     this.endowment = 0
+    this.extraEndowment = 0
     this.completionURL = ''
 
     this.socket = io()
@@ -154,6 +155,7 @@ export class Client {
       this.winGiftCard = msg.winGiftCard
       this.giftValue = msg.giftValue
       this.endowment = msg.endowment
+      this.extraEndowment = msg.extraEndowment
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL
       this.state = msg.state

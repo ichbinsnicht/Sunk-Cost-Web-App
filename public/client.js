@@ -158,6 +158,9 @@ export class Client {
       this.giftURL = msg.giftURL
       this.state = msg.state
       this.numPeriods = msg.numPeriods
+      if (this.step === 'feedback' & this.state === 'interface') {
+        this.chosen = true
+      }
     })
   }
 

@@ -96,7 +96,7 @@ export class Subject {
       this.state = 'welcome'
     }
     if (this.state === 'interface') {
-      if (this.chosen) {
+      if (this.chosen || this.step === 'feedback') {
         this.countdown = Math.max(this.countdown - 1, 0)
       }
       if (this.step === 'choice' && this.countdown <= 0) { // end choice1

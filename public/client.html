@@ -179,76 +179,77 @@
                     and pay your cost from that period. 
                     
                 </div>
-                <div id="instructionsTextDiv3Experiment">
-                    <div id="understandingQuiz">
+                <div id="instructionsTextDiv3">
+                    <div id="understandingQuiz1" class="centerDiv">
                         Understanding Quiz <br>
-                            <div class="quizQuestionDiv">
-                                <b>Question 1</b>: If the computer is not a dictator and you choose a different option 
-                                from the computer, then what will your cost be? <br>
-                                <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> $</div>
-                            </div>
-                            <div class="quizQuestionDiv">
-                                <b>Question 2</b>: If the computer is a dictator and you choose the same option 
-                                as the computer, then what will your cost be? <br>
-                                <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> $</div>
-                            </div>
-                            <div class="quizQuestionDiv">
-                                <b>Question 3</b>: In each period, what is the chance that 
-                                the computer will be a dictator?
-                                <br>
-                                <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %</div>
-                            </div>
-                            <button type="button" id="submitQuizButton" onclick="submitQuiz()">
-                                Submit Quiz
-                            </button>
-                    </div>
-                    <div id="instructionsTextDiv4Experiment">
-                        <div id="understandingQuiz">
-                            Understanding Quiz <br>
-                                <div class="quizQuestionDiv">
-                                    <b>Question 4</b>: At the end of the experiment, you will receive the item you 
-                                    selected in 
-                                    <select name="quiz4" id="quiz4">
-                                        <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
-                                        <option value="last" class="mcSelection">the last period.</option>
-                                        <option value="random" class="mcSelection">one randomly selected period.</option>
-                                        <option value="first" class="mcSelection">the first period.</option>
-                                    </select>
-                                </div>
-                                <div class="quizQuestionDiv">
-                                    <b>Question 5</b>: If the computer is a dictator and you choose a different option 
-                                    from the computer, then what will your cost be? <br>
-                                    <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz5" id="quiz5" required> $</div>
-                                </div>
-                                <div class="quizQuestionDiv">
-                                    <b>Question 6</b>: If the computer is not a dictator and you choose the same option 
-                                    as the computer, then what will your cost be? <br>
-                                    <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz6" id="quiz6" required> $</div>
-                                </div>
-                                <button type="button" id="submitQuizButton" onclick="submitQuiz()">
-                                    Submit Quiz
-                                </button>
+                        <div class="quizQuestionDiv">
+                            <b>Question 1</b>: If the computer is not a dictator and you choose a different option 
+                            from the computer, then what will your cost be? <br>
+                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> $</div>
                         </div>
-                    <div id="beginExperimentText">
-                        Please click the button below to begin the experiment.
+                        <div class="quizQuestionDiv">
+                            <b>Question 2</b>: If the computer is a dictator and you choose the same option 
+                            as the computer, then what will your cost be? <br>
+                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> $</div>
+                        </div>
+                        <div class="quizQuestionDiv">
+                            <b>Question 3</b>: In each period, what is the chance that 
+                            the computer will be a dictator?
+                            <br>
+                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %</div>
+                        </div>
+                        <button type="button" id="submitQuizButton" onclick="nextPage()">
+                            Submit Quiz
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <button type="button" onclick="previousInstructionsPage()" id="previousPageButton">
-                    Previous Page
-                </button>
-                <button type="button" onclick="nextInstructionsPage()" id="nextPageButton">
-                    Next Page
-                </button>
-            </div> 
-            <div>
-                <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">
-                    Begin Practice
-                </button>
-                <button type="button" onclick="beginExperiment()" id="beginExperimentButton">
-                    Begin Experiment
-                </button>
+                <div id="instructionsTextDiv4">
+                    <div id="understandingQuiz2" class="centerDiv">
+                        Understanding Quiz <br>
+                        <div class="quizQuestionDiv">
+                            <b>Question 4</b>: At the end of the experiment, you will receive the item you 
+                            selected in 
+                            <select name="quiz4" id="quiz4">
+                                <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
+                                <option value="last" class="mcSelection">the last period.</option>
+                                <option value="random" class="mcSelection">one randomly selected period.</option>
+                                <option value="first" class="mcSelection">the first period.</option>
+                            </select>
+                        </div>
+                        <div class="quizQuestionDiv">
+                            <b>Question 5</b>: If the computer is a dictator and you choose a different option 
+                            from the computer, then what will your cost be? <br>
+                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz5" id="quiz5" required> $</div>
+                        </div>
+                        <div class="quizQuestionDiv">
+                            <b>Question 6</b>: If the computer is not a dictator and you choose the same option 
+                            as the computer, then what will your cost be? <br>
+                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz6" id="quiz6" required> $</div>
+                        </div>
+                        <button type="button" id="submitQuizButton" onclick="submitQuiz()">
+                            Submit Quiz
+                        </button>
+                    </div>
+                    <div id="beginExperimentText" class="centerDiv">
+                        Please click the button below to begin the experiment.<br><br>
+                    </div>
+                </div>
+                <div class ="centerDiv">
+                    <button type="button" onclick="previousInstructionsPage()" id="previousPageButton">
+                        Previous Page
+                    </button>
+                    <button type="button" onclick="nextInstructionsPage()" id="nextPageButton">
+                        Next Page
+                    </button>
+                </div> 
+                <div class ="centerDiv">
+                    <button type="button" onclick="beginPracticePeriods()" id="beginPracticePeriodsButton">
+                        Begin Practice
+                    </button>
+                    <button type="button" onclick="beginExperiment()" id="beginExperimentButton">
+                        Begin Experiment
+                    </button>
+                </div>
             </div>
         </div>
         <div id="interfaceDiv">  
@@ -263,17 +264,37 @@
                     </div>
                 </div>
                 <div class="stageTextDiv">
-                    <div id="requestText" class="centerTextBox">Please click to choose an option.</div>
+                    <div id="computerDecisionText" class="centerTextBox">
+                        The computer is choosing an option...
+                    </div>
+                    <div id="computerText" class="centerTextBox">
+                        The computer chose the <span id="computerChoiceSpan">X</span>.
+                    </div>
+                    <div id="requestText" class="centerTextBox">
+                        Please click to choose an option.
+                    </div>
                     <div id="choiceText" class="centerTextBox">
                         You chose the <span id="choiceSpan">X</span>.
                     </div>
+                    <div id="computerDictator" class="centerTextBox">
+                        The computer is a <span style="color: red;">dictator</span> in this period.
+                    </div>
                     <div id="forcedText" class="centerTextBox">
-                        You were <span style="color: red;">forced</span> to select the <span id="forcedSpan">Y</span>.
+                        You were <span style="color: red;">forced</span> to 
+                        select the <span id="forcedSpan">Y</span>.
+                    </div>
+                    <div id="costText" class="centerTextBox">
+                        You paid a <span style="color: red;">$3 cost</span>.
+                    </div>
+                    <div id="computerNotDictator" class="centerTextBox">
+                        The computer is not a dictator in this period.
                     </div>
                     <div id="unforcedText" class="centerTextBox">
                         You selected the <span id="unforcedSpan">X</span>.
                     </div>
-                    <div id="countdownText" class="centerTextBox">Countdown: 10</div>
+                    <div id="countdownText" class="centerTextBox">
+                        Countdown: 10
+                    </div>
                     <div id="nextPeriodText" class="centerTextBox">
                         <button id="nextPeriodButton">Begin Next Period</button>
                     </div>

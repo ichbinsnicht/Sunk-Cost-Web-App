@@ -44,7 +44,7 @@ export class Scribe {
     let csvString = 'study,session,startTime,surveyEndTime,quizEndTime,experimentEndTime,'
     csvString += 'period,id,forced,forceDir,overruled,'
     csvString += 'choice,endowment,bonus,giftValue,'
-    csvString += 'winGiftCard,totalCost,earnings,giftAmount'
+    csvString += 'winGiftCard,totalCost,earnings,giftAmount,randomPeriod'
     csvString += '\n'
     this.dataStream.write(csvString)
   }
@@ -67,7 +67,8 @@ export class Scribe {
     csvString += `${forced},${forceDir},${overruled},`
     csvString += `${choice},`
     csvString += `${endowment},${bonus},${giftValue},`
-    csvString += `${subject.winGiftCard},${subject.totalCost},${subject.earnings},${subject.giftAmount}`
+    csvString += `${subject.winGiftCard},${subject.totalCost},${subject.earnings},`
+    csvString += `${subject.giftAmount},${subject.randomPeriod}`
     csvString += '\n'
     this.dataStream.write(csvString)
     console.log('csvString', csvString)
@@ -137,10 +138,14 @@ export class Scribe {
   }
 
   updateBonusFile (subject) {
+    const forced = subject.hist[subject.randomPeriod].forced
     const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
-    if (winGiftCard === 0) {
-      const bonus = this.server.game.bonus
-      const csvString = `${subject.id},${bonus.toFixed(2)}\n`
+    const extraEndowment = this.server.game.extraEndowment
+    const cost = forced ? extraEndowment : 0
+    const bonus = this.server.game.bonus
+    const extraMoney = extraEndowment - cost + (1 - winGiftCard) * bonus
+    if (extraMoney > 0) {
+      const csvString = `${subject.id},${extraMoney.toFixed(2)}\n`
       this.bonusStream.write(csvString)
     }
   }

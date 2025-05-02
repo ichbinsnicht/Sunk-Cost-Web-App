@@ -162,7 +162,7 @@ export class Server {
             endowment: this.game.endowment,
             step: subject.step,
             countdown: subject.countdown,
-            outcomeRandom: subject.outcomeRandom,
+            randomPeriod: subject.randomPeriod,
             winGiftCard: subject.winGiftCard,
             giftValue: this.game.giftValue,
             totalCost: subject.totalCost,
@@ -170,6 +170,7 @@ export class Server {
             hist: subject.hist,
             bonus: this.game.bonus,
             numPeriods: this.game.numPeriods,
+            baseEndowment: this.game.baseEndowment,
             extraEndowment: this.game.extraEndowment,
             completionURL: subject.state === 'experimentComplete' ? this.completionURL : '',
             giftURL: subject.state === 'experimentComplete' ? subject.giftURL : ''

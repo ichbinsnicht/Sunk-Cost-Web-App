@@ -24,14 +24,7 @@ export class Client {
     this.giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
     this.copyURLDiv = document.getElementById('copyURLDiv')
     this.bonusDiv = document.getElementById('bonusDiv')
-    this.countdownText = document.getElementById('countdownText')
-    this.requestText = document.getElementById('requestText')
-    this.choiceText = document.getElementById('choiceText')
-    this.choseText = document.getElementById('choseText') // potential vestigial code
-    this.choseItemText = document.getElementById('choseItemText') // potential vestigial code
-    this.stepTitle = document.getElementById('stepTitle')
-    this.feedbackStageText = document.getElementById('feedbackStageText')
-    this.understandingQuiz = document.getElementById('understandingQuiz')
+    this.understandingQuiz2 = document.getElementById('understandingQuiz2')
     this.beginExperimentText = document.getElementById('beginExperimentText')
     this.nextPeriodButton = document.getElementById('nextPeriodButton')
     this.preSurveyForms = [
@@ -80,8 +73,10 @@ export class Client {
     this.bonus = 0
     this.giftValue = 0
     this.endowment = 0
+    this.baseEndowment = 0
     this.extraEndowment = 0
     this.completionURL = ''
+    this.randomPeriod = 0
 
     this.socket = io()
     // URL: http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
@@ -155,11 +150,13 @@ export class Client {
       this.winGiftCard = msg.winGiftCard
       this.giftValue = msg.giftValue
       this.endowment = msg.endowment
+      this.baseEndowment = msg.baseEndowment
       this.extraEndowment = msg.extraEndowment
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL
       this.state = msg.state
       this.numPeriods = msg.numPeriods
+      this.randomPeriod = msg.randomPeriod
       if (this.step === 'feedback' & this.state === 'interface') {
         this.chosen = true
       }
@@ -184,21 +181,21 @@ export class Client {
         : 'none'
     const showBeginExperimentButton =
       this.practicePeriodsComplete &&
-      this.instructions.instructionsPage === 3 &&
+      this.instructions.instructionsPage === 4 &&
       this.quizComplete
     this.beginExperimentButton.style.display =
       showBeginExperimentButton ? 'inline' : 'none'
     this.previousPageButton.style.display =
       this.instructions.instructionsPage === 1 || this.quizComplete ? 'none' : 'inline'
     this.nextPageButton.style.display =
-      this.instructions.instructionsPage === 3 ? 'none' : 'inline'
+      [3, 4].includes(this.instructions.instructionsPage) ? 'none' : 'inline'
     this.instructionsDiv.style.display = 'none'
     this.welcomeDiv.style.display = 'none'
     this.pleaseWaitDiv.style.display = 'none'
     this.preSurveyDiv.style.display = 'none'
     this.interfaceDiv.style.display = 'none'
     this.nextPeriodButton.style.display = 'none'
-    this.understandingQuiz.style.display = this.quizComplete ? 'none' : 'block'
+    this.understandingQuiz2.style.display = this.quizComplete ? 'none' : 'block'
     this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
     if (this.joined && this.state === 'startup') {

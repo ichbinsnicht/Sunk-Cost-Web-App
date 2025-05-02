@@ -121,17 +121,7 @@ form {
     margin-bottom: 3vmin;
     display: block;
 }
-#instructionsDiv {
-    width: 80vw;
-    margin-top: 1vh;
-    margin-left: auto;
-    margin-right: auto;    
-    display: none;
-    text-align: center;
-    font: 4vmin monospace; 
-    border: 0;
-    padding: 0;
-}
+
 .greenText{
     color: limegreen;
 }
@@ -143,6 +133,17 @@ form {
 }
 .yellowText{
     color: rgb(255, 255, 0);
+}
+#instructionsDiv {
+    width: 80vw;
+    margin-top: 1vh;
+    margin-left: auto;
+    margin-right: auto;    
+    display: none;
+    text-align: center;
+    font: 4vmin monospace; 
+    border: 0;
+    padding: 0;
 }
 #instructionsTextDiv {
     display: block;
@@ -176,20 +177,6 @@ form {
     padding: 0;
     height: 100vh;
 }
-.prizeImage{
-    width: auto;
-    height: 15vw;
-    display:block;
-}
-.prizeImageDiv{
-    width: 40vw;
-    height: 20.25vw;
-    display: flex;
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-    outline: 2vmin solid rgba(0, 0, 0, 0);
-}
 .instructionsPrizeImage{
     width: auto;
     height: 10vw;
@@ -213,21 +200,28 @@ form {
 #choseItemText{
     color: rgb(0, 136, 255)    
 }
-.imageBox{
-    border: solid 2vh rgb(2, 252, 2, 0);
-    width: 60vh;
-    flex-direction: row;
+.prizeImageDiv{
+    width: 30vw;
+    height: 15vw;
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;   
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    outline: 2vmin solid rgba(0, 0, 0, 0);
+    border: 2vmin solid rgba(0, 0, 0, 0);
+}
+.prizeImage{
+    width: auto;
+    height: 10vw;
+    display:block;
 }
 .centerTextBox{
     text-align:center;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
+    padding-top: .8vh;
+    padding-bottom: .8vh;
 }
 .leftTextBox{
     text-align:left;
@@ -346,6 +340,9 @@ button {
     margin: 2vh;
     width: 20vh;
     font: 3vmin monospace;
+}
+.centerDiv{
+    text-align: center;   
 }
 .quizInputDiv {
     text-align: center;

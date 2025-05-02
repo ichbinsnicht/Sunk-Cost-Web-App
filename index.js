@@ -1,6 +1,7 @@
 // TO-DO NOW - experimental design adjustments for salient penalty of forcing and revealing forceDir:
-// finish quiz (q5,q6, nextPage button, submit button)
-// interface:
+// interface: (CONTINUE HERE!)
+// - update payoffs, outcome feedback, update data
+//
 // - strengthen negative attachment to forcing (resentment of being forced):
 // --> reveal forcedDir in every period
 // --> reveal forced in every period

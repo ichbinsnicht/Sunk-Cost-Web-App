@@ -17,7 +17,7 @@ export class Subject {
     this.preSurveySubmitted = false
     this.instructionsComplete = false
     this.practicePeriodsComplete = true
-    this.step = 'choice'
+    this.step = 'computer'
     this.state = 'startup'
     this.period = 1
     this.countdown = this.game.choiceLength
@@ -56,8 +56,9 @@ export class Subject {
     const choice = this.hist[this.period].choice
     const forced = this.hist[this.period].forced
     const forceDir = this.hist[this.period].forceDir
+    const cost = forced ? this.game.extraEndowment : 0
     this.winGiftCard = forced ? forceDir : choice
-    this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard)
+    this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard) - cost
     this.hist[this.period].winGiftCard = this.winGiftCard
     this.hist[this.period].earnings = this.earnings
     const giftValue = this.game.giftValue
@@ -81,7 +82,7 @@ export class Subject {
     }
     this.countdown = this.game.choiceLength
     this.period += 1
-    this.step = 'choice'
+    this.step = 'computer'
     console.log('this.period', this.period)
     console.log('this.numPeriods', this.numPeriods)
   }
@@ -96,13 +97,20 @@ export class Subject {
       this.state = 'welcome'
     }
     if (this.state === 'interface') {
-      if (this.chosen || this.step === 'feedback') {
+      if (this.step === 'computer') {
         this.countdown = Math.max(this.countdown - 1, 0)
+        if (this.countdown <= 0) {
+          this.step = 'choice'
+          this.countdown = this.game.choiceLength
+        }
       }
       if (this.step === 'choice' && this.countdown <= 0) { // end choice1
         this.calculateOutcome()
         this.countdown = this.game.feedbackLength
         this.step = 'feedback'
+      }
+      if (this.chosen || this.step === 'feedback') {
+        this.countdown = Math.max(this.countdown - 1, 0)
       }
     }
   }

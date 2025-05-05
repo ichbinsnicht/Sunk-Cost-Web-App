@@ -17,7 +17,7 @@ export class Subject {
     this.preSurveySubmitted = false
     this.instructionsComplete = false
     this.practicePeriodsComplete = true
-    this.step = 'computer'
+    this.step = 'choice'
     this.state = 'startup'
     this.period = 1
     this.countdown = this.game.choiceLength
@@ -82,7 +82,7 @@ export class Subject {
     }
     this.countdown = this.game.choiceLength
     this.period += 1
-    this.step = 'computer'
+    this.step = 'choice'
     console.log('this.period', this.period)
     console.log('this.numPeriods', this.numPeriods)
   }
@@ -97,19 +97,11 @@ export class Subject {
       this.state = 'welcome'
     }
     if (this.state === 'interface') {
-      if (this.step === 'computer') {
-        this.countdown = Math.max(this.countdown - 1, 0)
-        if (this.countdown <= 0) {
-          this.step = 'choice'
-          this.countdown = this.game.choiceLength
-        }
-      }
       if (this.step === 'choice' && this.countdown <= 0) { // end choice1
         this.calculateOutcome()
         this.countdown = this.game.feedbackLength
         this.step = 'feedback'
-      }
-      if (this.chosen || this.step === 'feedback') {
+      } else if (this.chosen || this.step === 'feedback') {
         this.countdown = Math.max(this.countdown - 1, 0)
       }
     }

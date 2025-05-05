@@ -157,7 +157,7 @@ export class Client {
       this.state = msg.state
       this.numPeriods = msg.numPeriods
       this.randomPeriod = msg.randomPeriod
-      if (this.step === 'feedback' & this.state === 'interface') {
+      if (this.step !== 'choice' & this.state === 'interface') {
         this.chosen = true
       }
     })

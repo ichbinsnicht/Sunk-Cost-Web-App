@@ -12,7 +12,6 @@ export class Renderer {
     this.unforcedSpan = document.getElementById('unforcedSpan')
     this.countdownSpan = document.getElementById('countdownSpan')
     this.computerChoiceSpan = document.getElementById('computerChoiceSpan')
-    this.computerDecisionText = document.getElementById('computerDecisionText')
     this.computerText = document.getElementById('computerText')
     this.countdownText = document.getElementById('countdownText')
     this.requestText = document.getElementById('requestText')
@@ -31,16 +30,16 @@ export class Renderer {
     if (this.client.hist[this.client.period] == null) return // guard statement
     this.input = this.client.input
     this.drawing = true
-    const chosen = this.client.input.chosen
+    const chosen = this.client.input.chosen || this.client.step !== 'choice'
     const step = this.client.step
     const forceDir = this.client.hist[this.client.period].forceDir
     const giftString = '$6 gift card'
     const dollarString = '$1 bonus'
     const forced = this.client.hist[this.client.period].forced
-    const redColor = !forced || step === 'choice' ? 'rgba(255, 0, 0, 0.4)' : 'rgba(255, 0, 0, 1)'
-    const computer = this.client.step === 'computer'
-    const forced0 = forceDir === 0 && !computer
-    const forced1 = forceDir === 1 && !computer
+    const redColor = !forced || step === 'computer' ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 0, 0, 1)'
+    const choiceStep = this.client.step === 'choice'
+    const forced0 = forceDir === 0 && !choiceStep
+    const forced1 = forceDir === 1 && !choiceStep
     const choice0 = this.client.choice === 0 && chosen
     const choice1 = this.client.choice === 1 && chosen
     this.dollarImageDiv.style.borderColor = choice0 ? 'rgb(0, 0, 255)' : 'rgba(0, 0, 0, 0)'
@@ -57,7 +56,6 @@ export class Renderer {
     this.cardImageDiv.style.outlineColor = forced1 ? redColor : 'rgba(0, 0, 0, 0)'
     this.forcedText.style.display = 'none'
     this.unforcedText.style.display = 'none'
-    this.computerDecisionText.style.display = 'none'
     this.computerText.style.display = 'none'
     this.requestText.style.display = 'none'
     this.choiceText.style.display = 'none'
@@ -65,11 +63,7 @@ export class Renderer {
     this.costText.style.display = 'none'
     this.computerNotDictator.style.display = 'none'
     this.countdownText.style.display = 'none'
-    if (this.client.step === 'computer') {
-      this.computerDecisionText.style.display = 'block'
-    }
     if (this.client.step === 'choice') {
-      this.computerText.style.display = 'block'
       this.requestText.style.display = chosen ? 'none' : 'block'
       this.countdownText.style.display = chosen ? 'block' : 'none'
       this.choiceText.style.display = chosen ? 'block' : 'none'

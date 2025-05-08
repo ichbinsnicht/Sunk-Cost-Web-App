@@ -75,7 +75,7 @@ export class Renderer {
       if (forced) {
         this.computerDictator.style.display = 'block'
         this.forcedText.style.display = 'block'
-        this.costText.style.display = 'block'
+        // this.costText.style.display = 'block'
       } else {
         this.computerNotDictator.style.display = 'block'
         this.unforcedText.style.display = 'block'

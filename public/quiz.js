@@ -15,8 +15,8 @@ export class Quiz {
 
   nextPage () {
     console.log('nextPage')
-    const correctAnswer1 = this.quiz1.value === '0'
-    const correctAnswer2 = this.quiz2.value === `${this.client.extraEndowment}`
+    const correctAnswer1 = this.quiz1.value === 'giftCard'
+    const correctAnswer2 = this.quiz2.value === 'giftCard'
     const correctAnswer3 = this.quiz3.value === '50'
     if (!correctAnswer1) {
       window.alert('Question 1 is incorrect. Please try again.')
@@ -35,12 +35,12 @@ export class Quiz {
   }
 
   submitQuiz () {
-    const correctAnswer1 = this.quiz1.value === '0'
-    const correctAnswer2 = this.quiz2.value === `${this.client.extraEndowment}`
+    const correctAnswer1 = this.quiz1.value === 'giftCard'
+    const correctAnswer2 = this.quiz2.value === 'giftCard'
     const correctAnswer3 = this.quiz3.value === '50'
     const correctAnswer4 = this.quiz4.value === 'random'
-    const correctAnswer5 = this.quiz5.value === `${this.client.extraEndowment}`
-    const correctAnswer6 = this.quiz6.value === '0'
+    const correctAnswer5 = this.quiz5.value === 'bonus'
+    const correctAnswer6 = this.quiz6.value === 'bonus'
 
     if (!correctAnswer1) {
       window.alert('Question 1 is incorrect. Please try again.')

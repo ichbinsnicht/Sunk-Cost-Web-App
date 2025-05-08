@@ -181,14 +181,26 @@
                     <div id="understandingQuiz1" class="centerDiv">
                         Understanding Quiz <br>
                         <div class="quizQuestionDiv">
-                            <b>Question 1</b>: If the computer is not a dictator and you choose a different option 
-                            from the computer, then what will your cost be? <br>
-                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> $</div>
+                            <b>Question 1</b>: If the computer is not a dictator, you choose the $6 gift card, 
+                            and the computer chooses the $1 bonus then which item will you select? <br>
+                            <div class="centerDiv">
+                                <select name="quiz1" id="quiz1" class="quizInput">
+                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
+                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
+                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 2</b>: If the computer is a dictator and you choose the same option 
-                            as the computer, then what will your cost be? <br>
-                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> $</div>
+                            <b>Question 2</b>: If the computer is a dictator, you choose the $1 bonus, 
+                            and the computer chooses the $6 gift card then which item will you select? <br>
+                            <div class="centerDiv">
+                                <select name="quiz2" id="quiz2" class="quizInput">
+                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
+                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
+                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="quizQuestionDiv">
                             <b>Question 3</b>: In each period, what is the chance that 
@@ -215,14 +227,26 @@
                             </select>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 5</b>: If the computer is a dictator and you choose a different option 
-                            from the computer, then what will your cost be? <br>
-                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz5" id="quiz5" required> $</div>
+                            <b>Question 5</b>: If the computer is a dictator, you choose the $6 gift card, 
+                            and the computer chooses the $1 bonus then which item will you select? <br>
+                            <div class="centerDiv">
+                                <select name="quiz5" id="quiz5" class="quizInput">
+                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
+                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
+                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 6</b>: If the computer is not a dictator and you choose the same option 
-                            as the computer, then what will your cost be? <br>
-                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz6" id="quiz6" required> $</div>
+                            <b>Question 6</b>: If the computer is not a dictator, you choose the $1 bonus, 
+                            and the computer chooses the $6 gift card then which item will you select? <br>
+                            <div class="centerDiv">
+                                <select name="quiz6" id="quiz6" class="quizInput">
+                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
+                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
+                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
+                                </select>     
+                            </div>                   
                         </div>
                         <button type="button" id="submitQuizButton" onclick="submitQuiz()">
                             Submit Quiz

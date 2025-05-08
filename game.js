@@ -10,7 +10,7 @@ export class Game {
     this.choiceLength = 3 // 30 secs choice1 (lab: 15, internal: 3)
     this.feedbackLength = 10 // 15 secs choice1 (lab: 5, internal: 3)
     this.baseEndowment = 2 // 2 (lab: 2, internal: 3)
-    this.extraEndowment = 3
+    this.extraEndowment = 0
     this.endowment = this.baseEndowment + this.extraEndowment
     this.bonus = 1 // online: {4,6}
     this.giftValue = 6 // online: {6,9}

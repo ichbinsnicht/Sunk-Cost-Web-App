@@ -24,9 +24,9 @@ export class Client {
     this.giftBitLinkDiv = document.getElementById('giftBitLinkDiv')
     this.copyURLDiv = document.getElementById('copyURLDiv')
     this.bonusDiv = document.getElementById('bonusDiv')
-    this.understandingQuiz2 = document.getElementById('understandingQuiz2')
     this.beginExperimentText = document.getElementById('beginExperimentText')
     this.nextPeriodButton = document.getElementById('nextPeriodButton')
+    this.understandingQuiz = document.getElementById('understandingQuiz')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -46,7 +46,7 @@ export class Client {
       }
     })
     this.stageImageDiv = document.getElementById('stageImageDiv')
-    this.stageImageDiv.style.flexDirection = Math.random() < 0.5 ? 'row' : 'row-reverse'
+    this.stageImageDiv.style.flexDirection = Math.random() <= 1 ? 'row' : 'row-reverse'
 
     // variables
     this.state = 'startup'
@@ -136,7 +136,7 @@ export class Client {
         console.log('this.period', this.period)
         this.input.chosen = false
         console.log('this.input.chosen', this.input.chosen)
-        this.stageImageDiv.style.flexDirection = Math.random() < 0.5 ? 'row' : 'row-reverse'
+        this.stageImageDiv.style.flexDirection = Math.random() <= 1 ? 'row' : 'row-reverse'
       }
       this.instructions.updateInstructions()
       this.step = msg.step
@@ -175,27 +175,25 @@ export class Client {
       chosen: this.input.chosen
     }
     this.socket.emit('clientUpdate', msg)
-    this.beginPracticePeriodsButton.style.display =
-      (!this.practicePeriodsComplete && this.instructions.instructionsPage === 3)
-        ? 'inline'
-        : 'none'
+    this.beginPracticePeriodsButton.style.display = 'none'
     const showBeginExperimentButton =
       this.practicePeriodsComplete &&
-      this.instructions.instructionsPage === 4 &&
+      this.instructions.instructionsPage === 3 &&
       this.quizComplete
     this.beginExperimentButton.style.display =
       showBeginExperimentButton ? 'inline' : 'none'
+    this.understandingQuiz.style.display =
+      showBeginExperimentButton ? 'none' : 'block'
     this.previousPageButton.style.display =
       this.instructions.instructionsPage === 1 || this.quizComplete ? 'none' : 'inline'
     this.nextPageButton.style.display =
-      [3, 4].includes(this.instructions.instructionsPage) ? 'none' : 'inline'
+      [3].includes(this.instructions.instructionsPage) ? 'none' : 'inline'
     this.instructionsDiv.style.display = 'none'
     this.welcomeDiv.style.display = 'none'
     this.pleaseWaitDiv.style.display = 'none'
     this.preSurveyDiv.style.display = 'none'
     this.interfaceDiv.style.display = 'none'
     this.nextPeriodButton.style.display = 'none'
-    this.understandingQuiz2.style.display = this.quizComplete ? 'none' : 'block'
     this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
     if (this.joined && this.state === 'startup') {
@@ -213,7 +211,7 @@ export class Client {
     if (this.joined && this.state === 'interface') {
       this.interfaceDiv.style.display = 'flex'
     }
-    if (this.step === 'feedback' && this.countdown <= 0) {
+    if (this.countdown <= 0) {
       this.nextPeriodButton.style.display = 'block'
     }
     if (this.period >= this.numPeriods) {

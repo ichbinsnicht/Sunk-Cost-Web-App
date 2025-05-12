@@ -137,7 +137,7 @@ export class Server {
       })
       socket.on('nextPeriod', (msg) => {
         const subject = this.game.subjects[msg.id]
-        const ready = subject.step === 'feedback' && subject.countdown <= 0
+        const ready = subject.countdown <= 0
         if (ready) subject.nextPeriod()
       })
       socket.on('clientUpdate', (msg) => {

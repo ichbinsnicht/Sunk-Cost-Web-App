@@ -10,7 +10,6 @@ export class Instructions {
     this.instructionsTextDiv1 = document.getElementById('instructionsTextDiv1')
     this.instructionsTextDiv2 = document.getElementById('instructionsTextDiv2')
     this.instructionsTextDiv3 = document.getElementById('instructionsTextDiv3')
-    this.instructionsTextDiv4 = document.getElementById('instructionsTextDiv4')
     this.instructionsPage = 1
     this.client = client
   }
@@ -29,7 +28,6 @@ export class Instructions {
     this.instructionsTextDiv1.style.display = this.instructionsPage === 1 ? 'block' : 'none'
     this.instructionsTextDiv2.style.display = this.instructionsPage === 2 ? 'block' : 'none'
     this.instructionsTextDiv3.style.display = this.instructionsPage === 3 ? 'block' : 'none'
-    this.instructionsTextDiv4.style.display = this.instructionsPage === 4 ? 'block' : 'none'
     console.log('this.instructionsPage', this.instructionsPage)
   }
 }

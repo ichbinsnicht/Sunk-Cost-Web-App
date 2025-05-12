@@ -162,91 +162,31 @@
                 </div>
                 <div id="instructionsTextDiv2"> 
                     This experiment will have multiple periods. In each period, 
-                    the computer will randomly choose between 
-                    the $<span id="giftValue2">X</span> Starbucks gift card and 
-                    the $<span id="bonus2">X</span> bonus. Then you will choose between 
-                    these two options. The computer's choice will be revealed 
-                    after you make your choice.<br><br>
-
-                    There is a 50% chance that the computer will be a <span class="redText">dictator</span>. 
-                    If the computer is a dictator, then you will be <span class="redText">forced</span> 
-                    to select the option chosen by the computer.
-                    If the computer is not a dictator, then you will automatically select the option you chose.
+                    you will select either
+                    the $<span id="giftValue2">X</span> Starbucks gift card or 
+                    the $<span id="bonus2">X</span> bonus. Sometimes your choice may be restricted.
 
                     <br><br>At the end of the experiment, you will get $<span id="endowment2">X</span> just for 
-                    participating. You will also receive the item you selected in one random period. 
-                    
+                    participating. You will also receive the item you selected in one random period.   
                 </div>
                 <div id="instructionsTextDiv3">
-                    <div id="understandingQuiz1" class="centerDiv">
+                    <div id="understandingQuiz" class="centerDiv">
                         Understanding Quiz <br>
                         <div class="quizQuestionDiv">
-                            <b>Question 1</b>: If the computer is not a dictator, you choose the $6 gift card, 
-                            and the computer chooses the $1 bonus then which item will you select? <br>
-                            <div class="centerDiv">
-                                <select name="quiz1" id="quiz1" class="quizInput">
-                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
-                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
-                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
-                                </select>
+                            <b>Question 1</b>: At the end of the experiment, how much will you get, just for participating? <br>
+                            <div class="quizInputDiv">
+                                $ <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required>
                             </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 2</b>: If the computer is a dictator, you choose the $1 bonus, 
-                            and the computer chooses the $6 gift card then which item will you select? <br>
-                            <div class="centerDiv">
-                                <select name="quiz2" id="quiz2" class="quizInput">
-                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
-                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
-                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="quizQuestionDiv">
-                            <b>Question 3</b>: In each period, what is the chance that 
-                            the computer will be a dictator?
-                            <br>
-                            <div class="quizInputDiv"><input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %</div>
-                        </div>
-                        <button type="button" id="submitQuizButton" onclick="nextPage()">
-                            Submit Quiz
-                        </button>
-                    </div>
-                </div>
-                <div id="instructionsTextDiv4">
-                    <div id="understandingQuiz2" class="centerDiv">
-                        Understanding Quiz <br>
-                        <div class="quizQuestionDiv">
-                            <b>Question 4</b>: At the end of the experiment, you will receive the item you 
+                            <b>Question 2</b>: At the end of the experiment, you will receive the item you 
                             selected in 
-                            <select name="quiz4" id="quiz4">
+                            <select name="quiz2" id="quiz2">
                                 <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
                                 <option value="last" class="mcSelection">the last period.</option>
                                 <option value="random" class="mcSelection">one randomly selected period.</option>
                                 <option value="first" class="mcSelection">the first period.</option>
                             </select>
-                        </div>
-                        <div class="quizQuestionDiv">
-                            <b>Question 5</b>: If the computer is a dictator, you choose the $6 gift card, 
-                            and the computer chooses the $1 bonus then which item will you select? <br>
-                            <div class="centerDiv">
-                                <select name="quiz5" id="quiz5" class="quizInput">
-                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
-                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
-                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="quizQuestionDiv">
-                            <b>Question 6</b>: If the computer is not a dictator, you choose the $1 bonus, 
-                            and the computer chooses the $6 gift card then which item will you select? <br>
-                            <div class="centerDiv">
-                                <select name="quiz6" id="quiz6" class="quizInput">
-                                    <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
-                                    <option value="giftCard" class="mcSelection">The $6 gift card</option>
-                                    <option value="bonus" class="mcSelection">The $1 bonus</option>
-                                </select>     
-                            </div>                   
                         </div>
                         <button type="button" id="submitQuizButton" onclick="submitQuiz()">
                             Submit Quiz
@@ -284,32 +224,16 @@
                     <div class="prizeImageDiv" id="cardImageDiv">
                         <img src="GiftCard.png" class="prizeImage">
                     </div>
-                </div>
+                </div><br><br>
                 <div class="stageTextDiv">
+                    <div id="forcedText" class="centerTextBox">
+                        The  <span id="forcedSpan">Y</span> is <span style="color: red;">unavailable</span> in this period.
+                    </div>
                     <div id="requestText" class="centerTextBox">
                         Please click to choose an option.
                     </div>
                     <div id="choiceText" class="centerTextBox">
                         You chose the <span id="choiceSpan">X</span>.
-                    </div>
-                    <div id="computerText" class="centerTextBox">
-                        The computer chose the <span id="computerChoiceSpan">X</span>.
-                    </div>
-                    <div id="computerDictator" class="centerTextBox">
-                        The computer is a <span style="color: red;">dictator</span> in this period.
-                    </div>
-                    <div id="forcedText" class="centerTextBox">
-                        You were <span style="color: red;">forced</span> to 
-                        select the <span id="forcedSpan">Y</span>.
-                    </div>
-                    <div id="costText" class="centerTextBox">
-                        You paid a <span style="color: red;">$3 cost</span>.
-                    </div>
-                    <div id="computerNotDictator" class="centerTextBox">
-                        The computer is not a dictator in this period.
-                    </div>
-                    <div id="unforcedText" class="centerTextBox">
-                        You selected the <span id="unforcedSpan">X</span>.
                     </div>
                     <div id="countdownText" class="centerTextBox">
                         Countdown: 10

@@ -5,21 +5,14 @@ export class Renderer {
     this.cardImageDiv = document.getElementById('cardImageDiv')
     this.dollarImageDiv = document.getElementById('dollarImageDiv')
     this.forcedText = document.getElementById('forcedText')
-    this.unforcedText = document.getElementById('unforcedText')
     this.countdownText = document.getElementById('countdownText')
-    this.choiceSpan = document.getElementById('choiceSpan')
     this.forcedSpan = document.getElementById('forcedSpan')
-    this.unforcedSpan = document.getElementById('unforcedSpan')
-    this.countdownSpan = document.getElementById('countdownSpan')
-    this.computerChoiceSpan = document.getElementById('computerChoiceSpan')
-    this.computerText = document.getElementById('computerText')
+    this.choiceSpan = document.getElementById('choiceSpan')
+    this.countdownSpan = document.getElementById('choiceSpan')
     this.countdownText = document.getElementById('countdownText')
     this.requestText = document.getElementById('requestText')
     this.choiceText = document.getElementById('choiceText')
     this.stepTitle = document.getElementById('stepTitle')
-    this.computerDictator = document.getElementById('computerDictator')
-    this.costText = document.getElementById('costText')
-    this.computerNotDictator = document.getElementById('computerNotDictator')
     this.draw()
   }
 
@@ -37,31 +30,20 @@ export class Renderer {
     const dollarString = '$1 bonus'
     const forced = this.client.hist[this.client.period].forced
     const redColor = !forced || step === 'computer' ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 0, 0, 1)'
-    const choiceStep = this.client.step === 'choice'
-    const forced0 = forceDir === 0 && !choiceStep
-    const forced1 = forceDir === 1 && !choiceStep
-    const choice0 = this.client.choice === 0 && chosen
+    const forbidden0 = forceDir === 1 && forced
+    const forbidden1 = forceDir === 0 && forced
     const choice1 = this.client.choice === 1 && chosen
-    this.dollarImageDiv.style.borderColor = choice0 ? 'rgb(0, 0, 255)' : 'rgba(0, 0, 0, 0)'
-    this.cardImageDiv.style.borderColor = choice1 ? 'rgb(0, 0, 255)' : 'rgba(0, 0, 0, 0)'
     this.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
     this.stepTitle.innerHTML = ['computer', 'choice'].includes(step)
       ? 'Choice'
       : 'Feedback'
-    this.computerChoiceSpan.innerHTML = forceDir === 1 ? giftString : dollarString
-    this.forcedSpan.innerHTML = forceDir === 1 ? giftString : dollarString
+    this.forcedSpan.innerHTML = forceDir === 1 ? dollarString : giftString
     this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
-    this.unforcedSpan.innerHTML = choice1 ? giftString : dollarString
-    this.dollarImageDiv.style.outlineColor = forced0 ? redColor : 'rgba(0, 0, 0, 0)'
-    this.cardImageDiv.style.outlineColor = forced1 ? redColor : 'rgba(0, 0, 0, 0)'
-    this.forcedText.style.display = 'none'
-    this.unforcedText.style.display = 'none'
-    this.computerText.style.display = 'none'
+    this.dollarImageDiv.style.outlineColor = forbidden0 ? redColor : 'rgba(0, 0, 0, 0)'
+    this.cardImageDiv.style.outlineColor = forbidden1 ? redColor : 'rgba(0, 0, 0, 0)'
+    this.forcedText.style.display = forced ? 'block' : 'none'
     this.requestText.style.display = 'none'
     this.choiceText.style.display = 'none'
-    this.computerDictator.style.display = 'none'
-    this.costText.style.display = 'none'
-    this.computerNotDictator.style.display = 'none'
     this.countdownText.style.display = 'none'
     if (this.client.step === 'choice') {
       this.requestText.style.display = chosen ? 'none' : 'block'
@@ -69,17 +51,8 @@ export class Renderer {
       this.choiceText.style.display = chosen ? 'block' : 'none'
     }
     if (this.client.step === 'feedback') {
-      this.computerText.style.display = 'block'
       this.choiceText.style.display = 'block'
       this.countdownText.style.display = 'block'
-      if (forced) {
-        this.computerDictator.style.display = 'block'
-        this.forcedText.style.display = 'block'
-        // this.costText.style.display = 'block'
-      } else {
-        this.computerNotDictator.style.display = 'block'
-        this.unforcedText.style.display = 'block'
-      }
     }
     this.writeOutcome()
   }

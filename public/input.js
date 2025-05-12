@@ -112,6 +112,14 @@ export class Input {
     const direction = this.client.stageImageDiv.style.flexDirection
     console.log('direction', direction)
     console.log('this.mouseX', this.mouseX)
+    const forced = this.client.hist[this.client.period].forced
+    const forceDir = this.client.hist[this.client.period].forceDir
+    const right = direction === 'row' ? 1 : 0
+    const left = direction === 'row' ? 0 : 1
+    const choice = this.mouseX > 0 ? right : left
+    if (forced && choice !== forceDir) {
+      return
+    }
     const msg = {
       id: this.client.id,
       study: this.client.study,
@@ -125,8 +133,6 @@ export class Input {
       mouseX: this.mouseX
     }
     if (this.client.step === 'choice' & this.client.state === 'interface') {
-      const right = direction === 'row' ? 1 : 0
-      const left = direction === 'row' ? 0 : 1
       this.chosen = true
       this.client.choice = this.mouseX > 0 ? right : left
     }

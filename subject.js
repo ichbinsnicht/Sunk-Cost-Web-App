@@ -43,7 +43,7 @@ export class Subject {
       this.hist[period] = {
         choice: 0,
         ready: false,
-        forced: Math.random() < 0.4,
+        forced: Math.random() < 0.5 && period > 1 && !this.hist[period - 1].forced,
         forceDir: choose([0, 1]), // choose([0, 1])  // 0 - money, 1 - gift card
         winGiftCard: 0,
         earnings: 0
@@ -55,9 +55,8 @@ export class Subject {
   calculateOutcome () {
     const choice = this.hist[this.period].choice
     const forced = this.hist[this.period].forced
-    const forceDir = this.hist[this.period].forceDir
     const cost = forced ? this.game.extraEndowment : 0
-    this.winGiftCard = forced ? forceDir : choice
+    this.winGiftCard = choice
     this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard) - cost
     this.hist[this.period].winGiftCard = this.winGiftCard
     this.hist[this.period].earnings = this.earnings
@@ -99,9 +98,7 @@ export class Subject {
     if (this.state === 'interface') {
       if (this.step === 'choice' && this.countdown <= 0) { // end choice1
         this.calculateOutcome()
-        this.countdown = this.game.feedbackLength
-        this.step = 'feedback'
-      } else if (this.chosen || this.step === 'feedback') {
+      } else if (this.chosen) {
         this.countdown = Math.max(this.countdown - 1, 0)
       }
     }

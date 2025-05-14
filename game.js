@@ -6,7 +6,7 @@ export class Game {
     this.scribe = this.server.scribe
     this.numSubjects = 0
     this.subjects = {}
-    this.numPeriods = 20 // 10 periods (minimize fatigue based on pilots), numPeriods > numPracticePeriods (internal: 1)
+    this.numPeriods = 3 // 10 periods (minimize fatigue based on pilots), numPeriods > numPracticePeriods (internal: 1)
     this.choiceLength = 4 // 30 secs choice1 (lab: 15, internal: 3)
     this.feedbackLength = 1 // 15 secs choice1 (lab: 5, internal: 3)
     this.baseEndowment = 2 // 2 (lab: 2, internal: 3)

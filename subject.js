@@ -9,10 +9,11 @@ export class Subject {
     this.study = msg.study
     this.session = msg.session
     this.socket = socket
-    this.startTime = this.game.server.scribe.getDateString()
-    this.preSurveyEndTime = ''
-    this.quizEndTime = ''
-    this.experimentEndTime = ''
+    this.startTime = new Date().getTime()
+    this.endTime = 0
+    this.timeTaken = 0
+    this.preSurveyEndTime = 0
+    this.quizEndTime = 0
     this.quizSubmitted = false
     this.preSurveySubmitted = false
     this.instructionsComplete = false
@@ -65,8 +66,9 @@ export class Subject {
   }
 
   nextPeriod () {
-    this.game.server.scribe.updateDataFile(this)
     if (this.period >= this.numPeriods) {
+      this.endTime = new Date().getTime()
+      this.timeTaken = this.endTime - this.startTime
       this.step = 'end'
       this.state = 'experimentComplete'
       this.game.server.scribe.updatePaymentFile(this)
@@ -77,17 +79,18 @@ export class Subject {
         sendMesssage(this.id, `Your gift card is here: ${this.giftURL}`)
       }
       this.socket.emit('paymentComplete', reply)
-      return
+    } else {
+      this.countdown = this.game.choiceLength
+      this.period += 1
+      this.step = 'choice'
+      console.log('this.period', this.period)
+      console.log('this.numPeriods', this.numPeriods)
     }
-    this.countdown = this.game.choiceLength
-    this.period += 1
-    this.step = 'choice'
-    console.log('this.period', this.period)
-    console.log('this.numPeriods', this.numPeriods)
+    this.game.server.scribe.updateDataFile(this)
   }
 
   onQuizComplete () {
-    this.quizEndTime = this.game.server.scribe.getDateString()
+    this.quizEndTime = new Date().getTime()
     this.quizSubmitted = true
   }
 

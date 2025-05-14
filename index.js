@@ -1,16 +1,16 @@
-// TO-DO NOW - experimental design adjustments for salient penalty of forcing and revealing forceDir:
-// interface: (CONTINUE HERE!)
-//
-// - strengthen negative attachment to forcing (resentment of being forced):
-// --> reveal forcedDir in every period
-// --> reveal forced in every period
-// --> penalize subjects when they are forced (regardless of forcedDir & choice)
-// ----> penality through an endowment reduction
+// TO-DO
+// - fix repeat subject data recording (payment, bonus, data files...)
+// --> generate one bonus file per session
+// - set up data for analysis: forcedDir = {-1,0,1}
+// - run only 10 periods
+// - add the crossbar on top of outline (avoid criticism of experimenter demand)
+// - scale up everything (to better understand dynamics and heterogeneity, non-linearities)
 
 // TO DO LATER:
-// set parameters (period time, numbers of periods, etc.)
-// - run experiment
-// - money and gift cards?
+// - increase costs
+
+// Are Prolific subjects more rational than lab subjects?
+// - Best available proxy. Use cognitive reflection questions from our study and compare to others.
 
 // Other thoughts from Vechta:
 // - Hypothetical WTA of starbucks gift card?

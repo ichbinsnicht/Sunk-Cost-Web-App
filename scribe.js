@@ -41,8 +41,8 @@ export class Scribe {
 
   createDataFile () {
     this.dataStream = fs.createWriteStream(`data/${this.dateString}-data.csv`)
-    let csvString = 'study,session,startTime,surveyEndTime,quizEndTime,experimentEndTime,'
-    csvString += 'period,id,forced,forceDir,overruled,'
+    let csvString = 'study,session,startTime,surveyEndTime,quizEndTime,endTime,'
+    csvString += 'timeTaken,period,id,forced,forceDir,overruled,'
     csvString += 'choice,endowment,bonus,giftValue,'
     csvString += 'winGiftCard,totalCost,earnings,giftAmount,randomPeriod'
     csvString += '\n'
@@ -51,7 +51,6 @@ export class Scribe {
 
   updateDataFile (subject) {
     console.log('subject.period', subject.period)
-    if (subject.period >= subject.numPeriods) subject.experimentEndTime = this.getDateString()
     const endowment = this.server.game.endowment
     const bonus = this.server.game.bonus
     const giftValue = this.server.game.giftValue
@@ -62,7 +61,7 @@ export class Scribe {
     let csvString = ''
     csvString += `${subject.study},${subject.session},${subject.startTime},`
     csvString += `${subject.preSurveyEndTime},${subject.quizEndTime},`
-    csvString += `${subject.experimentEndTime},${subject.period},`
+    csvString += `${subject.endTime},${subject.timeTaken},${subject.period},`
     csvString += `${subject.id},`
     csvString += `${forced},${forceDir},${overruled},`
     csvString += `${choice},`
@@ -77,7 +76,7 @@ export class Scribe {
   updatePreSurveyFile (msg) {
     const subjects = this.server.game.subjects
     const subject = subjects[msg.id]
-    subject.preSurveyEndTime = this.getDateString()
+    subject.preSurveyEndTime = new Date().getTime()
     if (!this.preSurveyReady) this.createPreSurveyFile(msg)
     let csvString = Object.values(msg).join(',')
     csvString += '\n'
@@ -123,7 +122,7 @@ export class Scribe {
   }
 
   updatePaymentFile (subject) {
-    const date = subject.startTime.slice(0, 10)
+    const date = this.dateString
     const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
     const earnings = subject.hist[subject.randomPeriod].earnings
     if (winGiftCard) this.assignGift(subject)

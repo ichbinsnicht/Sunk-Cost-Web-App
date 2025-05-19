@@ -41,11 +41,17 @@ export class Subject {
     console.log('practice', practice)
     console.log('this.practicePeriodsComplete', this.practicePeriodsComplete)
     arange2(1, this.numPeriods).forEach(period => {
+      const forcing =
+        Math.random() < 0.5 &&
+        period > 1 &&
+        period < this.numPeriods &&
+        !this.hist[period - 1].forced
+      const forceDir = forcing ? choose([-1, 0, 1]) : 0
       this.hist[period] = {
         choice: 0,
         ready: false,
-        forced: Math.random() < 0.5 && period > 1 && !this.hist[period - 1].forced,
-        forceDir: choose([0, 1]), // choose([0, 1])  // 0 - money, 1 - gift card
+        forced: forceDir !== 0,
+        forceDir,
         winGiftCard: 0,
         earnings: 0
       }
@@ -66,6 +72,7 @@ export class Subject {
   }
 
   nextPeriod () {
+    this.game.server.scribe.updateDataFile(this)
     if (this.period >= this.numPeriods) {
       this.endTime = new Date().getTime()
       this.timeTaken = this.endTime - this.startTime
@@ -86,7 +93,6 @@ export class Subject {
       console.log('this.period', this.period)
       console.log('this.numPeriods', this.numPeriods)
     }
-    this.game.server.scribe.updateDataFile(this)
   }
 
   onQuizComplete () {

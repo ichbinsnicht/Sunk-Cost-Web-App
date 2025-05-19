@@ -59,7 +59,7 @@ export class Server {
       socket.emit('connected')
       console.log(`connected ${socket.id}`)
       socket.on('joinGame', (msg) => {
-        console.log('joinGame', msg.id)
+        console.log('joinGame', msg.id, socket.id)
         if (!subjects[msg.id]) this.game.createSubject(msg, socket)
         socket.emit('clientJoined', { id: msg.id, hist: subjects[msg.id].hist, period: subjects[msg.id].period })
       })
@@ -137,7 +137,7 @@ export class Server {
       })
       socket.on('nextPeriod', (msg) => {
         const subject = this.game.subjects[msg.id]
-        const ready = subject.countdown <= 0
+        const ready = subject.countdown <= 0 && subject.step !== 'end'
         if (ready) subject.nextPeriod()
       })
       socket.on('clientUpdate', (msg) => {

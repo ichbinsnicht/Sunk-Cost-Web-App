@@ -15,7 +15,6 @@ export class Input {
     window.beginExperiment = () => this.beginExperiment()
     window.goToGiftCard = () => this.goToGiftCard()
     window.copyGiftLink = () => this.copyGiftLink()
-    window.onkeydown = (event) => this.onkeydown(event)
     window.onmousedown = (event) => this.onmousedown(event)
     this.client.nextPeriodButton.onclick = () => this.nextPeriod()
   }
@@ -26,7 +25,7 @@ export class Input {
     this.client.socket.emit('nextPeriod', msg)
   }
 
-  joinGame () { // method of class Input
+  joinGame () {
     console.log('id', this.client.id)
     const msg = {
       id: this.client.id,
@@ -101,14 +100,12 @@ export class Input {
     navigator.clipboard.writeText(this.client.giftURL)
   }
 
-  onkeydown (event) {
-    if (event.key === 'Enter' && this.client.state === 'startup') this.joinGame()
-  }
-
   onmousedown (event) {
     console.log('this.client.countdown', this.client.countdown)
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
+    this.mouseY = mouseEvent.pageY - document.body.clientHeight / 2
+    if (this.mouseY > 0) return
     const direction = this.client.stageImageDiv.style.flexDirection
     console.log('direction', direction)
     console.log('this.mouseX', this.mouseX)
@@ -117,7 +114,8 @@ export class Input {
     const right = direction === 'row' ? 1 : 0
     const left = direction === 'row' ? 0 : 1
     const choice = this.mouseX > 0 ? right : left
-    if (forced && choice !== forceDir) {
+    const sign = Math.sign(this.mouseX)
+    if (forced && sign !== forceDir) {
       return
     }
     const msg = {
@@ -134,7 +132,7 @@ export class Input {
     }
     if (this.client.step === 'choice' & this.client.state === 'interface') {
       this.chosen = true
-      this.client.choice = this.mouseX > 0 ? right : left
+      this.client.choice = choice
     }
     this.client.socket.emit('clientClick', msg)
   }

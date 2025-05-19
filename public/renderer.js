@@ -2,8 +2,10 @@ export class Renderer {
   constructor (client) {
     this.client = client
     this.input = client.input
-    this.cardImageDiv = document.getElementById('cardImageDiv')
-    this.dollarImageDiv = document.getElementById('dollarImageDiv')
+    this.cardCrossBar = document.getElementById('cardCrossBar')
+    this.dollarCrossBar = document.getElementById('dollarCrossBar')
+    console.log('beforeCardImageDiv', this.beforeCardImageDiv)
+    console.log('afterCardImageDiv', this.afterCardImageDiv)
     this.forcedText = document.getElementById('forcedText')
     this.countdownText = document.getElementById('countdownText')
     this.forcedSpan = document.getElementById('forcedSpan')
@@ -29,9 +31,8 @@ export class Renderer {
     const giftString = '$6 gift card'
     const dollarString = '$1 bonus'
     const forced = this.client.hist[this.client.period].forced
-    const redColor = !forced || step === 'computer' ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 0, 0, 1)'
     const forbidden0 = forceDir === 1 && forced
-    const forbidden1 = forceDir === 0 && forced
+    const forbidden1 = forceDir === -1 && forced
     const choice1 = this.client.choice === 1 && chosen
     this.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
     this.stepTitle.innerHTML = ['computer', 'choice'].includes(step)
@@ -39,8 +40,8 @@ export class Renderer {
       : 'Feedback'
     this.forcedSpan.innerHTML = forceDir === 1 ? dollarString : giftString
     this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
-    this.dollarImageDiv.style.outlineColor = forbidden0 ? redColor : 'rgba(0, 0, 0, 0)'
-    this.cardImageDiv.style.outlineColor = forbidden1 ? redColor : 'rgba(0, 0, 0, 0)'
+    this.dollarCrossBar.style.display = forbidden0 ? 'block' : 'none'
+    this.cardCrossBar.style.display = forbidden1 ? 'block' : 'none'
     this.forcedText.style.display = forced ? 'block' : 'none'
     this.requestText.style.display = 'none'
     this.choiceText.style.display = 'none'

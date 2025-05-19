@@ -1,13 +1,12 @@
 // TO-DO
-// - fix repeat subject data recording (payment, bonus, data files...)
-// --> generate one bonus file per session
-// - set up data for analysis: forcedDir = {-1,0,1}
-// - run only 10 periods
-// - add the crossbar on top of outline (avoid criticism of experimenter demand)
+// - double check parameters prior to execution
 // - scale up everything (to better understand dynamics and heterogeneity, non-linearities)
 
 // TO DO LATER:
-// - increase costs
+// - increase costs (alternative design)
+
+// Put into paper:
+// - crossbar: avoid criticism of option is nudged - option is unavailable! (experimenter demand)
 
 // Are Prolific subjects more rational than lab subjects?
 // - Best available proxy. Use cognitive reflection questions from our study and compare to others.

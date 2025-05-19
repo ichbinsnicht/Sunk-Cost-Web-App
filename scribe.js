@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { unique } from './public/math.js'
 
 export class Scribe {
   constructor (server) {
@@ -8,7 +9,6 @@ export class Scribe {
 
     this.createDataFile()
     this.createPaymentFile()
-    this.createBonusFile()
     this.createEngagementFile()
     this.createClickFile()
   }
@@ -39,10 +39,20 @@ export class Scribe {
     this.preSurveyReady = true
   }
 
+  updatePreSurveyFile (msg) {
+    const subjects = this.server.game.subjects
+    const subject = subjects[msg.id]
+    subject.preSurveyEndTime = new Date().getTime()
+    if (!this.preSurveyReady) this.createPreSurveyFile(msg)
+    let csvString = Object.values(msg).join(',')
+    csvString += '\n'
+    this.preSurveyStream.write(csvString)
+  }
+
   createDataFile () {
     this.dataStream = fs.createWriteStream(`data/${this.dateString}-data.csv`)
     let csvString = 'study,session,startTime,surveyEndTime,quizEndTime,endTime,'
-    csvString += 'timeTaken,period,id,forced,forceDir,overruled,'
+    csvString += 'timeTaken,period,id,forced,forceDir,'
     csvString += 'choice,endowment,bonus,giftValue,'
     csvString += 'winGiftCard,totalCost,earnings,giftAmount,randomPeriod'
     csvString += '\n'
@@ -54,16 +64,15 @@ export class Scribe {
     const endowment = this.server.game.endowment
     const bonus = this.server.game.bonus
     const giftValue = this.server.game.giftValue
-    const forced = subject.hist[subject.period].forced ? 1 : 0
+    const forced = subject.hist[subject.period].forced * 1
     const forceDir = subject.hist[subject.period].forceDir
     const choice = subject.hist[subject.period].choice
-    const overruled = forceDir === choice ? 0 : forced
     let csvString = ''
     csvString += `${subject.study},${subject.session},${subject.startTime},`
     csvString += `${subject.preSurveyEndTime},${subject.quizEndTime},`
     csvString += `${subject.endTime},${subject.timeTaken},${subject.period},`
     csvString += `${subject.id},`
-    csvString += `${forced},${forceDir},${overruled},`
+    csvString += `${forced},${forceDir},`
     csvString += `${choice},`
     csvString += `${endowment},${bonus},${giftValue},`
     csvString += `${subject.winGiftCard},${subject.totalCost},${subject.earnings},`
@@ -71,16 +80,6 @@ export class Scribe {
     csvString += '\n'
     this.dataStream.write(csvString)
     console.log('csvString', csvString)
-  }
-
-  updatePreSurveyFile (msg) {
-    const subjects = this.server.game.subjects
-    const subject = subjects[msg.id]
-    subject.preSurveyEndTime = new Date().getTime()
-    if (!this.preSurveyReady) this.createPreSurveyFile(msg)
-    let csvString = Object.values(msg).join(',')
-    csvString += '\n'
-    this.preSurveyStream.write(csvString)
   }
 
   createEngagementFile () {
@@ -132,21 +131,27 @@ export class Scribe {
     this.paymentStream.write(csvString)
   }
 
-  createBonusFile () {
-    this.bonusStream = fs.createWriteStream(`data/${this.dateString}-bonus.csv`)
-  }
-
-  updateBonusFile (subject) {
-    const forced = subject.hist[subject.randomPeriod].forced
-    const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
+  updateBonusFile () {
+    const subjects = Object.values(this.server.game.subjects)
+    const readySubjects = subjects.filter(subject => subject.step === 'end')
     const extraEndowment = this.server.game.extraEndowment
-    const cost = forced ? extraEndowment : 0
     const bonus = this.server.game.bonus
-    const extraMoney = extraEndowment - cost + (1 - winGiftCard) * bonus
-    if (extraMoney > 0) {
-      const csvString = `${subject.id},${extraMoney.toFixed(2)}\n`
-      this.bonusStream.write(csvString)
-    }
+    const studies = unique(subjects.map(subject => subject.study))
+    studies.forEach(study => {
+      let bonusString = ''
+      const studySubjects = readySubjects.filter(subject => subject.study === study)
+      studySubjects.forEach(subject => {
+        const forced = subject.hist[subject.randomPeriod].forced
+        const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
+        const cost = forced ? extraEndowment : 0
+        const extraMoney = extraEndowment - cost + (1 - winGiftCard) * bonus
+        if (extraMoney > 0) {
+          const csvString = `${subject.id},${extraMoney.toFixed(2)}\n`
+          bonusString += csvString
+        }
+      })
+      fs.writeFileSync(`data/${this.dateString}-bonus-${study}.csv`, bonusString)
+    })
   }
 
   assignGift (subject) {

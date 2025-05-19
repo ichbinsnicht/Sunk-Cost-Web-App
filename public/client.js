@@ -93,11 +93,6 @@ export class Client {
     this.quiz = new Quiz(this)
     this.input = new Input(this)
     this.setup()
-    window.addEventListener('pageshow', (event) => {
-      if (event.persisted) {
-        window.location.reload()
-      }
-    })
   }
 
   setup () {

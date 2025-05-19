@@ -2,6 +2,11 @@
     --hiddenColor: rgba(177, 172, 172); 
     --showColor: rgb(0, 255, 0);
     --thumbOpacity: 0;
+    --box-width: 30vw;
+    --box-height: 15vw;
+    --hypot: calc(hypot(var(--box-width),var(--box-height))*1.01);
+    --angle1: calc(atan2(var(--box-height), var(--box-width)));
+    --angle2: calc(-1 * atan2(var(--box-height), var(--box-width)));
 }
 body {
     width: 100%;
@@ -14,10 +19,6 @@ body {
 a {
     color: rgb(0, 170, 255);
 }
-#joinGameButton{
-    font: 5vmin monospace;
-}
-
 #beginPreSurveyButton{
     font: 5vmin monospace;
 }
@@ -201,14 +202,45 @@ form {
     color: rgb(0, 136, 255)    
 }
 .prizeImageDiv{
-    width: 30vw;
-    height: 15vw;
     display: flex;
-    padding: 0;
     justify-content: center;
     align-items: center;
-    outline: 2vmin solid rgba(0, 0, 0, 0);
-    border: 2vmin solid rgba(0, 0, 0, 0);
+    width: var(--box-width);
+    height: var(--box-height);
+    position: relative;
+    padding: 0;
+    border: 1vmin solid rgba(0, 0, 0, 0);
+}
+.crossBar{
+    display: flex;
+    position: absolute;
+    width: var(--box-width);
+    height: var(--box-height);
+    border: 1vmin solid red;
+}
+.crossBar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--hypot));
+    height: var(--box-height);
+    border-top: 1vmin solid red;
+    transform: rotate(var(--angle1)); 
+    transform-origin: top left;
+    pointer-events: none; 
+}
+.crossBar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--hypot));
+    height: var(--box-height);
+    border-bottom: 1vmin solid red;
+    transform: rotate(var(--angle2));
+    transform-origin: bottom left;
+    pointer-events: none;
 }
 .prizeImage{
     width: auto;

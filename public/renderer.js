@@ -51,10 +51,6 @@ export class Renderer {
       this.countdownText.style.display = chosen ? 'block' : 'none'
       this.choiceText.style.display = chosen ? 'block' : 'none'
     }
-    if (this.client.step === 'feedback') {
-      this.choiceText.style.display = 'block'
-      this.countdownText.style.display = 'block'
-    }
     this.writeOutcome()
   }
 

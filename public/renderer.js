@@ -26,7 +26,6 @@ export class Renderer {
     this.input = this.client.input
     this.drawing = true
     const chosen = this.client.input.chosen || this.client.step !== 'choice'
-    const step = this.client.step
     const forceDir = this.client.hist[this.client.period].forceDir
     const giftString = '$6 gift card'
     const dollarString = '$1 bonus'
@@ -35,9 +34,7 @@ export class Renderer {
     const forbidden1 = forceDir === -1 && forced
     const choice1 = this.client.choice === 1 && chosen
     this.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
-    this.stepTitle.innerHTML = ['computer', 'choice'].includes(step)
-      ? 'Choice'
-      : 'Feedback'
+    this.stepTitle.innerHTML = 'Choice'
     this.forcedSpan.innerHTML = forceDir === 1 ? dollarString : giftString
     this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
     this.dollarCrossBar.style.display = forbidden0 ? 'block' : 'none'

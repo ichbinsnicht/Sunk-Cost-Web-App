@@ -228,7 +228,6 @@ form {
     border-top: 1vmin solid red;
     transform: rotate(var(--angle1)); 
     transform-origin: top left;
-    pointer-events: none; 
 }
 .crossBar::after {
     content: '';
@@ -240,7 +239,6 @@ form {
     border-bottom: 1vmin solid red;
     transform: rotate(var(--angle2));
     transform-origin: bottom left;
-    pointer-events: none;
 }
 .prizeImage{
     width: auto;

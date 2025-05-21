@@ -101,23 +101,10 @@ export class Input {
   }
 
   onmousedown (event) {
-    console.log('this.client.countdown', this.client.countdown)
+    console.log('onmousedown')
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
     this.mouseY = mouseEvent.pageY - document.body.clientHeight / 2
-    if (this.mouseY > 0) return
-    const direction = this.client.stageImageDiv.style.flexDirection
-    console.log('direction', direction)
-    console.log('this.mouseX', this.mouseX)
-    const forced = this.client.hist[this.client.period].forced
-    const forceDir = this.client.hist[this.client.period].forceDir
-    const right = direction === 'row' ? 1 : 0
-    const left = direction === 'row' ? 0 : 1
-    const choice = this.mouseX > 0 ? right : left
-    const sign = Math.sign(this.mouseX)
-    if (forced && sign !== forceDir) {
-      return
-    }
     const msg = {
       id: this.client.id,
       study: this.client.study,
@@ -128,12 +115,25 @@ export class Input {
       stage: this.client.stage,
       state: this.client.state,
       countdown: this.client.countdown,
-      mouseX: this.mouseX
+      mouseX: this.mouseX,
+      mouseY: this.mouseY
     }
-    if (this.client.step === 'choice' & this.client.state === 'interface') {
+    this.client.socket.emit('clientClick', msg)
+    const direction = this.client.stageImageDiv.style.flexDirection
+    console.log('direction', direction)
+    console.log('this.mouseX', this.mouseX)
+    console.log('this.mouseY', this.mouseY)
+    if (this.mouseY > 0) return
+    const forced = this.client.hist[this.client.period].forced
+    const forceDir = this.client.hist[this.client.period].forceDir
+    const right = direction === 'row' ? 1 : 0
+    const left = direction === 'row' ? 0 : 1
+    const choice = this.mouseX > 0 ? right : left
+    const sign = Math.sign(this.mouseX)
+    const available = !forced || sign === forceDir
+    if (this.client.state === 'interface' && available) {
       this.chosen = true
       this.client.choice = choice
     }
-    this.client.socket.emit('clientClick', msg)
   }
 }

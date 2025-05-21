@@ -125,6 +125,7 @@ export class Server {
         socket.emit('serverUpdateManager', reply)
       })
       socket.on('clientClick', (msg) => {
+        console.log('clientClick msg', msg)
         const subject = this.game.subjects[msg.id]
         if (subject) {
           const step = subject.step

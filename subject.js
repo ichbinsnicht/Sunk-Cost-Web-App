@@ -56,7 +56,6 @@ export class Subject {
         earnings: 0
       }
     })
-    console.log('this.hist', this.hist)
   }
 
   calculateOutcome () {
@@ -72,10 +71,12 @@ export class Subject {
   }
 
   nextPeriod () {
-    this.game.server.scribe.updateDataFile(this)
     if (this.period >= this.numPeriods) {
       this.endTime = new Date().getTime()
       this.timeTaken = this.endTime - this.startTime
+    }
+    this.game.server.scribe.updateDataFile(this)
+    if (this.period >= this.numPeriods) {
       this.step = 'end'
       this.state = 'experimentComplete'
       this.game.server.scribe.updatePaymentFile(this)
@@ -90,8 +91,6 @@ export class Subject {
       this.countdown = this.game.choiceLength
       this.period += 1
       this.step = 'choice'
-      console.log('this.period', this.period)
-      console.log('this.numPeriods', this.numPeriods)
     }
   }
 
@@ -104,12 +103,11 @@ export class Subject {
     if (this.state === 'startup') {
       this.state = 'welcome'
     }
-    if (this.state === 'interface') {
-      if (this.step === 'choice' && this.countdown <= 0) { // end choice1
+    if (this.state === 'interface' && this.chosen) {
+      if (this.countdown === 1) {
         this.calculateOutcome()
-      } else if (this.chosen) {
-        this.countdown = Math.max(this.countdown - 1, 0)
       }
+      this.countdown = Math.max(this.countdown - 1, 0)
     }
   }
 }

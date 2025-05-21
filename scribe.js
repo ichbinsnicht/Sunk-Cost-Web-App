@@ -100,16 +100,18 @@ export class Scribe {
 
   createClickFile () {
     this.clickStream = fs.createWriteStream(`data/${this.dateString}-click.csv`)
-    let csvString = 'id,study,session,time,period,step,stage,state,countdown,choiceX'
+    let csvString = 'id,study,session,time,period,step,stage,state,countdown,mouseX,mouseY,choice'
     csvString += '\n'
     this.clickStream.write(csvString)
   }
 
   updateClickFile (msg) {
+    console.log('updateClickFile', msg)
+    const choice = msg.mouseY > 0 ? 0.5 : msg.mouseX > 0 ? 1 : 0
     let csvString = ''
     csvString += `${msg.id},${msg.study},${msg.session},${msg.time},`
     csvString += `${msg.period},${msg.step},${msg.stage},`
-    csvString += `${msg.state},${msg.countdown},${msg.mouseX}`
+    csvString += `${msg.state},${msg.countdown},${msg.mouseX},${msg.mouseY},${choice}`
     csvString += '\n'
     this.clickStream.write(csvString)
   }
@@ -121,6 +123,7 @@ export class Scribe {
   }
 
   updatePaymentFile (subject) {
+    console.log('subject.hist', subject.hist)
     const date = this.dateString
     const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
     const earnings = subject.hist[subject.randomPeriod].earnings

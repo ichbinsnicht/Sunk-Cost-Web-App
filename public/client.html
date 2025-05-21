@@ -164,16 +164,19 @@
                     This experiment will have multiple periods. In each period, 
                     you will select either
                     the $<span id="giftValue2">X</span> Starbucks gift card or 
-                    the $<span id="bonus2">X</span> bonus. Sometimes your choice may be restricted.
+                    the $<span id="bonus2">X</span> bonus. Sometimes your choice may be <span class='redText'>restricted</span>.
+
+                    <br><br>If your choice is <span class='redText'>restricted</span>, you will face a <span class='redText'>$3 cost</span>.
 
                     <br><br>At the end of the experiment, you will get $<span id="endowment2">X</span> just for 
-                    participating. You will also receive the item you selected in one random period.   
+                    participating. One period will be selected at random for payment.
+                    You will receive the item you chose and pay the cost you faced in the randomly selected period. 
                 </div>
                 <div id="instructionsTextDiv3">
                     <div id="understandingQuiz" class="centerDiv">
                         Understanding Quiz <br>
                         <div class="quizQuestionDiv">
-                            <b>Question 1</b>: At the end of the experiment, how much will you get, just for participating? <br>
+                            <b>Question 1</b>: At the beginning of the experiment, how much money will you start with, just for participating? <br>
                             <div class="quizInputDiv">
                                 $ <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required>
                             </div>
@@ -230,7 +233,10 @@
                 </div><br><br>
                 <div class="stageTextDiv">
                     <div id="forcedText" class="centerTextBox">
-                        The  <span id="forcedSpan">Y</span> is <span style="color: red;">unavailable</span> in this period.
+                        The  <span id="forcedSpan">Y</span> is <span class="redText">unavailable</span> in this period.
+                    </div>
+                    <div id="costText" class="centerTextBox">
+                        You face a <span class="redText">$<span id="costSpan">Y</span> cost</span> in this period.
                     </div>
                     <div id="requestText" class="centerTextBox">
                         Please click to choose an option.

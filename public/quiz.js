@@ -10,7 +10,7 @@ export class Quiz {
   }
 
   submitQuiz () {
-    const correctAnswer1 = Number(this.quiz1.value) === 2
+    const correctAnswer1 = Number(this.quiz1.value) === this.client.endowment
     const correctAnswer2 = this.quiz2.value === 'random'
 
     if (!correctAnswer1) {

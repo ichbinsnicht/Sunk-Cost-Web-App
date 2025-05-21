@@ -10,6 +10,8 @@ export class Renderer {
     this.countdownText = document.getElementById('countdownText')
     this.forcedSpan = document.getElementById('forcedSpan')
     this.choiceSpan = document.getElementById('choiceSpan')
+    this.costText = document.getElementById('costText')
+    this.costSpan = document.getElementById('costSpan')
     this.countdownSpan = document.getElementById('choiceSpan')
     this.countdownText = document.getElementById('countdownText')
     this.requestText = document.getElementById('requestText')
@@ -37,9 +39,11 @@ export class Renderer {
     this.stepTitle.innerHTML = 'Choice'
     this.forcedSpan.innerHTML = forceDir === 1 ? dollarString : giftString
     this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
+    this.costSpan.innerHTML = this.client.extraEndowment
     this.dollarCrossBar.style.display = forbidden0 ? 'block' : 'none'
     this.cardCrossBar.style.display = forbidden1 ? 'block' : 'none'
     this.forcedText.style.display = forced ? 'block' : 'none'
+    this.costText.style.display = forced ? 'block' : 'none'
     this.requestText.style.display = 'none'
     this.choiceText.style.display = 'none'
     this.countdownText.style.display = 'none'

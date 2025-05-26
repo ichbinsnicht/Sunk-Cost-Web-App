@@ -4,7 +4,6 @@ export class Input {
     this.renderer = client.renderer
     this.instructions = client.instructions
     this.mouseX = 50
-    this.chosen = false
     this.joinGame()
     window.beginPreSurvey = () => this.beginPreSurvey()
     window.nextPreSurveyForm = () => this.nextPreSurveyForm()
@@ -79,7 +78,6 @@ export class Input {
   }
 
   beginPracticePeriods () {
-    this.chosen = false
     const msg = { id: this.client.id }
     this.client.beginPracticePeriodsButton.style.display = 'none'
     this.client.socket.emit('beginPracticePeriods', msg)
@@ -87,7 +85,6 @@ export class Input {
   }
 
   beginExperiment () {
-    this.chosen = false
     const msg = { id: this.client.id }
     this.client.socket.emit('beginExperiment', msg)
   }
@@ -102,6 +99,7 @@ export class Input {
 
   onmousedown (event) {
     console.log('onmousedown')
+    console.log('this.client.state', this.client.state)
     const mouseEvent = event
     this.mouseX = mouseEvent.pageX - document.body.clientWidth / 2
     this.mouseY = mouseEvent.pageY - document.body.clientHeight / 2
@@ -119,21 +117,5 @@ export class Input {
       mouseY: this.mouseY
     }
     this.client.socket.emit('clientClick', msg)
-    const direction = this.client.stageImageDiv.style.flexDirection
-    console.log('direction', direction)
-    console.log('this.mouseX', this.mouseX)
-    console.log('this.mouseY', this.mouseY)
-    if (this.mouseY > 0) return
-    const forced = this.client.hist[this.client.period].forced
-    const forceDir = this.client.hist[this.client.period].forceDir
-    const right = direction === 'row' ? 1 : 0
-    const left = direction === 'row' ? 0 : 1
-    const choice = this.mouseX > 0 ? right : left
-    const sign = Math.sign(this.mouseX)
-    const available = !forced || sign === forceDir
-    if (this.client.state === 'interface' && available) {
-      this.chosen = true
-      this.client.choice = choice
-    }
   }
 }

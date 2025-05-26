@@ -1,12 +1,38 @@
 // TO-DO
+// - first round choice (step or stage I):
+// - second round choice (step or stage II)
+// - framing on lottery tickets: lottery tickets. You earn them through the real effort task
+// gift card vs bonus tickets (100 tickets)
+// each bonus ticket raises the probability of winning the bonus by 1%
+// each gift card ticket raises the probability of winning the gift card by 1%
+// at the end you get either the bonus or the gift card
+//
+// round 1: real effort slider task (earn 100 bonus tickets)
+// round 2: would you like to invest 40 bonus tickets to earn 40 gift card tickets?
+// round 3: either your investment happens or not (overruling, forcing w/ 50% chance)
+// round 4: would you like to invest 40 bonus tickets to earn 40 gift card tickets?
+//
+//
+// - update instructions
+//
+// framing:
+// company manager wants to engage in an investment: CEO approves or not
+// CEO approves --> continue with investment (sunk cost fallacy)
+//
 // - double check parameters prior to execution
 // - scale up everything (to better understand dynamics and heterogeneity, non-linearities)
 
-// TO DO LATER:
-// - increase costs (alternative design)
+// stated preferences as assistance for the design!
+// add questions: individuals that have problem with authority
+// (revealed preference against authority)
+// wieviel wuerdet ihr zahlen, damit ihr selber eine Entscheidung treffen koennt?
+// Authoritaet vs Praeferenzen gegen andere (Alex Staub)
+// Autoritaet kann gegen meine eigene Praeferenzen gehen (Expertise, Einfacher)
+// --> Aversion gegen Autoritaet
 
-// Put into paper:
-// - crossbar: avoid criticism of option is nudged - option is unavailable! (experimenter demand)
+// Ihr seht was der Diktator euch geben wuerde, auch wenn ihr fuer eure Entscheidung getroffen HTMLTableCaptionElement.
+// bekommt was sie wollen und nehmen immer was sie wollen (starke Praeferenzen, kein Problem mit Autoritaet)
+// Nicht-Zahlen
 
 // Are Prolific subjects more rational than lab subjects?
 // - Best available proxy. Use cognitive reflection questions from our study and compare to others.

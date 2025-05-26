@@ -147,8 +147,8 @@
                 <div id="instructionsTextDiv1">
                     This is an experiment about decision making. You will start with 
                     $<span id="endowment1">X</span> just for participating. 
-                    Depending on the decisions you make, you may also 
-                    receive either a $<span id="bonus1">X</span> bonus or a 
+                    Depending on the decisions you make, you will either 
+                    receive a $<span id="bonus1">X</span> bonus or a 
                     $<span id="giftValue1">X</span> Starbucks gift card.
                     
                     <div id="instructionsImageDiv">
@@ -159,37 +159,57 @@
                             <img src="GiftCard.png" class="instructionsPrizeImage">
                         </div>
                     </div>
+                    <br> At the beginning of the experiment, you will complete a slider task
+                    to earn 100 bonus tickets.
                 </div>
                 <div id="instructionsTextDiv2"> 
-                    This experiment will have multiple periods. In each period, 
-                    you will select either
-                    the $<span id="giftValue2">X</span> Starbucks gift card or 
-                    the $<span id="bonus2">X</span> bonus. Sometimes your choice may be <span class='redText'>restricted</span>.
+                    This experiment will have two periods. 
+                    In period 1, you can try to invest some bonus tickets to earn gift card tickets.
+                    If you try to invest, there is a 50% chance that your investment will happen.
+                    If the investment happens, you will receive 40 gift card tickets 
+                    and loose 40 bonus tickets. <br><br>
 
-                    <br><br>If your choice is <span class='redText'>restricted</span>, you will face a <span class='redText'>$3 cost</span>.
+                    In period 2, you can try to invest additional bonus tickets in gift card tickets.
+                    If you try to invest, then your investment will certainly happen.
+                    If you make the investment you will receive 40 gift card tickets 
+                    and loose 40 bonus tickets.<br><br>
 
-                    <br><br>At the end of the experiment, you will get $<span id="endowment2">X</span> just for 
-                    participating. One period will be selected at random for payment.
-                    You will receive the item you chose and pay the cost you faced in the randomly selected period. 
+                    At the end of the experiment, you will get $<span id="endowment2">X</span> just for 
+                    participating. You will also receive either a $<span id="bonus2">X</span> bonus or a 
+                    $<span id="giftValue2">X</span> Starbucks gift card.
+                    Each bonus ticket you hold increases your probability of receiving the bonus by 1%.
+                    Each gift card ticket you hold increases the probability of receiving the gift card by 1%.
+                    
                 </div>
                 <div id="instructionsTextDiv3">
                     <div id="understandingQuiz" class="centerDiv">
-                        Understanding Quiz <br>
                         <div class="quizQuestionDiv">
-                            <b>Question 1</b>: At the beginning of the experiment, how much money will you start with, just for participating? <br>
+                            <b>Question 1</b>: In period 1, if you try to invest, what is the probability 
+                            that your investment will happen? <br>
                             <div class="quizInputDiv">
-                                $ <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required>
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz1" id="quiz1" required> %
                             </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 2</b>: At the end of the experiment, you will receive the item you 
-                            selected in 
-                            <select name="quiz2" id="quiz2">
-                                <option value="choose" class="mcSelection">PLEASE CHOOSE AN OPTION</option>
-                                <option value="last" class="mcSelection">the last period.</option>
-                                <option value="random" class="mcSelection">one randomly selected period.</option>
-                                <option value="first" class="mcSelection">the first period.</option>
-                            </select>
+                            <b>Question 2</b>: In period 2, if you try to invest, what is the probability 
+                            that your investment will happen? <br>
+                            <div class="quizInputDiv">
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz2" id="quiz2" required> %
+                            </div>
+                        </div>
+                        <div class="quizQuestionDiv">
+                            <b>Question 3</b>: At the end of the experiment, how much will each bonus ticket 
+                            increase your probability of earning the bonus? <br>
+                            <div class="quizInputDiv">
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required> %
+                            </div>
+                        </div>
+                        <div class="quizQuestionDiv">
+                            <b>Question 4</b>: At the end of the experiment, how much will each gift card ticket 
+                            increase your probability of earning the gift card? <br>
+                            <div class="quizInputDiv">
+                                <input class="quizInput" type="number" min="0" max="100" name="quiz4" id="quiz4" required> %
+                            </div>
                         </div>
                         <button type="button" id="submitQuizButton" onclick="submitQuiz()">
                             Submit Quiz
@@ -217,32 +237,43 @@
                 </div>
             </div>
         </div>
+        <div id="sliderTaskDiv">
+            <div class="slidecontainer">
+                Please set the slider to <span id="sliderTargetSpan">X</span>.<br><br>
+                <input type="range" min="1" max="100" value="50" class="slider" id="slider"> 
+                <br><br> The slider is currently set to <span id="sliderValueSpan">X</span>.
+                <br><br>
+                <br><br> So far, you have earned <span id="bonusTicketsEarnedSpan">X</span> bonus tickets.
+            </div>
+        </div>
         <div id="interfaceDiv">  
             <div id="stageDiv" >
                 <div id="stepTitle">Choice</div>
                 <div id="stageImageDiv">
                     <div class="prizeImageDiv" id="dollarImageDiv">
-                        <img src="Dollar.jpg" class="prizeImage">
-                        <div class="crossBar" id="dollarCrossBar"></div>
+                        <div><img src="Dollar.jpg" class="prizeImage"></div>
+                        <div><br><span id="bonusPercentSpan">X</span> Tickets</div>
                     </div>
                     <div class="prizeImageDiv" id="cardImageDiv">
-                        <img src="GiftCard.png" class="prizeImage">
-                        <div class="crossBar" id="cardCrossBar"></div>
+                        <div><img src="GiftCard.png" class="prizeImage"></div>
+                        <div><br><span id="giftCardPercentSpan">X</span> Tickets</div>
                     </div>
                 </div>
                 </div><br><br>
                 <div class="stageTextDiv">
-                    <div id="forcedText" class="centerTextBox">
-                        The  <span id="forcedSpan">Y</span> is <span class="redText">unavailable</span> in this period.
-                    </div>
-                    <div id="costText" class="centerTextBox">
-                        You face a <span class="redText">$<span id="costSpan">Y</span> cost</span> in this period.
-                    </div>
                     <div id="requestText" class="centerTextBox">
-                        Please click to choose an option.
+                        Would you like to invest 40 bonus tickets to earn 40 gift card tickets?
+                        <div id="buttonDiv">
+                            <button type="button" id="YesButton" class="choiceButton">Yes</button>
+                            <button type="button" id="NoButton" class="choiceButton">No</button>
+                        </div>
                     </div>
-                    <div id="choiceText" class="centerTextBox">
-                        You chose the <span id="choiceSpan">X</span>.
+                    <div id="investmentYesText">
+                        The investment happened.<br><br>
+                        You earned 40 gift card tickets and lost 40 bonus tickets.<br>
+                    </div>
+                    <div id="investmentNoText">
+                        The investment did not happen.
                     </div>
                     <div id="countdownText" class="centerTextBox">
                         Countdown: 10

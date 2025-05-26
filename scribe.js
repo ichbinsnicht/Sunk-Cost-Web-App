@@ -106,7 +106,6 @@ export class Scribe {
   }
 
   updateClickFile (msg) {
-    console.log('updateClickFile', msg)
     const choice = msg.mouseY > 0 ? 0.5 : msg.mouseX > 0 ? 1 : 0
     let csvString = ''
     csvString += `${msg.id},${msg.study},${msg.session},${msg.time},`

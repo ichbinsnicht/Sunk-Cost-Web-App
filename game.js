@@ -9,7 +9,7 @@ export class Game {
     this.numPeriods = 10 // 10 periods (minimize fatigue based on pilots), numPeriods > numPracticePeriods (internal: 1)
     this.choiceLength = 4 // 30 secs choice1 (lab: 15, internal: 3)
     this.baseEndowment = 2 // 2 (lab: 2, internal: 3)
-    this.extraEndowment = 3
+    this.extraEndowment = 0
     this.endowment = this.baseEndowment + this.extraEndowment
     this.bonus = 1 // online: {4,6}
     this.giftValue = 6 // online: {6,9}

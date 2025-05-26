@@ -99,9 +99,28 @@ export class Server {
         if (subject.practicePeriodsComplete && subject.state === 'instructions') {
           subject.experimentStarted = true
           subject.setupHist(subject)
-          subject.state = 'interface'
+          subject.state = 'sliderTask'
         }
       })
+      socket.on('sliderTaskComplete', (id) => {
+        const subject = subjects[id]
+        if (subject) {
+          console.log('sliderTaskComplete', id)
+          subject.state = 'interface'
+        } else {
+          console.error(`Subject with id ${id} not found`)
+        }
+      })
+      socket.on('yesButton', (id) => {
+        const subject = subjects[id]
+        if (subject) {
+          console.log('yesButton', id)
+          subject.state = 'interface'
+        } else {
+          console.error(`Subject with id ${id} not found`)
+        }
+      })
+
       socket.on('managerUpdate', (msg) => {
         const ids = Object.keys(subjects)
         const subjectsArray = Object.values(subjects)
@@ -125,7 +144,6 @@ export class Server {
         socket.emit('serverUpdateManager', reply)
       })
       socket.on('clientClick', (msg) => {
-        console.log('clientClick msg', msg)
         const subject = this.game.subjects[msg.id]
         if (subject) {
           const step = subject.step
@@ -144,7 +162,6 @@ export class Server {
       socket.on('clientUpdate', (msg) => {
         const subject = this.game.subjects[msg.id]
         if (subject) {
-          subject.chosen = msg.chosen
           const step = subject.step
           const histPeriod = subject.hist[msg.period]
           const choosing = step === 'choice'
@@ -173,6 +190,7 @@ export class Server {
             numPeriods: this.game.numPeriods,
             baseEndowment: this.game.baseEndowment,
             extraEndowment: this.game.extraEndowment,
+            bonusPercent: subject.bonusPercent,
             completionURL: subject.state === 'experimentComplete' ? this.completionURL : '',
             giftURL: subject.state === 'experimentComplete' ? subject.giftURL : ''
           }

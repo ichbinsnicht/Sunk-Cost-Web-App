@@ -16,6 +16,7 @@ export class Client {
     this.beginExperimentButton = document.getElementById('beginExperimentButton')
     this.previousPageButton = document.getElementById('previousPageButton')
     this.nextPageButton = document.getElementById('nextPageButton')
+    this.sliderTaskDiv = document.getElementById('sliderTaskDiv')
     this.interfaceDiv = document.getElementById('interfaceDiv')
     this.experimentCompleteDiv = document.getElementById('experimentCompleteDiv')
     this.paymentDiv = document.getElementById('paymentDiv')
@@ -27,6 +28,8 @@ export class Client {
     this.beginExperimentText = document.getElementById('beginExperimentText')
     this.nextPeriodButton = document.getElementById('nextPeriodButton')
     this.understandingQuiz = document.getElementById('understandingQuiz')
+    this.YesButton = document.getElementById('YesButton')
+    this.NoButton = document.getElementById('NoButton')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -77,6 +80,7 @@ export class Client {
     this.extraEndowment = 0
     this.completionURL = ''
     this.randomPeriod = 0
+    this.bonusPercent = 100
 
     this.socket = io()
     // URL: http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
@@ -92,6 +96,13 @@ export class Client {
     this.instructions = new Instructions(this)
     this.quiz = new Quiz(this)
     this.input = new Input(this)
+
+    this.YesButton.onclick = () => {
+      this.socket.emit('yesButton', this.id)
+    }
+    this.NoButton.onclick = () => {
+      this.socket.emit('noButton', this.id)
+    }
     this.setup()
   }
 
@@ -129,8 +140,6 @@ export class Client {
       if (this.period !== msg.period) {
         console.log('msg.period', msg.period)
         console.log('this.period', this.period)
-        this.input.chosen = false
-        console.log('this.input.chosen', this.input.chosen)
         this.stageImageDiv.style.flexDirection = Math.random() <= 1 ? 'row' : 'row-reverse'
       }
       this.instructions.updateInstructions()
@@ -152,9 +161,7 @@ export class Client {
       this.state = msg.state
       this.numPeriods = msg.numPeriods
       this.randomPeriod = msg.randomPeriod
-      if (this.step !== 'choice' & this.state === 'interface') {
-        this.chosen = true
-      }
+      this.bonusPercent = msg.bonusPercent
     })
   }
 
@@ -167,7 +174,6 @@ export class Client {
       step: this.step,
       stage: this.stage,
       currentChoice: this.choice, // change currentChoice to choice
-      chosen: this.input.chosen
     }
     this.socket.emit('clientUpdate', msg)
     this.beginPracticePeriodsButton.style.display = 'none'
@@ -191,6 +197,7 @@ export class Client {
     this.nextPeriodButton.style.display = 'none'
     this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
+    this.sliderTaskDiv.style.display = 'none'
     if (this.joined && this.state === 'startup') {
       this.pleaseWaitDiv.style.display = 'block'
     }
@@ -202,6 +209,9 @@ export class Client {
     }
     if (this.joined && this.state === 'instructions') {
       this.instructionsDiv.style.display = 'block'
+    }
+    if (this.joined && this.state === 'sliderTask') {
+      this.sliderTaskDiv.style.display = 'flex'
     }
     if (this.joined && this.state === 'interface') {
       this.interfaceDiv.style.display = 'flex'

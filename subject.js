@@ -29,8 +29,8 @@ export class Subject {
     this.giftURL = ''
     this.totalCost = 0
     this.earnings = 0
+    this.bonusPercent = 100
     this.randomPeriod = choose(arange2(1, this.numPeriods))
-    this.chosen = false
     this.hist = {}
     this.selectedStage = Math.random() < 0.5 ? 1 : 2 // make sure to use it
     this.setupHist()
@@ -103,7 +103,8 @@ export class Subject {
     if (this.state === 'startup') {
       this.state = 'welcome'
     }
-    if (this.state === 'interface' && this.chosen) {
+    const chosen = this.hist[this.period].choice !== 0
+    if (this.state === 'interface' && chosen) {
       if (this.countdown === 1) {
         this.calculateOutcome()
       }

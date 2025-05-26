@@ -1,23 +1,45 @@
+import { arange1 } from './math.js'
+
 export class Renderer {
   constructor (client) {
     this.client = client
     this.input = client.input
-    this.cardCrossBar = document.getElementById('cardCrossBar')
-    this.dollarCrossBar = document.getElementById('dollarCrossBar')
     console.log('beforeCardImageDiv', this.beforeCardImageDiv)
     console.log('afterCardImageDiv', this.afterCardImageDiv)
-    this.forcedText = document.getElementById('forcedText')
     this.countdownText = document.getElementById('countdownText')
-    this.forcedSpan = document.getElementById('forcedSpan')
-    this.choiceSpan = document.getElementById('choiceSpan')
-    this.costText = document.getElementById('costText')
-    this.costSpan = document.getElementById('costSpan')
     this.countdownSpan = document.getElementById('choiceSpan')
-    this.countdownText = document.getElementById('countdownText')
+    this.investmentYesText = document.getElementById('investmentYesText')
+    this.investmentNoText = document.getElementById('investmentNoText')
     this.requestText = document.getElementById('requestText')
-    this.choiceText = document.getElementById('choiceText')
     this.stepTitle = document.getElementById('stepTitle')
+    this.sliderTargetSpan = document.getElementById('sliderTargetSpan')
+    this.sliderValueSpan = document.getElementById('sliderValueSpan')
+    this.bonusTicketsEarnedSpan = document.getElementById('bonusTicketsEarnedSpan')
+    this.giftCardPercentSpan = document.getElementById('giftCardPercentSpan')
+    this.bonusPercentSpan = document.getElementById('bonusPercentSpan')
+    this.sliderCount = 2 // 20 default
+    this.slider = document.getElementById('slider')
+    this.sliderTargets = arange1(this.sliderCount).map(i => Math.round(Math.random() * 100))
+    this.sliderProgress = 0
+    this.slider.value = Math.round(Math.random() * 100)
+    this.slider.onchange = () => {
+      const sliderTarget = this.sliderTargets[this.sliderProgress]
+      if (this.slider.value === sliderTarget.toString()) {
+        this.sliderProgress++
+        this.slider.value = Math.round(Math.random() * 100)
+      }
+      if (this.sliderProgress >= this.sliderCount) {
+        this.client.socket.emit('sliderTaskComplete', this.client.id)
+      }
+    }
     this.draw()
+  }
+
+  drawSliderTask () {
+    const sliderTarget = this.sliderTargets[this.sliderProgress]
+    this.sliderTargetSpan.innerHTML = sliderTarget
+    this.sliderValueSpan.innerHTML = this.slider.value
+    this.bonusTicketsEarnedSpan.innerHTML = this.sliderProgress * 100 / this.sliderCount
   }
 
   draw () {
@@ -25,33 +47,17 @@ export class Renderer {
     if (!this.client.joined) return // guard statement
     if (this.client.input == null) return // guard statement
     if (this.client.hist[this.client.period] == null) return // guard statement
+    this.drawSliderTask()
     this.input = this.client.input
     this.drawing = true
-    const chosen = this.client.input.chosen || this.client.step !== 'choice'
-    const forceDir = this.client.hist[this.client.period].forceDir
-    const giftString = '$6 gift card'
-    const dollarString = '$1 bonus'
-    const forced = this.client.hist[this.client.period].forced
-    const forbidden0 = forceDir === 1 && forced
-    const forbidden1 = forceDir === -1 && forced
-    const choice1 = this.client.choice === 1 && chosen
+    this.bonusPercentSpan.innerHTML = this.client.bonusPercent
+    this.giftCardPercentSpan.innerHTML = 100 - this.client.bonusPercent
     this.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
     this.stepTitle.innerHTML = 'Choice'
-    this.forcedSpan.innerHTML = forceDir === 1 ? dollarString : giftString
-    this.choiceSpan.innerHTML = choice1 ? giftString : dollarString
-    this.costSpan.innerHTML = this.client.extraEndowment
-    this.dollarCrossBar.style.display = forbidden0 ? 'block' : 'none'
-    this.cardCrossBar.style.display = forbidden1 ? 'block' : 'none'
-    this.forcedText.style.display = forced ? 'block' : 'none'
-    this.costText.style.display = forced ? 'block' : 'none'
-    this.requestText.style.display = 'none'
-    this.choiceText.style.display = 'none'
-    this.countdownText.style.display = 'none'
-    if (this.client.step === 'choice') {
-      this.requestText.style.display = chosen ? 'none' : 'block'
-      this.countdownText.style.display = chosen ? 'block' : 'none'
-      this.choiceText.style.display = chosen ? 'block' : 'none'
-    }
+    const chosen = this.client.hist[this.client.period].choice !== 0
+    this.requestText.style.display = chosen ? 'none' : 'block'
+    this.countdownText.style.display = chosen ? 'block' : 'none'
+    // console.log('countdownText.style.display', this.countdownText.style.display)
     this.writeOutcome()
   }
 

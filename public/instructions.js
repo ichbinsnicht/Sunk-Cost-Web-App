@@ -28,6 +28,5 @@ export class Instructions {
     this.instructionsTextDiv1.style.display = this.instructionsPage === 1 ? 'block' : 'none'
     this.instructionsTextDiv2.style.display = this.instructionsPage === 2 ? 'block' : 'none'
     this.instructionsTextDiv3.style.display = this.instructionsPage === 3 ? 'block' : 'none'
-    console.log('this.instructionsPage', this.instructionsPage)
   }
 }

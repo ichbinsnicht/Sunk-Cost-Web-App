@@ -41,17 +41,10 @@ export class Subject {
     console.log('practice', practice)
     console.log('this.practicePeriodsComplete', this.practicePeriodsComplete)
     arange2(1, this.numPeriods).forEach(period => {
-      const forcing =
-        Math.random() < 0.5 &&
-        period > 1 &&
-        period < this.numPeriods &&
-        !this.hist[period - 1].forced
-      const forceDir = forcing ? choose([-1, 0, 1]) : 0
       this.hist[period] = {
         choice: 0,
         ready: false,
-        forced: forceDir !== 0,
-        forceDir,
+        possible: Math.random() < 0.5 || period > 1 ? 1 : 0,
         winGiftCard: 0,
         earnings: 0
       }

@@ -1,4 +1,4 @@
-import { arange1 } from './math.js'
+import { arange1, arange2, choose } from './math.js'
 
 export class Renderer {
   constructor (client) {
@@ -8,20 +8,22 @@ export class Renderer {
     console.log('afterCardImageDiv', this.afterCardImageDiv)
     this.countdownText = document.getElementById('countdownText')
     this.countdownSpan = document.getElementById('choiceSpan')
-    this.investmentYesText = document.getElementById('investmentYesText')
-    this.investmentNoText = document.getElementById('investmentNoText')
     this.requestText = document.getElementById('requestText')
-    this.stepTitle = document.getElementById('stepTitle')
     this.sliderTargetSpan = document.getElementById('sliderTargetSpan')
     this.sliderValueSpan = document.getElementById('sliderValueSpan')
     this.bonusTicketsEarnedSpan = document.getElementById('bonusTicketsEarnedSpan')
-    this.giftCardPercentSpan = document.getElementById('giftCardPercentSpan')
-    this.bonusPercentSpan = document.getElementById('bonusPercentSpan')
+    this.giftCardTicketSpan = document.getElementById('giftCardTicketSpan')
+    this.bonusTicketSpan = document.getElementById('bonusTicketSpan')
     this.sliderCount = 2 // 20 default
     this.slider = document.getElementById('slider')
-    this.sliderTargets = arange1(this.sliderCount).map(i => Math.round(Math.random() * 100))
     this.sliderProgress = 0
     this.slider.value = Math.round(Math.random() * 100)
+    this.sliderTargets = []
+    arange1(this.sliderCount).forEach(i => {
+      const oldValue = i === 0 ? this.slider.value : this.sliderTargets[i - 1]
+      const increment = choose(arange2(1, 99))
+      this.sliderTargets[i] = (oldValue + increment) % 101
+    })
     this.slider.onchange = () => {
       const sliderTarget = this.sliderTargets[this.sliderProgress]
       if (this.slider.value === sliderTarget.toString()) {
@@ -50,10 +52,16 @@ export class Renderer {
     this.drawSliderTask()
     this.input = this.client.input
     this.drawing = true
-    this.bonusPercentSpan.innerHTML = this.client.bonusPercent
-    this.giftCardPercentSpan.innerHTML = 100 - this.client.bonusPercent
+    const choice1 = this.client.hist[1].choice === 1
+    const choice2 = this.client.hist[2].choice === 1
+    const possible1 = this.client.hist[1].possible === 1
+    const possible2 = this.client.hist[2].possible === 1
+    const happen1 = choice1 && possible1 ? 1 : 0
+    const happen2 = choice2 && possible2 ? 1 : 0
+    const bonusPercent = 100 - 40 * happen1 - 40 * happen2
+    this.bonusTicketSpan.innerHTML = bonusPercent
+    this.giftCardTicketSpan.innerHTML = 100 - bonusPercent
     this.countdownText.innerHTML = `Countdown: ${this.client.countdown}`
-    this.stepTitle.innerHTML = 'Choice'
     const chosen = this.client.hist[this.client.period].choice !== 0
     this.requestText.style.display = chosen ? 'none' : 'block'
     this.countdownText.style.display = chosen ? 'block' : 'none'

@@ -291,7 +291,8 @@ input[type="range"] {
 #buttonDiv{
     display: flex;
     flex-direction: row;
-    justify-content: center;    
+    justify-content: center;   
+    margin: 3vmin; 
 }
 .choiceButton{
     width: 20vmin;
@@ -380,7 +381,7 @@ button {
     outline: 0.2vmin solid white;
     padding: 1vmin;
     font: 3vmin monospace;
-    width: 120vmin;
+    width: 65vw;
     text-align: left;
 }
 .mcSelection{
@@ -392,7 +393,8 @@ button {
 .quizInput {
     text-align: center;
     margin: 2vh;
-    width: 50vh;
+    margin-right: 1vmin;
+    width: 7vh;
     font: 3vmin monospace;
 }
 .centerDiv{

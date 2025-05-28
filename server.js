@@ -115,7 +115,18 @@ export class Server {
         const subject = subjects[id]
         if (subject) {
           console.log('yesButton', id)
-          subject.state = 'interface'
+          subject.hist[subject.period].choice = 1
+          console.log('subject.hist', subject.hist)
+        } else {
+          console.error(`Subject with id ${id} not found`)
+        }
+      })
+      socket.on('noButton', (id) => {
+        const subject = subjects[id]
+        if (subject) {
+          console.log('noButton', id)
+          subject.hist[subject.period].choice = -1
+          console.log('subject.hist', subject.hist)
         } else {
           console.error(`Subject with id ${id} not found`)
         }
@@ -162,15 +173,6 @@ export class Server {
       socket.on('clientUpdate', (msg) => {
         const subject = this.game.subjects[msg.id]
         if (subject) {
-          const step = subject.step
-          const histPeriod = subject.hist[msg.period]
-          const choosing = step === 'choice'
-          const stateInterface = subject.state === 'interface'
-          if (subject.period === msg.period && step === msg.step) {
-            if (stateInterface && choosing) {
-              histPeriod.choice = msg.currentChoice
-            }
-          }
           const reply = {
             period: subject.period,
             state: subject.state,
@@ -190,7 +192,6 @@ export class Server {
             numPeriods: this.game.numPeriods,
             baseEndowment: this.game.baseEndowment,
             extraEndowment: this.game.extraEndowment,
-            bonusPercent: subject.bonusPercent,
             completionURL: subject.state === 'experimentComplete' ? this.completionURL : '',
             giftURL: subject.state === 'experimentComplete' ? subject.giftURL : ''
           }

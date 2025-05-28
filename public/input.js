@@ -73,6 +73,10 @@ export class Input {
   }
 
   nextInstructionsPage () {
+    if (this.instructions.instructionsPage === 3) {
+      const correct = this.client.quiz.nextPageQuiz()
+      if (!correct) { return false }
+    }
     this.instructions.instructionsPage++
     console.log('this.instructions.instructionsPage', this.instructions.instructionsPage)
   }

@@ -30,6 +30,9 @@ export class Client {
     this.understandingQuiz = document.getElementById('understandingQuiz')
     this.YesButton = document.getElementById('YesButton')
     this.NoButton = document.getElementById('NoButton')
+    this.buttonDiv = document.getElementById('buttonDiv')
+    this.investmentYesText = document.getElementById('investmentYesText')
+    this.investmentNoText = document.getElementById('investmentNoText')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -67,7 +70,6 @@ export class Client {
     this.stage = 1
     this.countdown = 60 // seconds
     this.time = 0
-    this.choice = 0
     this.hist = {}
     this.practicePeriodsComplete = false
     this.engagement = 0
@@ -80,7 +82,6 @@ export class Client {
     this.extraEndowment = 0
     this.completionURL = ''
     this.randomPeriod = 0
-    this.bonusPercent = 100
 
     this.socket = io()
     // URL: http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
@@ -113,12 +114,10 @@ export class Client {
     this.socket.on('clientJoined', (msg) => {
       console.log(`client ${msg.id} joined`)
       console.log('period:', this.period)
-      console.log('choice:', this.choice)
       this.joined = true
       this.id = msg.id
       this.period = msg.period
       this.hist = msg.hist
-      this.choice = this.hist[this.period].choice
       console.log('hist', this.hist)
       setInterval(() => this.update(), 10)
       setInterval(() => this.measureEngagement(), 1000)
@@ -161,7 +160,6 @@ export class Client {
       this.state = msg.state
       this.numPeriods = msg.numPeriods
       this.randomPeriod = msg.randomPeriod
-      this.bonusPercent = msg.bonusPercent
     })
   }
 
@@ -172,14 +170,12 @@ export class Client {
       session: this.session,
       period: this.period,
       step: this.step,
-      stage: this.stage,
-      currentChoice: this.choice, // change currentChoice to choice
+      stage: this.stage
     }
     this.socket.emit('clientUpdate', msg)
     this.beginPracticePeriodsButton.style.display = 'none'
     const showBeginExperimentButton =
       this.practicePeriodsComplete &&
-      this.instructions.instructionsPage === 3 &&
       this.quizComplete
     this.beginExperimentButton.style.display =
       showBeginExperimentButton ? 'inline' : 'none'
@@ -188,16 +184,20 @@ export class Client {
     this.previousPageButton.style.display =
       this.instructions.instructionsPage === 1 || this.quizComplete ? 'none' : 'inline'
     this.nextPageButton.style.display =
-      [3].includes(this.instructions.instructionsPage) ? 'none' : 'inline'
+      this.instructions.instructionsPage > 3 ? 'none' : 'inline'
+    console.log('this.quizComplete', this.quizComplete)
+    this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.instructionsDiv.style.display = 'none'
     this.welcomeDiv.style.display = 'none'
     this.pleaseWaitDiv.style.display = 'none'
     this.preSurveyDiv.style.display = 'none'
     this.interfaceDiv.style.display = 'none'
     this.nextPeriodButton.style.display = 'none'
-    this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.experimentCompleteDiv.style.display = 'none'
     this.sliderTaskDiv.style.display = 'none'
+    this.buttonDiv.style.display = 'none'
+    this.investmentYesText.style.display = 'none'
+    this.investmentNoText.style.display = 'none'
     if (this.joined && this.state === 'startup') {
       this.pleaseWaitDiv.style.display = 'block'
     }
@@ -215,6 +215,21 @@ export class Client {
     }
     if (this.joined && this.state === 'interface') {
       this.interfaceDiv.style.display = 'flex'
+    }
+    console.log('this.period', this.period)
+    console.log('this.hist[this.period].choice', this.hist[this.period].choice)
+    if (this.hist[this.period].choice === 0) {
+      this.buttonDiv.style.display = 'flex'
+    }
+    console.log('this.hist[this.period].possible', this.hist[this.period].possible)
+    const happen =
+      this.hist[this.period].choice === 1 &&
+      this.hist[this.period].possible === 1
+    if (this.hist[this.period].choice !== 0 && happen) {
+      this.investmentYesText.style.display = 'block'
+    }
+    if (this.hist[this.period].choice !== 0 && !happen) {
+      this.investmentNoText.style.display = 'block'
     }
     if (this.countdown <= 0) {
       this.nextPeriodButton.style.display = 'block'

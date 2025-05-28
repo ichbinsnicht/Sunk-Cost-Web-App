@@ -1,27 +1,14 @@
 // TO-DO
-// - first round choice (step or stage I):
-// - second round choice (step or stage II)
-// - framing on lottery tickets: lottery tickets. You earn them through the real effort task
-// gift card vs bonus tickets (100 tickets)
-// each bonus ticket raises the probability of winning the bonus by 1%
-// each gift card ticket raises the probability of winning the gift card by 1%
-// at the end you get either the bonus or the gift card
+// - randomily assign gift card or bonus to subjects (outcome function)
+// - data recording
 //
-// round 1: real effort slider task (earn 100 bonus tickets)
-// round 2: would you like to invest 40 bonus tickets to earn 40 gift card tickets?
-// round 3: either your investment happens or not (overruling, forcing w/ 50% chance)
-// round 4: would you like to invest 40 bonus tickets to earn 40 gift card tickets?
-//
-//
-// - update instructions
+// - double check parameters prior to execution
+// - scale up everything (to better understand dynamics and heterogeneity, non-linearities)
 //
 // framing:
 // company manager wants to engage in an investment: CEO approves or not
 // CEO approves --> continue with investment (sunk cost fallacy)
 //
-// - double check parameters prior to execution
-// - scale up everything (to better understand dynamics and heterogeneity, non-linearities)
-
 // stated preferences as assistance for the design!
 // add questions: individuals that have problem with authority
 // (revealed preference against authority)

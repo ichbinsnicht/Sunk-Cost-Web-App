@@ -70,14 +70,11 @@ export class Renderer {
   }
 
   writeOutcome = function () {
-    if (this.client.hist[this.client.randomPeriod] == null) return // guard statement
+    if (this.client.state !== 'experimentComplete') return // guard statement
     const completeTextDiv = this.client.completeTextDiv
-    const forced = this.client.hist[this.client.randomPeriod].forced
-    const winGiftCard = this.client.hist[this.client.randomPeriod].winGiftCard
-    const cost = forced ? this.client.extraEndowment : 0
-    const baseEndowment = this.client.baseEndowment
+    const endowment = this.client.endowment
+    const winGiftCard = this.client.winGiftCard
     const bonus = this.client.bonus
-    const extraMoney = this.client.extraEndowment - cost + (1 - winGiftCard) * bonus
     const giftValue = this.client.giftValue
     const giftBitLinkDiv = this.client.giftBitLinkDiv
     const completionURL = this.client.completionURL
@@ -86,18 +83,18 @@ export class Renderer {
     const copyURLDiv = this.client.copyURLDiv
     const bonusDiv = this.client.bonusDiv
     completeTextDiv.innerHTML = ''
-    completeTextDiv.innerHTML += `You will get $${baseEndowment.toFixed(0)} upon completion.<br>`
-    const bonusText = `You will also receive a $${extraMoney.toFixed(0)} Prolific bonus.<br>`
+    completeTextDiv.innerHTML += `You will get $${endowment.toFixed(0)} upon completion.<br>`
+    const bonusText = `You will also receive a $${bonus.toFixed(0)} Prolific bonus.<br>`
     const giftCardTextA = `You won the $${giftValue.toFixed(0)} Starbucks gift card.`
     const giftCardTextB = `You did not win the $${giftValue.toFixed(0)} Starbucks gift card.`
-    completeTextDiv.innerHTML += extraMoney > 0 ? bonusText : ''
-    completeTextDiv.innerHTML += winGiftCard ? giftCardTextA : giftCardTextB
+    completeTextDiv.innerHTML += winGiftCard === 0 ? bonusText : ''
+    completeTextDiv.innerHTML += winGiftCard === 1 ? giftCardTextA : giftCardTextB
     giftBitLinkDiv.innerHTML = ''
     paymentLink.href = completionURL
     paymentLink.target = '_self'
     copyURLDiv.style.display = 'none'
     bonusDiv.style.display = 'none'
-    if (winGiftCard) {
+    if (winGiftCard === 1) {
       giftBitLinkDiv.innerHTML += `Your gift card URL: <br> ${giftURL}`
       paymentLink.target = '_blank'
       copyURLDiv.style.display = 'block'

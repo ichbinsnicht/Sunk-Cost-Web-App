@@ -155,14 +155,6 @@ export class Server {
         socket.emit('serverUpdateManager', reply)
       })
       socket.on('clientClick', (msg) => {
-        const subject = this.game.subjects[msg.id]
-        if (subject) {
-          const step = subject.step
-          const stateInterface = subject.state === 'interface'
-          const histPeriod = subject.hist[msg.period]
-          const choosing = step === 'choice'
-          if (stateInterface & choosing) histPeriod.ready = true
-        }
         this.scribe.updateClickFile(msg)
       })
       socket.on('nextPeriod', (msg) => {
@@ -182,10 +174,8 @@ export class Server {
             endowment: this.game.endowment,
             step: subject.step,
             countdown: subject.countdown,
-            randomPeriod: subject.randomPeriod,
             winGiftCard: subject.winGiftCard,
             giftValue: this.game.giftValue,
-            totalCost: subject.totalCost,
             earnings: subject.earnings,
             hist: subject.hist,
             bonus: this.game.bonus,

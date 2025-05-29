@@ -6,11 +6,9 @@ export class Game {
     this.scribe = this.server.scribe
     this.numSubjects = 0
     this.subjects = {}
-    this.numPeriods = 2 // 10 periods (minimize fatigue based on pilots), numPeriods > numPracticePeriods (internal: 1)
+    this.numPeriods = 2 // 2 periods
     this.choiceLength = 10 // 30 secs choice1 (lab: 15, internal: 3)
-    this.baseEndowment = 2 // 2 (lab: 2, internal: 3)
-    this.extraEndowment = 0
-    this.endowment = this.baseEndowment + this.extraEndowment
+    this.endowment = 2 // 2 (lab: 2, internal: 3)
     this.bonus = 1 // online: {4,6}
     this.giftValue = 6 // online: {6,9}
     setInterval(() => this.updateSubjects(), 1000)

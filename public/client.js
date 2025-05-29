@@ -78,10 +78,7 @@ export class Client {
     this.bonus = 0
     this.giftValue = 0
     this.endowment = 0
-    this.baseEndowment = 0
-    this.extraEndowment = 0
     this.completionURL = ''
-    this.randomPeriod = 0
 
     this.socket = io()
     // URL: http://localhost:3000?PROLIFIC_PID=1&STUDY_ID=GiftCard&SESSION_ID=Session
@@ -153,13 +150,10 @@ export class Client {
       this.winGiftCard = msg.winGiftCard
       this.giftValue = msg.giftValue
       this.endowment = msg.endowment
-      this.baseEndowment = msg.baseEndowment
-      this.extraEndowment = msg.extraEndowment
       this.completionURL = msg.completionURL
       this.giftURL = msg.giftURL
       this.state = msg.state
       this.numPeriods = msg.numPeriods
-      this.randomPeriod = msg.randomPeriod
     })
   }
 
@@ -185,7 +179,6 @@ export class Client {
       this.instructions.instructionsPage === 1 || this.quizComplete ? 'none' : 'inline'
     this.nextPageButton.style.display =
       this.instructions.instructionsPage > 3 ? 'none' : 'inline'
-    console.log('this.quizComplete', this.quizComplete)
     this.beginExperimentText.style.display = this.quizComplete ? 'block' : 'none'
     this.instructionsDiv.style.display = 'none'
     this.welcomeDiv.style.display = 'none'
@@ -216,12 +209,9 @@ export class Client {
     if (this.joined && this.state === 'interface') {
       this.interfaceDiv.style.display = 'flex'
     }
-    console.log('this.period', this.period)
-    console.log('this.hist[this.period].choice', this.hist[this.period].choice)
     if (this.hist[this.period].choice === 0) {
       this.buttonDiv.style.display = 'flex'
     }
-    console.log('this.hist[this.period].possible', this.hist[this.period].possible)
     const happen =
       this.hist[this.period].choice === 1 &&
       this.hist[this.period].possible === 1

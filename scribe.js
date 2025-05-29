@@ -52,9 +52,9 @@ export class Scribe {
   createDataFile () {
     this.dataStream = fs.createWriteStream(`data/${this.dateString}-data.csv`)
     let csvString = 'study,session,startTime,surveyEndTime,quizEndTime,endTime,'
-    csvString += 'timeTaken,period,id,forced,forceDir,'
+    csvString += 'timeTaken,period,id,possible,happen,'
     csvString += 'choice,endowment,bonus,giftValue,'
-    csvString += 'winGiftCard,totalCost,earnings,giftAmount,randomPeriod'
+    csvString += 'winGiftCard,totalCost,earnings,giftAmount'
     csvString += '\n'
     this.dataStream.write(csvString)
   }
@@ -64,19 +64,19 @@ export class Scribe {
     const endowment = this.server.game.endowment
     const bonus = this.server.game.bonus
     const giftValue = this.server.game.giftValue
-    const forced = subject.hist[subject.period].forced * 1
-    const forceDir = subject.hist[subject.period].forceDir
-    const choice = subject.hist[subject.period].choice
+    const possible = subject.hist[subject.period].possible
+    const happen = subject.hist[subject.period].happen
+    const choice = subject.hist[subject.period].choice === 1 ? 1 : 0
     let csvString = ''
     csvString += `${subject.study},${subject.session},${subject.startTime},`
     csvString += `${subject.preSurveyEndTime},${subject.quizEndTime},`
     csvString += `${subject.endTime},${subject.timeTaken},${subject.period},`
     csvString += `${subject.id},`
-    csvString += `${forced},${forceDir},`
+    csvString += `${possible},${happen},`
     csvString += `${choice},`
     csvString += `${endowment},${bonus},${giftValue},`
     csvString += `${subject.winGiftCard},${subject.totalCost},${subject.earnings},`
-    csvString += `${subject.giftAmount},${subject.randomPeriod}`
+    csvString += `${subject.giftAmount}`
     csvString += '\n'
     this.dataStream.write(csvString)
     console.log('csvString', csvString)
@@ -100,34 +100,33 @@ export class Scribe {
 
   createClickFile () {
     this.clickStream = fs.createWriteStream(`data/${this.dateString}-click.csv`)
-    let csvString = 'id,study,session,time,period,step,stage,state,countdown,mouseX,mouseY,choice'
+    let csvString = 'id,study,session,time,period,step,stage,state,countdown,mouseX,mouseY'
     csvString += '\n'
     this.clickStream.write(csvString)
   }
 
   updateClickFile (msg) {
-    const choice = msg.mouseY > 0 ? 0.5 : msg.mouseX > 0 ? 1 : 0
     let csvString = ''
     csvString += `${msg.id},${msg.study},${msg.session},${msg.time},`
     csvString += `${msg.period},${msg.step},${msg.stage},`
-    csvString += `${msg.state},${msg.countdown},${msg.mouseX},${msg.mouseY},${choice}`
+    csvString += `${msg.state},${msg.countdown},${msg.mouseX},${msg.mouseY}`
     csvString += '\n'
     this.clickStream.write(csvString)
   }
 
   createPaymentFile () {
     this.paymentStream = fs.createWriteStream(`data/${this.dateString}-payment.csv`)
-    const csvString = 'date,id,period,earnings,winGiftCard,link\n'
+    const csvString = 'date,id,earnings,winGiftCard,link\n'
     this.paymentStream.write(csvString)
   }
 
   updatePaymentFile (subject) {
     console.log('subject.hist', subject.hist)
     const date = this.dateString
-    const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
-    const earnings = subject.hist[subject.randomPeriod].earnings
+    const winGiftCard = subject.winGiftCard
+    const earnings = subject.earnings
     if (winGiftCard) this.assignGift(subject)
-    let csvString = `${date},${subject.id},${subject.randomPeriod},${earnings.toFixed(0)},`
+    let csvString = `${date},${subject.id},${earnings.toFixed(0)},`
     csvString += `${winGiftCard},`
     csvString += `${subject.giftURL}\n`
     this.paymentStream.write(csvString)
@@ -136,19 +135,15 @@ export class Scribe {
   updateBonusFile () {
     const subjects = Object.values(this.server.game.subjects)
     const readySubjects = subjects.filter(subject => subject.step === 'end')
-    const extraEndowment = this.server.game.extraEndowment
     const bonus = this.server.game.bonus
     const studies = unique(subjects.map(subject => subject.study))
     studies.forEach(study => {
       let bonusString = ''
       const studySubjects = readySubjects.filter(subject => subject.study === study)
       studySubjects.forEach(subject => {
-        const forced = subject.hist[subject.randomPeriod].forced
-        const winGiftCard = subject.hist[subject.randomPeriod].winGiftCard
-        const cost = forced ? extraEndowment : 0
-        const extraMoney = extraEndowment - cost + (1 - winGiftCard) * bonus
-        if (extraMoney > 0) {
-          const csvString = `${subject.id},${extraMoney.toFixed(2)}\n`
+        const winGiftCard = subject.winGiftCard
+        if (winGiftCard === 0) {
+          const csvString = `${subject.id},${bonus.toFixed(2)}\n`
           bonusString += csvString
         }
       })

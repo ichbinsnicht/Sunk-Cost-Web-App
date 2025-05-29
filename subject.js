@@ -1,4 +1,4 @@
-import { arange2, choose } from './public/math.js'
+import { arange2 } from './public/math.js'
 import { sendMesssage } from './prolific.js'
 
 export class Subject {
@@ -30,7 +30,6 @@ export class Subject {
     this.totalCost = 0
     this.earnings = 0
     this.bonusPercent = 100
-    this.randomPeriod = choose(arange2(1, this.numPeriods))
     this.hist = {}
     this.selectedStage = Math.random() < 0.5 ? 1 : 2 // make sure to use it
     this.setupHist()
@@ -43,30 +42,28 @@ export class Subject {
     arange2(1, this.numPeriods).forEach(period => {
       this.hist[period] = {
         choice: 0,
-        ready: false,
         possible: Math.random() < 0.5 || period > 1 ? 1 : 0,
-        winGiftCard: 0,
-        earnings: 0
+        happen: 0
       }
     })
   }
 
   calculateOutcome () {
-    const choice = this.hist[this.period].choice
-    const forced = this.hist[this.period].forced
-    const cost = forced ? this.game.extraEndowment : 0
-    this.winGiftCard = choice
-    this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard) - cost
-    this.hist[this.period].winGiftCard = this.winGiftCard
-    this.hist[this.period].earnings = this.earnings
+    const happen1 = this.hist[1].happen
+    const happen2 = this.hist[2].happen
+    const probWinGiftCard = 40 * (happen1 + happen2)
+    this.winGiftCard = Math.random() < probWinGiftCard / 100 ? 1 : 0
+    this.earnings = this.game.endowment + this.game.bonus * (1 - this.winGiftCard)
     const giftValue = this.game.giftValue
     this.giftAmount = this.winGiftCard === 1 ? giftValue : 0
   }
 
   nextPeriod () {
+    console.log(`Period ${this.period} complete`)
     if (this.period >= this.numPeriods) {
       this.endTime = new Date().getTime()
       this.timeTaken = this.endTime - this.startTime
+      this.calculateOutcome()
     }
     this.game.server.scribe.updateDataFile(this)
     if (this.period >= this.numPeriods) {
@@ -75,8 +72,7 @@ export class Subject {
       this.game.server.scribe.updatePaymentFile(this)
       this.game.server.scribe.updateBonusFile(this)
       const reply = { id: this.id }
-      const winGiftCard = this.hist[this.randomPeriod].winGiftCard
-      if (winGiftCard) {
+      if (this.winGiftCard === 1) {
         sendMesssage(this.id, `Your gift card is here: ${this.giftURL}`)
       }
       this.socket.emit('paymentComplete', reply)
@@ -99,7 +95,10 @@ export class Subject {
     const chosen = this.hist[this.period].choice !== 0
     if (this.state === 'interface' && chosen) {
       if (this.countdown === 1) {
-        this.calculateOutcome()
+        const choice = this.hist[this.period].choice
+        const possible = this.hist[this.period].possible
+        const happen = choice === 1 && possible === 1 ? 1 : 0
+        this.hist[this.period].happen = happen
       }
       this.countdown = Math.max(this.countdown - 1, 0)
     }

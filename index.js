@@ -1,7 +1,4 @@
 // TO-DO
-// - randomily assign gift card or bonus to subjects (outcome function)
-// - data recording
-//
 // - double check parameters prior to execution
 // - scale up everything (to better understand dynamics and heterogeneity, non-linearities)
 //

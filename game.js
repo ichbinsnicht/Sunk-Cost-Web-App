@@ -9,7 +9,7 @@ export class Game {
     this.numPeriods = 2 // 2 periods
     this.choiceLength = 10 // 30 secs choice1 (lab: 15, internal: 3)
     this.endowment = 2 // 2 (lab: 2, internal: 3)
-    this.bonus = 1 // online: {4,6}
+    this.bonus = 0.25 // online: {4,6}
     this.giftValue = 6 // online: {6,9}
     setInterval(() => this.updateSubjects(), 1000)
   }

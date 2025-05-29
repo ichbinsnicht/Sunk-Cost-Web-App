@@ -84,9 +84,9 @@ export class Renderer {
     const bonusDiv = this.client.bonusDiv
     completeTextDiv.innerHTML = ''
     completeTextDiv.innerHTML += `You will get $${endowment.toFixed(0)} upon completion.<br>`
-    const bonusText = `You will also receive a $${bonus.toFixed(0)} Prolific bonus.<br>`
-    const giftCardTextA = `You won the $${giftValue.toFixed(0)} Starbucks gift card.`
-    const giftCardTextB = `You did not win the $${giftValue.toFixed(0)} Starbucks gift card.`
+    const bonusText = 'You will also receive a 25¢ Prolific bonus.<br>'
+    const giftCardTextA = 'You won the $6 Starbucks gift card.'
+    const giftCardTextB = 'You did not win the $6 Starbucks gift card.'
     completeTextDiv.innerHTML += winGiftCard === 0 ? bonusText : ''
     completeTextDiv.innerHTML += winGiftCard === 1 ? giftCardTextA : giftCardTextB
     giftBitLinkDiv.innerHTML = ''

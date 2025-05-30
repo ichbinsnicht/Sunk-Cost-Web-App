@@ -145,37 +145,37 @@
         <div id="instructionsDiv"> 
             <div id="instructionsTextDiv">
                 <div id="instructionsTextDiv1">
-                    This is an experiment about decision making. You will start with 
+                    This is a study about decision making. You will start with 
                     $<span id="endowment1">X</span> just for participating. 
                     Depending on the decisions you make, you will either 
-                    receive a 25¢ bonus or a 
+                    receive a $1 bonus or a 
                     $6 Starbucks gift card.
                     
                     <div id="instructionsImageDiv">
                         <div class="instructionsPrizeImageDiv">
-                            <img src="WashingtonQuarter.png" class="instructionsPrizeImage">
+                            <img src="Dollar.jpg" class="instructionsPrizeImage">
                         </div>
                         <div class="instructionsPrizeImageDiv">
                             <img src="GiftCard.png" class="instructionsPrizeImage">
                         </div>
                     </div>
-                    <br> At the beginning of the experiment, you will complete a slider task
+                    <br> At the beginning of the study, you will complete a slider task
                     to earn 100 bonus tickets.
                 </div>
                 <div id="instructionsTextDiv2"> 
-                    This experiment will have two periods. 
+                    This study has two periods. 
                     In period 1, you can try to invest some bonus tickets to earn gift card tickets.
                     If you try to invest, there is a 50% chance that your investment will happen.
                     If the investment happens, you will receive 40 gift card tickets 
                     and loose 40 bonus tickets. <br><br>
 
                     In period 2, you can try to invest additional bonus tickets in gift card tickets.
-                    If you try to invest, then your investment will certainly happen.
-                    If you make the investment you will receive 40 gift card tickets 
+                    If you try to invest, there is a 100% chance that your investment will happen.
+                    If the investment happens, you will receive 40 gift card tickets 
                     and loose 40 bonus tickets.<br><br>
 
-                    At the end of the experiment, you will get $<span id="endowment2">X</span> just for 
-                    participating. You will also receive either a 25¢ bonus or a 
+                    At the end of the study, you will get $<span id="endowment2">X</span> just for 
+                    participating. You will also receive either a $1 bonus or a 
                     $6 Starbucks gift card.
                     Your percent chance of receiving the bonus will equal the number of bonus tickets you hold. 
                     Your percent chance of receiving the gift card will equal the number of gift card tickets you hold.                    
@@ -197,14 +197,14 @@
                             </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 3</b>: At the end of the experiment, if you have 0 gift card tickets 
-                            and 100 bonus tickets, what is the probability that you will win the 25¢ bonus? <br>
+                            <b>Question 3</b>: At the end of the study, if you have 0 gift card tickets 
+                            and 100 bonus tickets, what is the probability that you will win the $1 bonus? <br>
                             <div class="quizInputDiv">
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz3" id="quiz3" required>%
                             </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 4</b>: At the end of the experiment, if you have 40 gift card tickets 
+                            <b>Question 4</b>: At the end of the study, if you have 40 gift card tickets 
                             and 60 bonus tickets, what is the probability that you will win the $6 gift card? <br>
                             <div class="quizInputDiv">
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz4" id="quiz4" required>%
@@ -215,28 +215,28 @@
                 <div id="instructionsTextDiv4">
                     <div id="understandingQuiz2" class="centerDiv">
                         <div class="quizQuestionDiv">
-                            <b>Question 5</b>: At the end of the experiment, if you have 80 gift card tickets 
+                            <b>Question 5</b>: At the end of the study, if you have 80 gift card tickets 
                             and 20 bonus tickets, what is the probability that you will win the $6 gift card? <br>
                             <div class="quizInputDiv">
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz5" id="quiz5" required>%
                             </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 6</b>: At the end of the experiment, if you have 40 gift card tickets 
-                            and 60 bonus tickets, what is the probability that you will win the 25¢ bonus? <br>
+                            <b>Question 6</b>: At the end of the study, if you have 40 gift card tickets 
+                            and 60 bonus tickets, what is the probability that you will win the $1 bonus? <br>
                             <div class="quizInputDiv">
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz6" id="quiz6" required>%
                             </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 7</b>: At the end of the experiment, what is the probability that you will 
+                            <b>Question 7</b>: At the end of the study, what is the probability that you will 
                             win both the bonus and the gift card? <br>
                             <div class="quizInputDiv">
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz7" id="quiz7" required>%
                             </div>
                         </div>
                         <div class="quizQuestionDiv">
-                            <b>Question 8</b>: At the end of the experiment, what is the probability that you will
+                            <b>Question 8</b>: At the end of the study, what is the probability that you will
                             win neither the bonus nor the gift card? <br>
                             <div class="quizInputDiv">
                                 <input class="quizInput" type="number" min="0" max="100" name="quiz8" id="quiz8" required>%
@@ -248,7 +248,7 @@
                     </div>
                 </div>
                 <div class="centerDiv" id="beginExperimentText">
-                    Please click the button below to begin the experiment.<br><br>
+                    Please click the button below to begin the study.<br><br>
                 </div>
                 <div class ="centerDiv">
                     <button type="button" onclick="previousInstructionsPage()" id="previousPageButton">
@@ -270,23 +270,29 @@
         </div>
         <div id="sliderTaskDiv">
             <div class="slidecontainer">
-                Please set the slider to <span id="sliderTargetSpan">X</span>.<br><br>
-                <input type="range" min="1" max="100" value="50" class="slider" id="slider"> 
-                <br><br> The slider is currently set to <span id="sliderValueSpan">X</span>.
-                <br><br>
-                <br><br> So far, you have earned <span id="bonusTicketsEarnedSpan">X</span> bonus tickets.
+                <div id="sliderDiv">
+                    Please set the slider to <span id="sliderTargetSpan">X</span>.<br><br>
+                    <input type="range" min="1" max="100" value="50" class="slider" id="slider"> 
+                    <br><br> The slider is currently set to <span id="sliderValueSpan">X</span>.
+                    <br><br>
+                </div>
+                <br><br> You have earned <b><span id="bonusTicketsEarnedSpan" class="blueText">X</span></b> bonus tickets.
+                <br><br> 
+                <div id="sliderCountdownDiv">
+                    Countdown: <span id="sliderCountdownSpan">X</span>
+                </div>
             </div>
         </div>
         <div id="interfaceDiv">  
             <div id="stageDiv" >
                 <div id="stageImageDiv">
                     <div class="prizeImageDiv" id="dollarImageDiv">
-                        <div><img src="WashingtonQuarter.png" class="prizeImage"></div>
-                        <div><br><span id="bonusTicketSpan">X</span> Tickets</div>
+                        <div><img src="Dollar.jpg" class="prizeImage"></div>
+                        <div><br><span id="bonusTicketSpan">X</span> Bonus Tickets</div>
                     </div>
                     <div class="prizeImageDiv" id="cardImageDiv">
                         <div><img src="GiftCard.png" class="prizeImage"></div>
-                        <div><br><span id="giftCardTicketSpan">X</span> Tickets</div>
+                        <div><br><span id="giftCardTicketSpan">X</span> Gift Card Tickets</div>
                     </div>
                 </div>
                 </div><br><br>

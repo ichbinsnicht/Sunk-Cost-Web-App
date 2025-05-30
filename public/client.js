@@ -33,6 +33,8 @@ export class Client {
     this.buttonDiv = document.getElementById('buttonDiv')
     this.investmentYesText = document.getElementById('investmentYesText')
     this.investmentNoText = document.getElementById('investmentNoText')
+    this.sliderCountdownDiv = document.getElementById('sliderCountdownDiv')
+    this.sliderDiv = document.getElementById('sliderDiv')
     this.preSurveyForms = [
       document.getElementById('preSurveyForm1'),
       document.getElementById('preSurveyForm2'),
@@ -68,7 +70,7 @@ export class Client {
     this.period = 1
     this.step = 'choice'
     this.stage = 1
-    this.countdown = 60 // seconds
+    this.countdown = 5 // seconds
     this.time = 0
     this.hist = {}
     this.practicePeriodsComplete = false
@@ -191,6 +193,8 @@ export class Client {
     this.buttonDiv.style.display = 'none'
     this.investmentYesText.style.display = 'none'
     this.investmentNoText.style.display = 'none'
+    this.sliderDiv.style.display = 'none'
+    this.sliderCountdownDiv.style.display = 'none'
     if (this.joined && this.state === 'startup') {
       this.pleaseWaitDiv.style.display = 'block'
     }
@@ -205,6 +209,12 @@ export class Client {
     }
     if (this.joined && this.state === 'sliderTask') {
       this.sliderTaskDiv.style.display = 'flex'
+    }
+    if (this.renderer.sliderProgress >= this.renderer.sliderCount) {
+      this.sliderCountdownDiv.style.display = 'block'
+    }
+    if (this.renderer.sliderProgress < this.renderer.sliderCount) {
+      this.sliderDiv.style.display = 'block'
     }
     if (this.joined && this.state === 'interface') {
       this.interfaceDiv.style.display = 'flex'

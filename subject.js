@@ -18,6 +18,7 @@ export class Subject {
     this.preSurveySubmitted = false
     this.instructionsComplete = false
     this.practicePeriodsComplete = true
+    this.sliderTaskComplete = false
     this.step = 'choice'
     this.state = 'startup'
     this.period = 1
@@ -93,6 +94,14 @@ export class Subject {
       this.state = 'welcome'
     }
     const chosen = this.hist[this.period].choice !== 0
+    if (this.state === 'sliderTask' && this.sliderTaskComplete) {
+      if (this.countdown === 1) {
+        this.state = 'interface'
+        this.countdown = this.game.choiceLength
+        return
+      }
+      this.countdown = Math.max(this.countdown - 1, 0)
+    }
     if (this.state === 'interface' && chosen) {
       if (this.countdown === 1) {
         const choice = this.hist[this.period].choice

@@ -1,4 +1,6 @@
 // TO-DO
+
+// also interface: mention that people got the gift card
 // - double check parameters prior to execution
 // - scale up everything (to better understand dynamics and heterogeneity, non-linearities)
 //

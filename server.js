@@ -106,7 +106,7 @@ export class Server {
         const subject = subjects[id]
         if (subject) {
           console.log('sliderTaskComplete', id)
-          subject.state = 'interface'
+          subject.sliderTaskComplete = true
         } else {
           console.error(`Subject with id ${id} not found`)
         }

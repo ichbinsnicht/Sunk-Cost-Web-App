@@ -14,6 +14,7 @@ export class Renderer {
     this.bonusTicketsEarnedSpan = document.getElementById('bonusTicketsEarnedSpan')
     this.giftCardTicketSpan = document.getElementById('giftCardTicketSpan')
     this.bonusTicketSpan = document.getElementById('bonusTicketSpan')
+    this.sliderCountdownSpan = document.getElementById('sliderCountdownSpan')
     this.sliderCount = 2 // 20 default
     this.slider = document.getElementById('slider')
     this.sliderProgress = 0
@@ -42,6 +43,7 @@ export class Renderer {
     this.sliderTargetSpan.innerHTML = sliderTarget
     this.sliderValueSpan.innerHTML = this.slider.value
     this.bonusTicketsEarnedSpan.innerHTML = this.sliderProgress * 100 / this.sliderCount
+    this.sliderCountdownSpan.innerHTML = this.client.countdown
   }
 
   draw () {
@@ -74,8 +76,6 @@ export class Renderer {
     const completeTextDiv = this.client.completeTextDiv
     const endowment = this.client.endowment
     const winGiftCard = this.client.winGiftCard
-    const bonus = this.client.bonus
-    const giftValue = this.client.giftValue
     const giftBitLinkDiv = this.client.giftBitLinkDiv
     const completionURL = this.client.completionURL
     const giftURL = this.client.giftURL
@@ -84,7 +84,7 @@ export class Renderer {
     const bonusDiv = this.client.bonusDiv
     completeTextDiv.innerHTML = ''
     completeTextDiv.innerHTML += `You will get $${endowment.toFixed(0)} upon completion.<br>`
-    const bonusText = 'You will also receive a 25¢ Prolific bonus.<br>'
+    const bonusText = 'You will also receive a $1 Prolific bonus.<br>'
     const giftCardTextA = 'You won the $6 Starbucks gift card.'
     const giftCardTextB = 'You did not win the $6 Starbucks gift card.'
     completeTextDiv.innerHTML += winGiftCard === 0 ? bonusText : ''
